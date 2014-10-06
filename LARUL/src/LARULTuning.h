@@ -15,4 +15,7 @@
 */
 #define OVERSIZED_DATA_ALLOCATION 0x80000
 
+// Default size for lookback buffers in filters
+#define FILTER_LOOKBACK_SIZE_DEFAULT 16
+
 #endif

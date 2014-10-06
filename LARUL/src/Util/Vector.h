@@ -66,6 +66,17 @@ public:
 		
 	};
 	
+	inline int32_t IndexOf ( T Element, uint32_t Start = 0 )
+	{
+		
+		for ( uint32_t i = Start; i < Used; i ++ )
+			if ( Elements [ i ] == Element )
+				return i;
+			
+		return - 1;
+		
+	};
+	
 private:
 	
 	void Grow ( size_t Minimum )

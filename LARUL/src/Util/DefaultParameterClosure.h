@@ -1,7 +1,7 @@
 #ifndef LARUL_PARAMETERCLOSURE_H
 #define LARUL_PARAMETERCLOSURE_H
 
-#include "Delegate.h";
+#include "Delegate.h"
 
 // Default parameter closures allow you to fit simpler incompatible delegate types by defaulting some parameters.
 // Please don't worry, i used a script to generate this code. I'm not completely insane.

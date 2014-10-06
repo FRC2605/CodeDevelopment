@@ -27,7 +27,7 @@ std :: string Error :: GetErrorString ()
 {
 	
 	std :: stringstream Out ( File );
-	Out << ", " << Line << ": " << Type;
+	Out << File << ", " << Line << ": " << Type;
 	
 	return Out.str ();
 	

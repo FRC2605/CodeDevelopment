@@ -12,7 +12,7 @@ void MyCallback ();
 
 // Elsewhere, we make a delegate.
 
-GlobalDelegate0 <void> * MyCallbackDelegate = new ( & MyCallback );
+GlobalDelegate0 <void> * MyCallbackDelegate = new GlobalDelegate0 <void> ( & MyCallback );
 Caller.SetCallback ( MyCallbackDelegate );
 
 =================================

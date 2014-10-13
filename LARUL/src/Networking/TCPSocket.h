@@ -8,11 +8,13 @@
 #include <sys/socket.h>
 #include <netdb.h>
 #include <stdint.h>
- #include <arpa/inet.h>
+#include <arpa/inet.h>
 #include <unistd.h>
 
 #include "../Threading/Mutex.h"
 #include "../Threading/Synchronized.h"
+
+#include "TCP.h"
 
 /* TCPSocket: Just a plain old TCP socket implemented using berkley sockets.
 */
@@ -24,14 +26,6 @@ public:
 	typedef enum
 	{
 		
-		kAddressType_IPV4 = 1,
-		kAddressType_IPV6 = 2
-		
-	} AddressType;
-	
-	typedef enum
-	{
-		
 		kDisconnectBehavior_SilentError,
 		kDisconnectBehavior_FailureCallback,
 		kDisconnectBehavior_ThrowError,
@@ -39,8 +33,8 @@ public:
 		
 	} DisconnectBehavior;
 	
-	TCPSocket ( AddressType Type, DisconnectBehavior Disconnection );
-	TCPSocket ( AddressType Type, DisconnectBehavior Disconnection, uint16_t Port );
+	TCPSocket ( TCP :: AddressType Type, DisconnectBehavior Disconnection );
+	TCPSocket ( TCP :: AddressType Type, DisconnectBehavior Disconnection, uint16_t Port );
 	~TCPSocket ();
 	
 	void SetDisconnectionCallback ( IDelegate1 <void, TCPSocket *> * Callback );
@@ -55,6 +49,9 @@ public:
 	
 	void Write ( const void * Buffer, size_t Length, bool DontBlock = false );
 	void Read ( void * Buffer, size_t Length, bool Fill = true, size_t * Received = NULL, bool * Closed = NULL );
+	
+	void SetUserData ( void * UserData );
+	void * GetUserData ();
 	
 private:
 	
@@ -72,14 +69,17 @@ private:
 	bool Bound;
 	uint16_t BoundPort;
 	
-	AddressType Type;
+	TCP :: AddressType Type;
 	DisconnectBehavior Disconnection;
 	
 	IDelegate1 <void, TCPSocket *> * DisconnectCallback;
 	
 	bool Connected;
 	
-	Mutex SyncMutex;
+	Mutex SocketSync;
+	Mutex UserDataSync;
+	
+	void * UserData;
 	
 };
 

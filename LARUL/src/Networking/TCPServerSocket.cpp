@@ -1,159 +1,62 @@
-#include "TCPSocket.h"
+#include "TCPServerSocket.h"
 
-TCPSocket :: TCPSocket ( TCP :: AddressType Type, DisconnectBehavior Disconnection ):
-	SocketFD ( - 1 ),
+TCPServerSocket :: TCPServerSocket ( TCP :: AddressType Type, DisconnectBehavior Behavior ):
+	Type ( Type ),
+	Disconnection ( Behavior ),
+	DisconnectCallback ( NULL ),
+	UserDataSync ( true ),
+	UserData ( NULL ),
 	SendCounter ( 0 ),
 	ReceiveCounter ( 0 ),
-	Bound ( false ),
-	Type ( Type ),
-	Disconnection ( Disconnection ),
-	DisconnectCallback ( NULL ),
-	Connected ( false ),
 	SocketSync ( true ),
-	UserDataSync ( true ),
-	UserData ( NULL )
+	Connected ( false )
+{
+};
+
+TCPServerSocket :: ~TCPServerSocket ()
 {
 	
-	int Namespace;
-	
-	switch ( Type )
-	{
-		
-	case TCP :: kAddressType_IPV4:
-		
-		Namespace = PF_INET;
-		
-		break;
-		
-	case TCP :: kAddressType_IPV6:
-		
-		Namespace = PF_INET6;
-		
-		break;
-		
-	default:
-		THROW_ERROR ( "AddressType must be a valid enum in TCPSocket :: AddressType!" );
-		
-	}
-	
-	SocketFD = socket ( Namespace, SOCK_STREAM, IPPROTO_TCP );
-	
-	if ( SocketFD < 0 )
-		THROW_ERROR ( "Couldn't create socket!" );
+	if ( Connected )
+		Disconnect ( false );
 	
 };
 
-TCPSocket :: TCPSocket ( TCP :: AddressType Type, DisconnectBehavior Disconnection, uint16_t Port ):
-	SocketFD ( - 1 ),
-	SendCounter ( 0 ),
-	ReceiveCounter ( 0 ),
-	Bound ( true ),
-	BoundPort ( Port ),
-	Type ( Type ),
-	Disconnection ( Disconnection ),
-	DisconnectCallback ( NULL ),
-	Connected ( false ),
-	SocketSync ( true ),
-	UserDataSync ( true ),
-	UserData ( NULL )
+void TCPServerSocket :: SetUserData ( void * UserData )
 {
 	
-	int Namespace;
+	UserDataSync.Lock ();
 	
-	switch ( Type )
-	{
-		
-	case TCP :: kAddressType_IPV4:
-		
-		Namespace = PF_INET;
-		
-		break;
-		
-	case TCP :: kAddressType_IPV6:
+	this -> UserData = UserData;
 	
-		Namespace = PF_INET6;
-		
-		break;
-		
-	default:
-	
-		THROW_ERROR ( "AddressType must be a valid enum in TCPSocket :: AddressType!" );
-		
-	}
-	
-	SocketFD = socket ( Namespace, SOCK_STREAM, IPPROTO_TCP );
-	
-	if ( SocketFD < 0 )
-		THROW_ERROR ( "Couldn't create socket!" );
+	UserDataSync.Unlock ();
 	
 };
 
-void TCPSocket :: SetDisconnectionCallback ( IDelegate1 <void, TCPSocket *> * Callback )
+void * TCPServerSocket :: GetUserData ()
 {
 	
-	Synchronized Sync ( & SocketSync );
+	UserDataSync.Lock ();
+	
+	void * Data = UserData;
+	
+	UserDataSync.Unlock ();
+	
+	return Data;
+	
+};
+
+void TCPServerSocket :: SetDisconnectionCallback ( IDelegate1 <void, TCPServerSocket *> * Callback )
+{
+	
+	SocketSync.Lock ();
 	
 	DisconnectCallback = Callback;
 	
-};
-
-void TCPSocket :: Connect ( const char * Address, uint16_t Port )
-{
-	
-	Synchronized Sync ( & SocketSync );
-	
-	if ( Connected )
-		return;
-	
-	this -> Port = Port;
-	this -> Address = Address;
-	
-	struct sockaddr * SocketAddress;
-	size_t AddressSize;
-	
-	SendCounter = 0;
-	ReceiveCounter = 0;
-	
-	switch ( Type )
-	{
-		
-	case TCP :: kAddressType_IPV4:
-	
-		IPV4Address.sin_family = AF_INET;
-		IPV4Address.sin_port = htons ( Port );
-		
-		inet_pton ( AF_INET, Address, & IPV4Address.sin_addr );
-		
-		SocketAddress = reinterpret_cast <struct sockaddr *> ( & IPV4Address );
-		AddressSize = sizeof ( IPV4Address );
-		
-		break;
-		
-	case TCP :: kAddressType_IPV6:
-	
-		IPV6Address.sin6_family = AF_INET6;
-		IPV6Address.sin6_port = htons ( Port );
-		
-		inet_pton ( AF_INET6, Address, & IPV6Address.sin6_addr );
-		
-		SocketAddress = reinterpret_cast <struct sockaddr *> ( & IPV6Address );
-		AddressSize = sizeof ( IPV6Address );
-		
-		break;
-		
-	default:
-		THROW_ERROR ( "AddressType must be a valid enum in TCP :: AddressType!" );
-		
-	}
-	
-	if ( connect ( SocketFD, SocketAddress, AddressSize ) < 0 )
-		THROW_ERROR ( "Couldn't connect to the specified address!" );
-	
-	Connected = true;
+	SocketSync.Unlock ();
 	
 };
 
-void TCPSocket :: Disconnect ( bool Callback )
+void TCPServerSocket :: Disconnect ( bool Callback )
 {
 	
 	Synchronized Sync ( & SocketSync );
@@ -187,34 +90,7 @@ void TCPSocket :: Disconnect ( bool Callback )
 	
 };
 
-bool TCPSocket :: IsConnected ()
-{
-	
-	Synchronized Sync ( & SocketSync );
-	
-	return Connected;
-	
-};
-
-uint32_t TCPSocket :: GetWriteCount ()
-{
-	
-	Synchronized Sync ( & SocketSync );
-	
-	return SendCounter;
-	
-};
-
-uint32_t TCPSocket :: GetReadCount ()
-{
-	
-	Synchronized Sync ( & SocketSync );
-	
-	return ReceiveCounter;
-	
-};
-
-void TCPSocket :: Write ( const void * Buffer, size_t Length, bool DontBlock )
+void TCPServerSocket :: Write ( const void * Buffer, size_t Length, bool DontBlock )
 {
 	
 	Synchronized Sync ( & SocketSync );
@@ -257,11 +133,6 @@ void TCPSocket :: Write ( const void * Buffer, size_t Length, bool DontBlock )
 			
 				THROW_ERROR ( "TCP Socket disconnected! ( Disconnect behavior was kDisconnectBehavior_FailureCallback but no callback was set. )" );
 				
-			case kDisconnectBehavior_SpinReconnect:
-			
-				Connect ( Address, Port );
-				return Write ( Buffer, Length, DontBlock );
-				
 			}
 			
 		case EFAULT:
@@ -296,7 +167,7 @@ void TCPSocket :: Write ( const void * Buffer, size_t Length, bool DontBlock )
 	
 };
 
-void TCPSocket :: Read ( void * Buffer, size_t Length, bool Fill, size_t * Received, bool * Closed )
+void TCPServerSocket :: Read ( void * Buffer, size_t Length, bool Fill, size_t * Received, bool * Closed )
 {
 	
 	Synchronized Sync ( & SocketSync );
@@ -386,37 +257,5 @@ void TCPSocket :: Read ( void * Buffer, size_t Length, bool Fill, size_t * Recei
 	
 	if ( Received != NULL )
 		* Received = ReceivedBytes;
-	
-};
-
-void TCPSocket :: SetUserData ( void * UserData )
-{
-	
-	UserDataSync.Lock ();
-	
-	this -> UserData = UserData;
-	
-	UserDataSync.Unlock ();
-	
-};
-
-void * TCPSocket :: GetUserData ()
-{
-	
-	UserDataSync.Lock ();
-	
-	void * Data = UserData;
-	
-	UserDataSync.Unlock ();
-	
-	return Data;
-	
-};
-
-TCPSocket :: ~TCPSocket ()
-{
-	
-	if ( Connected )
-		Disconnect ();
 	
 };

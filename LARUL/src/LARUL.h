@@ -30,6 +30,8 @@
 #include "COnfig/ConfigSection.h"
 
 #include "Networking/TCPSocket.h"
+#include "Networking/TCPServer.h"
+#include "Networking/TCPServerSocket.h"
 
 #ifndef NO_WPILIB
 	#include "DSInput/NumericStepper.h"

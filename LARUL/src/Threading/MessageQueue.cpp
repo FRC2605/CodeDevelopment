@@ -187,8 +187,6 @@ void MessageQueue :: ReceiveMessage ( void ** Message )
 	
 	Availible.Unlock ();
 	
-	std :: cout << "R:H\n";
-	
 };
 
 bool MessageQueue :: TryReceiveMessage ( void ** Message, double Timeout )

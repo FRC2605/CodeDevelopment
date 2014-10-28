@@ -10,6 +10,7 @@
 #include <stdint.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <sys/ioctl.h>
 
 #include "../Threading/Mutex.h"
 #include "../Threading/Synchronized.h"
@@ -49,6 +50,8 @@ public:
 	
 	void Write ( const void * Buffer, size_t Length, bool DontBlock = false );
 	void Read ( void * Buffer, size_t Length, bool Fill = true, size_t * Received = NULL, bool * Closed = NULL );
+	
+	size_t GetBytesAvailible ();
 	
 	void SetUserData ( void * UserData );
 	void * GetUserData ();

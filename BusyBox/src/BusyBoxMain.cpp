@@ -21,6 +21,8 @@ BusyBoxMain :: BusyBoxMain ():
 	Counter ( 0 )
 {
 	
+	printf ( "Hello world!" );
+	
 	Step1.SetRange ( - 5, 5 );
 	Step2.SetRange ( - 5, 5 );
 	

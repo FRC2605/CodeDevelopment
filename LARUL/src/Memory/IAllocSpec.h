@@ -3,6 +3,10 @@
 
 #include <stddef.h>
 
+/*
+* IAllocSpec is an interface for single-purpose allocators. It defines the size and alignment of a type.
+*/
+
 class IAllocSpec
 {
 public:

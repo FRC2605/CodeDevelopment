@@ -80,13 +80,6 @@ Condition :: ~Condition ()
 	
 };
 
-void Condition :: Lock ()
-{
-	
-	LockingMutex.Lock ();
-	
-};
-
 void Condition :: Unlock ()
 {
 	
@@ -139,20 +132,31 @@ void Condition :: Wait ()
 	LockingMutex.Lock ();
 	
 	if ( Set && Persistant )
-		return;
-	
-	int ErrorCode = pthread_cond_wait ( & ConditionHandle, & LockingMutex.MutexHandle );
-	
-	switch ( ErrorCode )
 	{
 		
-	case 0:	
-		break;
+		LockingMutex.Unlock ();
 		
-	default:
-		THROW_ERROR ( "Unspecified error waiting on condition!" );
+		return;
 		
-	};
+	}
+	
+	while ( ! Set )
+	{
+		
+		int ErrorCode = pthread_cond_wait ( & ConditionHandle, & LockingMutex.MutexHandle );
+		
+		switch ( ErrorCode )
+		{
+			
+		case 0:	
+			break;
+			
+		default:
+			THROW_ERROR ( "Unspecified error waiting on condition!" );
+			
+		};
+		
+	}
 	
 	LockingMutex.Unlock ();
 	
@@ -163,7 +167,117 @@ bool Condition :: TimedWait ( double Seconds )
 	
 	LockingMutex.Lock ();
 	
+	if ( Set )
+	{
+		
+		LockingMutex.Unlock ();
+		return true;
+		
+	}
+	
+	struct timespec Time;
+	int ErrorCode;
+	
+#if _POSIX_TIMERS > 0
+	
+	clockid_t Clock;
+	
+	ErrorCode = pthread_getcpuclockid ( pthread_self (), & Clock );
+	
+	if ( ErrorCode != 0 )
+		THROW_ERROR ( "Unspecified error getting thread clock ID for condition timed wait!" );
+	
+	ErrorCode = clock_getttime ( Clock, & Time );
+	
+	if ( ErrorCode != 0 )
+		THROW_ERROR ( "Unspecified error getting time for condition timed wait!" );
+
+#else
+	
+	/* Note: This solution is vounerable to NTP jumps and should probably be fixed at some point.
+	* On any real target of LARUL, posix timers are expected to be implemented, but we have this
+	* here for development purposes.
+	*/
+	
+	struct timeval TimeV;
+	
+	if ( gettimeofday ( & TimeV, NULL ) == -1 )
+		THROW_ERROR ( "Unspecified error getting time for condition timed wait!" );
+	
+	Time.tv_nsec = TimeV.tv_usec * 1000;
+	Time.tv_sec = TimeV.tv_sec;
+	
+#endif
+	
+	Time.tv_sec += Seconds;
+	Seconds -= (uint64_t) Seconds;
+	
+	Time.tv_nsec = Seconds * 1000000000L;
+	
+	while ( ! Set )
+	{
+		
+		ErrorCode = pthread_cond_timedwait ( & ConditionHandle, & LockingMutex.MutexHandle, & Time );
+		
+		switch ( ErrorCode )
+		{
+			
+		case 0:	
+			break;
+			
+		case ETIMEDOUT:
+			return false;
+			
+		case EINVAL:
+			THROW_ERROR ( "Invalid time specified to condition timed wait!" );
+			
+		default:
+			THROW_ERROR ( "Unspecified error waiting on condition!" );
+			
+		}
+			
+	};
+	
+	LockingMutex.Unlock ();
+	
+	return true;
+	
+};
+
+void Condition :: LockWait ()
+{
+	
+	LockingMutex.Lock ();
+	
 	if ( Set && Persistant )
+		return;
+	
+	while ( ! Set )
+	{
+		
+		int ErrorCode = pthread_cond_wait ( & ConditionHandle, & LockingMutex.MutexHandle );
+		
+		switch ( ErrorCode )
+		{
+			
+		case 0:	
+			break;
+			
+		default:
+			THROW_ERROR ( "Unspecified error waiting on condition!" );
+			
+		};
+		
+	}
+	
+};
+
+bool Condition :: TimedLockWait ( double Seconds )
+{
+	
+	LockingMutex.Lock ();
+	
+	if ( Set )
 		return true;
 	
 	struct timespec Time;
@@ -205,26 +319,29 @@ bool Condition :: TimedWait ( double Seconds )
 	
 	Time.tv_nsec = Seconds * 1000000000L;
 	
-	ErrorCode = pthread_cond_timedwait ( & ConditionHandle, & LockingMutex.MutexHandle, & Time );
-	
-	switch ( ErrorCode )
+	while ( ! Set )
 	{
 		
-	case 0:	
-		break;
+		ErrorCode = pthread_cond_timedwait ( & ConditionHandle, & LockingMutex.MutexHandle, & Time );
 		
-	case ETIMEDOUT:
-		return false;
-		
-	case EINVAL:
-		THROW_ERROR ( "Invalid time specified to condition timed wait!" );
-		
-	default:
-		THROW_ERROR ( "Unspecified error waiting on condition!" );
-		
+		switch ( ErrorCode )
+		{
+			
+		case 0:	
+			break;
+			
+		case ETIMEDOUT:
+			return false;
+			
+		case EINVAL:
+			THROW_ERROR ( "Invalid time specified to condition timed wait!" );
+			
+		default:
+			THROW_ERROR ( "Unspecified error waiting on condition!" );
+			
+		}
+			
 	};
-	
-	LockingMutex.Unlock ();
 	
 	return true;
 	

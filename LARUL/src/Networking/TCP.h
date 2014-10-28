@@ -1,6 +1,10 @@
 #ifndef LARUL_TCP_H
 #define LARUL_TCP_H
 
+/*
+* TCP defines the tcp-related information used by all TCP classes.
+*/
+
 class TCP
 {
 public:

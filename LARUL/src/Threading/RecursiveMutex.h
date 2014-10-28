@@ -15,7 +15,7 @@ class RecursiveMutex : public IMutex
 {
 public:
 	
-	RecursiveMutex ( bool Robust = false );
+	explicit RecursiveMutex ( bool Robust = false );
 	~RecursiveMutex ();
 	
 	void Lock ();

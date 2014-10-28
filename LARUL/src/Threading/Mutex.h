@@ -8,7 +8,6 @@
 #include "../Util/Error.h"
 
 #include "IMutex.h"
-#include "Condition.h"
 
 #ifndef PTHREAD_MUTEX_ROBUST
 	#ifdef PTHREAD_MUTEX_ROBUST_NP
@@ -20,7 +19,7 @@ class Mutex : public IMutex
 {
 public:
 	
-	Mutex ( bool ErrorChecking = false, bool Robust = false );
+	explicit Mutex ( bool ErrorChecking = false, bool Robust = false );
 	~Mutex ();
 	
 	void Lock ();

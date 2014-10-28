@@ -37,6 +37,9 @@ void Logger :: SetPrintLevel ( LogLevel Level )
 	
 	PrintLevel = Level;
 	
+	if ( PrintLevel < kLogLevel_Warning )
+		PrintLevel = kLogLevel_Warning;
+	
 	LevelMutex.Unlock ();
 	
 };
@@ -47,6 +50,9 @@ void Logger :: SetTerminationLevel ( LogLevel Level )
 	LevelMutex.Lock ();
 	
 	TerminationLevel = Level;
+	
+	if ( PrintLevel > kLogLevel_Warning )
+		PrintLevel = kLogLevel_Warning;
 	
 	LevelMutex.Unlock ();
 	
@@ -92,11 +98,7 @@ void Logger :: Log ( LogLevel Level, const char * Format, ... )
 	}
 	
 	if ( Level <= TLevel )
-	{
-		
 		Thread :: Terminate ( NULL );
-		
-	}
 	
 };
 

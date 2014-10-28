@@ -18,10 +18,15 @@
 
 #include "TCP.h"
 
+/*
+* TCPServer is a server socket that listens for connections TCP. it is implemented with POSIX sockets.
+*/
+
 class TCPServer
 {
 public:
 	
+	// Address type of the server and server port
 	TCPServer ( TCP :: AddressType Type, uint16_t Port );
 	~TCPServer ();
 	

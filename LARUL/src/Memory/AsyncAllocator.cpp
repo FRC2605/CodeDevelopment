@@ -128,3 +128,35 @@ void AsyncAllocator :: Alloc ( void ** Memory )
 	}
 	
 };
+
+void AsyncAllocator :: Free ( void * Memory, bool DontCache )
+{
+	
+	ModeSync.Lock ();
+	AllocationMode CurrentMode = Mode;
+	ModeSync.Unlock ();
+	
+	switch ( CurrentMode )
+	{
+		
+		case kAllocationMode_AsyncCaching:
+		
+		
+	
+		break;
+		
+	case kAllocationMode_AsyncNoCache:
+		
+		
+		
+		break;
+		
+	case kAllocationMode_SyncCaching:
+		
+		
+		
+		break;
+		
+	}
+	
+};

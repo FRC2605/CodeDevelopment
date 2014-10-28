@@ -19,16 +19,20 @@ class Condition
 {
 public:
 	
-	Condition ( bool Persistant = true, bool ProcessShared = false );
+	explicit Condition ( bool Persistant = true, bool ProcessShared = false );
 	~Condition ();
 	
-	void Lock ();
-	void Unlock ();
 	void Signal ();
-	void Reset ();
 	void Broadcast ();
+	
 	void Wait ();
 	bool TimedWait ( double Seconds );
+	
+	void LockWait ();
+	bool TimedLockWait ( double Seconds );
+	void Unlock ();
+	
+	void Reset ();
 	
 private:
 	

@@ -41,7 +41,7 @@ void ConfigFile :: AddConfigSection ( ConfigSection * Section )
 
 	if ( SectionNode != NULL )
 	{
-
+		
 		Section -> SetLoadedValueObject ( SectionNode );
 		return;
 
@@ -66,7 +66,7 @@ bool ConfigFile :: Write ()
 	if ( json_dump_file ( RootNode, FilePath, JSON_INDENT ( 4 ) | JSON_SORT_KEYS ) == - 1 )
 	{
 
-		//Log -> Log ( Logger :: LOG_WARNING, "JSON Write failed!\n" );
+		Log -> Log ( Logger :: LOG_WARNING, "JSON Write failed!\n" );
 		return false;
 	
 	}

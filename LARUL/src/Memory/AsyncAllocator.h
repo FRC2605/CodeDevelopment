@@ -36,7 +36,7 @@ public:
 	void Start ();
 	void Stop ();
 	
-	void Free ( void * Memory );
+	void Free ( void * Memory, bool DontCache = false );
 	void Alloc ( void ** Memory );
 	
 private:

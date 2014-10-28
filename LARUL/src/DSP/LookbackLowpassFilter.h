@@ -33,12 +33,18 @@ public:
 	LookbackLowpassFilter ( double MaximumSlew, uint32_t LookbackSize = FILTER_LOOKBACK_SIZE_DEFAULT, LookbackLowpassFilterMode Mode = kMode_ComputeSlew );
 	~LookbackLowpassFilter ();
 	
+	// Compute data.
 	void Compute ( double Feed );
+	// Read computed data.
 	double Read ();
+	// Reset the filter.
 	void Reset ();
 	
+	// Set the number of averaging values.
 	void SetLookbackSize ( uint32_t LookbackSize );
+	// Set the maximum slew rate relative to lookback average. ( n Per compute )
 	void SetMaximumSlewrate ( double MaxSlew );
+	// Set the mode.
 	void SetFilterMode ( LookbackLowpassFilterMode Mode );
 	
 private:

@@ -4,8 +4,12 @@
 #include "IAllocSpec.h"
 #include "AlignOf.h"
 
+/*
+* SingleAllocSpec defines a template class that implements IAllocSpec. It derives this spec from the natural size and alignment of the supplied type.
+*/
+
 template <class AllocType>
-class SingleAllocSpec
+class SingleAllocSpec : public IAllocSpec
 {
 public:
 	

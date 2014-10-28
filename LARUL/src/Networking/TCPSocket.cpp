@@ -389,6 +389,28 @@ void TCPSocket :: Read ( void * Buffer, size_t Length, bool Fill, size_t * Recei
 	
 };
 
+size_t TCPSocket :: GetBytesAvailible ()
+{
+	
+	Synchronized Sync ( & SocketSync );
+	
+	int Value;
+	int ErrorCode = ioctl ( SocketFD, FIONREAD, & Value );
+	
+	switch ( ErrorCode )
+	{
+	case 0:
+		break;
+		
+	default:
+		THROW_ERROR ( "Unspecified error getting the number of availible bytes in the TCP buffer!" );
+		
+	}
+	
+	return static_cast <size_t> ( Value );
+	
+};
+
 void TCPSocket :: SetUserData ( void * UserData )
 {
 	

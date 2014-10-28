@@ -21,6 +21,7 @@
 #include "Threading/RecursiveMutex.h"
 #include "Threading/IMutex.h"
 #include "Threading/Condition.h"
+#include "Threading/MessageQueue.h"
 
 #include "Timing/Timer.h"
 

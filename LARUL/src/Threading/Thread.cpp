@@ -39,13 +39,15 @@ void Thread :: SetCancelable ( bool Cancelable )
 void * ThreadStub ( void * Instance );
 void CleanupStub ( void * Instance );
 
-Thread :: Thread ( IDelegate1 <void, Thread *> * Function, bool Joinable ):
+Thread :: Thread ( IDelegate1 <void, Thread *> * Function, bool Joinable, int ThreadPriority ):
 	Function ( Function ),
 	State ( kThreadState_Stopped ),
 	Joinable ( Joinable ),
+	Priority ( ThreadPriority ),
 	Destruction ( kDestructorBehavior_LeaveRunning ),
 	Status ( NULL ),
-	ThreadMutex ()
+	ThreadMutex (),
+	Name ( "Anonymous" )
 {
 	
 	int ErrorCode = pthread_attr_init ( & ThreadAttributes );
@@ -73,12 +75,56 @@ Thread :: Thread ():
 	Function ( NULL ),
 	State ( kThreadState_Running ),
 	Joinable ( true ),
+	Priority ( - 1 ),
 	Destruction ( kDestructorBehavior_LeaveRunning ),
 	Status ( NULL ),
-	ThreadMutex ()
+	ThreadMutex (),
+	Name ( "Main" )
 {
 	
 	ThreadHandle = pthread_self ();
+	
+	int Policy;
+	struct sched_param Param;
+	
+	if ( pthread_getschedparam ( ThreadHandle, & Policy, & Param ) != 0 )
+		THROW_ERROR ( "Failed to get the scheduling policy of the main thread!" );
+	
+	switch ( Policy )
+	{
+		
+	case SCHED_RR:
+		this -> Policy = kSchedulingPolicy_RoundRobin;
+		break;
+		
+	#ifdef SCHED_IDLE
+	
+	case SCHED_IDLE:
+		this -> Policy = kSchedulingPolicy_Idle;
+		break;
+	
+	#endif
+		
+	case SCHED_OTHER:
+		this -> Policy = kSchedulingPolicy_Other;
+		break;
+		
+	case SCHED_FIFO:
+		this -> Policy = kSchedulingPolicy_FIFO;
+		break;
+	
+	#ifdef SCHED_BATCH
+		
+	case SCHED_BATCH
+		this -> Policy = kSchedulingPolicy_Batch;
+		break;
+		
+	#endif
+		
+	default:
+		THROW_ERROR ( "Unrecognized thread scheduling policy!" );
+		
+	};
 	
 };
 
@@ -285,7 +331,23 @@ void * Thread :: Entry ()
 	catch ( Error E )
 	{
 		
-		Logger :: GetInstance () -> ForcedLog ( "Thread terminated!\n==> %s", E.GetErrorString ().c_str () );
+		State = kThreadState_Error;
+		
+		if ( Name == NULL )
+			Logger :: GetInstance () -> ForcedLog ( "\n\n****** Thread Terminated! ****** \n==> %s", E.GetErrorString ().c_str () );
+		else
+			Logger :: GetInstance () -> ForcedLog ( "\n\n****** Thread [ %s ] Terminated! ****** \n==> %s", Name, E.GetErrorString ().c_str () );
+		
+	}
+	catch ( ... )
+	{
+		
+		State = kThreadState_Error;
+		
+		if ( Name == NULL )
+			Logger :: GetInstance () -> ForcedLog ( "\n\n****** Thread Terminated! ****** \n==> The error thrown could not be caught by LARUL.\n" );
+		else
+			Logger :: GetInstance () -> ForcedLog ( "\n\n****** Thread [ %s ] Terminated! ****** \n==> The error thrown could not be caught by LARUL.\n" );
 		
 	}
 	
@@ -302,6 +364,17 @@ void Thread :: Cleanup ()
 	
 	State = kThreadState_Stopped;
 	Status = NULL;
+
+	ThreadMutex.Unlock ();
+	
+};
+
+void Thread :: SetName ( const char * Name )
+{
+	
+	ThreadMutex.Lock ();
+	
+	this -> Name = Name;
 
 	ThreadMutex.Unlock ();
 	

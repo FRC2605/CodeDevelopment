@@ -19,7 +19,7 @@ class Condition
 {
 public:
 	
-	explicit Condition ( bool Persistant = true, bool ProcessShared = false );
+	explicit Condition ( bool InitiallySet = false, bool ProcessShared = false );
 	~Condition ();
 	
 	void Signal ();
@@ -41,8 +41,8 @@ private:
 	
 	RecursiveMutex LockingMutex;
 	
-	bool Persistant;
 	bool Set;
+	uint32_t Waiters;
 	
 };
 

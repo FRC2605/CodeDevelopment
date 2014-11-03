@@ -23,6 +23,9 @@ public:
 	void ReceiveMessage ( void ** Message );
 	bool TryReceiveMessage ( void ** Message, double Timeout );
 	
+	void PeekMessage ( void ** Message );
+	bool TryPeekMessage ( void ** Message, double Timeout );
+	
 private:
 	
 	uint32_t QueueLength;

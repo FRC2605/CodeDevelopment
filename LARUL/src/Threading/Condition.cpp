@@ -1,9 +1,9 @@
 #include "Condition.h"
 
-Condition :: Condition ( bool Persistant, bool ProcessShared ):
+Condition :: Condition ( bool InitiallySet, bool ProcessShared ):
 	LockingMutex (),
-	Persistant ( Persistant ),
-	Set ( false )
+	Set ( InitiallySet ),
+	Waiters ( 0 )
 {
 	
 	int ErrorCode = pthread_condattr_init ( & ConditionAttributes );
@@ -92,12 +92,21 @@ void Condition :: Signal ()
 	
 	LockingMutex.Lock ();
 	
-	if ( pthread_cond_signal ( & ConditionHandle ) != 0 )
-		THROW_ERROR ( "Unspecified error locking condition!" );
-	
 	Set = true;
 	
+	if ( Waiters == 0 )
+	{
+		
+		LockingMutex.Unlock ();
+		
+		return;
+		
+	}
+	
 	LockingMutex.Unlock ();
+	
+	if ( pthread_cond_signal ( & ConditionHandle ) != 0 )
+		THROW_ERROR ( "Unspecified error locking condition!" );
 	
 };
 
@@ -106,23 +115,28 @@ void Condition :: Broadcast ()
 	
 	LockingMutex.Lock ();
 	
-	if ( pthread_cond_broadcast ( & ConditionHandle ) != 0 )
-		THROW_ERROR ( "Unspecified error locking condition!" );
-	
 	Set = true;
 	
+	if ( Waiters == 0 )
+	{
+		
+		LockingMutex.Unlock ();
+		
+		return;
+		
+	}
+	
 	LockingMutex.Unlock ();
+	
+	if ( pthread_cond_broadcast ( & ConditionHandle ) != 0 )
+		THROW_ERROR ( "Unspecified error locking condition!" );
 	
 };
 
 void Condition :: Reset ()
 {
 	
-	LockingMutex.Lock ();
-	
 	Set = false;
-	
-	LockingMutex.Unlock ();
 	
 };
 
@@ -131,14 +145,7 @@ void Condition :: Wait ()
 	
 	LockingMutex.Lock ();
 	
-	if ( Set && Persistant )
-	{
-		
-		LockingMutex.Unlock ();
-		
-		return;
-		
-	}
+	Waiters ++;
 	
 	while ( ! Set )
 	{
@@ -152,11 +159,16 @@ void Condition :: Wait ()
 			break;
 			
 		default:
+		
+			Waiters --;
+			
 			THROW_ERROR ( "Unspecified error waiting on condition!" );
 			
 		};
 		
 	}
+	
+	Waiters --;
 	
 	LockingMutex.Unlock ();
 	
@@ -171,9 +183,12 @@ bool Condition :: TimedWait ( double Seconds )
 	{
 		
 		LockingMutex.Unlock ();
+		
 		return true;
 		
 	}
+	
+	Waiters ++;
 	
 	struct timespec Time;
 	int ErrorCode;
@@ -226,17 +241,30 @@ bool Condition :: TimedWait ( double Seconds )
 			break;
 			
 		case ETIMEDOUT:
+		
+			Waiters --;
+			
+			LockingMutex.Unlock ();
+			
 			return false;
 			
 		case EINVAL:
+		
+			Waiters --;
+		
 			THROW_ERROR ( "Invalid time specified to condition timed wait!" );
 			
 		default:
+		
+			Waiters --;
+			
 			THROW_ERROR ( "Unspecified error waiting on condition!" );
 			
 		}
 			
 	};
+	
+	Waiters --;
 	
 	LockingMutex.Unlock ();
 	
@@ -249,8 +277,7 @@ void Condition :: LockWait ()
 	
 	LockingMutex.Lock ();
 	
-	if ( Set && Persistant )
-		return;
+	Waiters ++;
 	
 	while ( ! Set )
 	{
@@ -264,11 +291,16 @@ void Condition :: LockWait ()
 			break;
 			
 		default:
+		
+			Waiters --;
+		
 			THROW_ERROR ( "Unspecified error waiting on condition!" );
 			
 		};
 		
 	}
+	
+	Waiters --;
 	
 };
 
@@ -279,6 +311,8 @@ bool Condition :: TimedLockWait ( double Seconds )
 	
 	if ( Set )
 		return true;
+	
+	Waiters ++;
 	
 	struct timespec Time;
 	int ErrorCode;
@@ -331,17 +365,28 @@ bool Condition :: TimedLockWait ( double Seconds )
 			break;
 			
 		case ETIMEDOUT:
+			
+			Waiters --;
+			
 			return false;
 			
 		case EINVAL:
+			
+			Waiters --;
+			
 			THROW_ERROR ( "Invalid time specified to condition timed wait!" );
 			
 		default:
+			
+			Waiters --;
+			
 			THROW_ERROR ( "Unspecified error waiting on condition!" );
 			
 		}
 			
 	};
+	
+	Waiters --;
 	
 	return true;
 	

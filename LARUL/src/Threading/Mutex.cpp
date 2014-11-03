@@ -104,7 +104,7 @@ void Mutex :: Lock ()
 		ErrorCode = pthread_mutex_lock ( & MutexHandle );
 		
 		if ( ErrorCode != 0 )
-			THROW_ERROR ( "Mutex holding thread terminated and the mutex could not be recovered!" );
+			THROW_ERROR ( "Thread holding mutex terminated and the mutex could not be recovered!" );
 		
 		break;
 		

@@ -9,11 +9,7 @@ MessageQueue :: MessageQueue ( uint32_t MaxSlots ):
 	QueueSync ( true )
 {
 	
-	Messages = reinterpret_cast <void **> ( 
-		malloc ( 
-			sizeof ( void * ) * static_cast <size_t> ( MaxSlots ) 
-			) 
-		);
+	Messages = reinterpret_cast <void **> ( malloc ( sizeof ( void * ) * static_cast <size_t> ( MaxSlots ) ) );
 	
 	if ( Messages == NULL )
 		THROW_ERROR ( "Failed to allocate message buffer!" );

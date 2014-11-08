@@ -11,8 +11,8 @@ class IAllocSpec
 {
 public:
 	
-	size_t GetSize () = 0;
-	size_t GetAlign () = 0;
+	virtual size_t GetSize () = 0;
+	virtual size_t GetAlign () = 0;
 	
 	~IAllocSpec () {};
 	

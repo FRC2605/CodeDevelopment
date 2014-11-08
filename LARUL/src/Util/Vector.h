@@ -66,6 +66,53 @@ public:
 		
 	};
 	
+	inline T & Peek ()
+	{
+		
+		return Elements [ Used - 1 ];
+		
+	};
+	
+	inline T Shift ()
+	{
+		
+		if ( Used == 0 )
+			THROW_ERROR ( "OUT OF BOUNDS ERROR (EMPTY)" );
+		
+		T Temporary = Elements [ 0 ];
+		
+		Used --;
+		
+		for ( uint32_t i = 0; i < Used; i ++ )
+			Elements [ i ] = Elements [ i - 1 ];
+		
+		return Temporary;
+		
+	};
+	
+	inline void Remove ( uint32_t Start, uint32_t Length )
+	{
+		
+		if ( Start >= Used )
+			return;
+		
+		if ( Start + Length > Used )
+			Length = Used - Start;
+		
+		for ( uint32_t i = Start; i < Used - Length; i ++ )
+			Elements [ i ] = Elements [ i + Length ];
+		
+		Used -= Length;
+		
+	};
+	
+	inline void Clear ()
+	{
+		
+		Used = 0;
+		
+	};
+	
 	inline int32_t IndexOf ( T Element, uint32_t Start = 0 )
 	{
 		

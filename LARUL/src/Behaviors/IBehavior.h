@@ -15,8 +15,6 @@ public:
 	
 	virtual void Update () = 0;
 	
-	virtual const char * Name () = 0;
-	
 };
 
 #endif

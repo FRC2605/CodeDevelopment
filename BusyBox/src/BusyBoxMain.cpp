@@ -18,7 +18,8 @@ BusyBoxMain :: BusyBoxMain ():
 	Step1 ( & JoystickA, 9, 8 ),
 	Step2 ( & JoystickB, 9, 8 ),
 	LCD ( NULL ),
-	Counter ( 0 )
+	Counter ( 0 ),
+	Rotation ( 1, 2 )
 {
 	
 	printf ( "Hello world!" );
@@ -47,6 +48,8 @@ void BusyBoxMain :: TeleopInit ()
 	Step1.Set ( 0 );
 	Step2.Set ( 0 );
 	
+	Rotation.Start ();
+	
 };
 
 void BusyBoxMain :: TeleopPeriodic ()
@@ -60,6 +63,7 @@ void BusyBoxMain :: TeleopPeriodic ()
 		
 		LCD -> PrintfLine ( DriverStationLCD :: kUser_Line3, "CIM 3: %d \%", Step1.Get () * 20 );
 		LCD -> PrintfLine ( DriverStationLCD :: kUser_Line4, "CIM 8: %d \%", Step2.Get () * 20 );
+		LCD -> PrintfLine ( DriverStationLCD :: kUser_Line5, "Encoder: %d", Rotation.Get () );
 		LCD -> UpdateLCD ();
 		
 	}
@@ -111,6 +115,7 @@ void BusyBoxMain :: DisabledInit ()
 	LCD -> PrintfLine ( DriverStationLCD :: kUser_Line2, "DISABLED!" );
 	LCD -> PrintfLine ( DriverStationLCD :: kUser_Line3, "" );
 	LCD -> PrintfLine ( DriverStationLCD :: kUser_Line4, "" );
+	LCD -> PrintfLine ( DriverStationLCD :: kUser_Line5, "" );
 	LCD -> UpdateLCD ();
 	
 	Motor1.Set ( 0 );
@@ -127,4 +132,8 @@ void BusyBoxMain :: DisabledInit ()
 	Servo1.Set ( 0 );
 	Servo2.Set ( 0 );
 	
+	Rotation.Stop ();
+	
 };
+
+START_ROBOT_CLASS ( BusyBoxMain );

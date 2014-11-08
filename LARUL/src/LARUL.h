@@ -30,9 +30,16 @@
 #include "Config/ConfigFile.h"
 #include "COnfig/ConfigSection.h"
 
+#include "Networking/TCP.h"
+#include "Networking/UDP.h"
 #include "Networking/TCPSocket.h"
 #include "Networking/TCPServer.h"
 #include "Networking/TCPServerSocket.h"
+
+#include "Memory/CachingAllocator.h"
+#include "Memory/SingleAllocSpec.h"
+#include "Memory/AlignOf.h"
+#include "Memory/IAllocSpec.h"
 
 #ifndef NO_WPILIB
 	#include "DSInput/NumericStepper.h"

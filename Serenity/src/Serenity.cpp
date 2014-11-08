@@ -31,7 +31,7 @@ Serenity :: Serenity ():
 	
 	Drive.SetSineInversion ( true );
 	
-	DiscShooter.SetFlywheelScale ( - 1 );
+	DiscShooter.SetFlywheelScale ( 1 );
 	
 };
 
@@ -46,7 +46,7 @@ void Serenity :: TeleopInit ()
 {
 	
 	Drive.Enable ();
-	ShooterWinch.Enable ();
+	//ShooterWinch.Enable ();
 	DiscShooter.SetEnabled ( false );
 	
 };
@@ -59,10 +59,10 @@ void Serenity :: TeleopPeriodic ()
 	Drive.SetTranslation ( JoyStrafe.GetX (), JoyStrafe.GetY () );
 	Drive.SetRotation ( - JoyRotate.GetX () );
 	
-	if ( JoyRotate.GetRawButton ( 2 ) )
+	/*if ( JoyRotate.GetRawButton ( 2 ) )
 		ShooterWinch.SetDrive ( JoyRotate.GetY (), true );
 	else
-		ShooterWinch.SetDrive ( 0.0 );
+		ShooterWinch.SetDrive ( 0.0 );*/
 	
 	if ( TriggerMonitor.Update () )
 		DiscShooter.Trigger ();
@@ -89,7 +89,7 @@ void Serenity :: TestPeriodic ()
 	
 	ShooterSpeed.Update ();
 	
-	ShooterWinch.SetDrive ( JoyRotate.GetY () / 5, false );
+	//ShooterWinch.SetDrive ( JoyRotate.GetY () / 5, false );
 	
 	if ( JoyRotate.GetRawButton ( 11 ) )
 	{

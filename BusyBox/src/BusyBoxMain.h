@@ -43,6 +43,8 @@ private:
 	
 	int Counter;
 	
+	Encoder Rotation;
+	
 };
 
 #endif

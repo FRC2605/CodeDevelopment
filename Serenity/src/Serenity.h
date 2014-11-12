@@ -30,33 +30,24 @@ public:
 	
 private:
 	
-	Talon WheelFL;
-	Talon WheelFR;
-	Talon WheelRL;
-	Talon WheelRR;
+	Talon WheelFL, WheelFR, WheelRL, WheelRR;
+	MecanumDrive Drive;
 	
-	Talon Flywheel;
-	Talon Trigger;
+	Talon TriggerMotor, FlyWheel;
+	Encoder FlyWheelEncoder;
+	PIDController FlyWheelController;
 	
 	Talon WinchMotor;
 	
-	AnalogChannel WinchAngle;
-	
-	DigitalInput TriggerSwitch;
-	
 	Joystick JoyStrafe;
 	Joystick JoyRotate;
-	NumericStepper ShooterSpeed;
-	ButtonMonitor TriggerMonitor;
-	ButtonMonitor ToggleMonitor;
 	
-	MecanumDrive Drive;
-	Winch ShooterWinch;
-	Shooter DiscShooter;
+	NumericStepper FlyWheelSpeed;
+	ButtonMonitor FlyWheelToggle;
 	
-	ConfigFile Config;
+	bool FlyWheelEnabled;
 	
-	WinchConfig WinchConfiguration;
+	DriverStationLCD * LCD;
 	
 };
 

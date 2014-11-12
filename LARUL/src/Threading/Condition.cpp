@@ -2,6 +2,7 @@
 
 Condition :: Condition ( bool InitiallySet, bool ProcessShared ):
 	LockingMutex (),
+	PreLocked ( false ),
 	Set ( InitiallySet ),
 	Waiters ( 0 )
 {
@@ -84,6 +85,27 @@ void Condition :: Unlock ()
 {
 	
 	LockingMutex.Unlock ();
+	
+	if ( PreLocked )
+		LockingMutex.Unlock ();
+	
+};
+
+void Condition :: PreLock ()
+{
+	
+	LockingMutex.Lock ();
+	
+	if ( PreLocked )
+	{
+		
+		LockingMutex.Unlock ();
+		
+		return;
+		
+	}
+	
+	PreLocked = true;
 	
 };
 

@@ -7,7 +7,7 @@ NumericStepper :: NumericStepper ( GenericHID * Device, uint32_t UpButton, uint3
 	Value ( 0 ),
 	Max ( INT32_MIN - 1 ),
 	Min ( INT32_MIN + 1 ),
-	Step ( Step ),
+	Step ( 1 ),
 	UpButtonState ( false ),
 	DownButtonState ( false )
 {	

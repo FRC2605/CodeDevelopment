@@ -32,7 +32,7 @@ public:
 	inline T & operator[] ( size_t Index )
 	{
 		
-		return & Elements [ Index ];
+		return Elements [ Index ];
 		
 	};
 	

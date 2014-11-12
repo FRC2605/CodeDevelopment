@@ -22,6 +22,7 @@
 #include "Threading/IMutex.h"
 #include "Threading/Condition.h"
 #include "Threading/MessageQueue.h"
+#include "Threading/ObjectLock.h"
 
 #include "Timing/Timer.h"
 

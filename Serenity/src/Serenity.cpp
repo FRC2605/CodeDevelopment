@@ -5,33 +5,28 @@ Serenity :: Serenity ():
 	WheelFR ( 2 ),
 	WheelRL ( 3 ),
 	WheelRR ( 4 ),
-	Flywheel ( 5 ),
-	Trigger ( 6 ),
+	Drive ( & WheelFL, & WheelFR, & WheelRL, & WheelRR ),
+	TriggerMotor ( 5 ),
+	FlyWheel ( 6 ),
+	FlyWheelEncoder ( 1, 2 ),
+	FlyWheelController ( 0.015, 0.002, 0.001, & FlyWheelEncoder, & FlyWheel, 0.016 ),
 	WinchMotor ( 7 ),
-	WinchAngle ( 1 ),
-	TriggerSwitch ( 1 ),
 	JoyStrafe ( 1 ),
 	JoyRotate ( 2 ),
-	ShooterSpeed ( & JoyRotate, 8, 9 ),
-	TriggerMonitor ( & JoyRotate, 1 ),
-	ToggleMonitor ( & JoyRotate, 2 ),
-	Drive ( & WheelFL, & WheelFR, & WheelRL, & WheelRR ),
-	ShooterWinch ( & WinchAngle, & WinchMotor ),
-	DiscShooter ( & Flywheel, & Trigger, & TriggerSwitch ),
-	Config (),
-	WinchConfiguration ( & ShooterWinch )
+	FlyWheelSpeed ( & JoyRotate, 9, 8 ),
+	FlyWheelToggle ( & JoyRotate, 2 ),
+	FlyWheelEnabled ( false )
 {
 	
-	ShooterSpeed.SetRange ( 0, 10 );
+	Drive.SetInverted ( true, false, true, false );
 	
-	Config.Init ();
+	FlyWheelSpeed.SetRange ( 0, 40 );
+	FlyWheelSpeed.SetStep ( 5 );
 	
-	Config.AddConfigSection ( & WinchConfiguration );
-	WinchConfiguration.LoadConfig ();
+	LCD = DriverStationLCD :: GetInstance ();
 	
-	Drive.SetSineInversion ( true );
-	
-	DiscShooter.SetFlywheelScale ( 1 );
+	FlyWheelEncoder.SetPIDSourceParameter ( PIDSource :: kRate );
+	FlyWheelEncoder.SetDistancePerPulse ( 1.0 / 256.0 );
 	
 };
 
@@ -46,69 +41,52 @@ void Serenity :: TeleopInit ()
 {
 	
 	Drive.Enable ();
-	//ShooterWinch.Enable ();
-	DiscShooter.SetEnabled ( false );
+	
+	FlyWheelSpeed.Set ( 0 );
+	
+	FlyWheelEncoder.Reset ();
+	FlyWheelEncoder.Start ();
+	
+	FlyWheelController.Enable ();
 	
 };
 
 void Serenity :: TeleopPeriodic ()
 {
 	
-	ShooterSpeed.Update ();
+	FlyWheelSpeed.Update ();
 	
 	Drive.SetTranslation ( JoyStrafe.GetX (), JoyStrafe.GetY () );
-	Drive.SetRotation ( - JoyRotate.GetX () );
-	
-	/*if ( JoyRotate.GetRawButton ( 2 ) )
-		ShooterWinch.SetDrive ( JoyRotate.GetY (), true );
-	else
-		ShooterWinch.SetDrive ( 0.0 );*/
-	
-	if ( TriggerMonitor.Update () )
-		DiscShooter.Trigger ();
-	
-	if ( ToggleMonitor.Update () )
-		DiscShooter.SetEnabled ( ! DiscShooter.GetEnabled () );
-	
-	DiscShooter.SetFlywheelSpeed ( (double) ShooterSpeed.Get () / 10 );
-	
-	DiscShooter.Update ();
+	Drive.SetRotation ( JoyRotate.GetX () );
 	Drive.PushTransform ();
+	
+	if ( FlyWheelToggle.Update () )
+		FlyWheelEnabled = ! FlyWheelEnabled;
+	
+	if ( FlyWheelEnabled )
+		FlyWheelController.SetSetpoint ( FlyWheelSpeed.Get () );
+	else
+		FlyWheelController.SetSetpoint ( 0 );
+	
+	LCD -> PrintfLine ( DriverStationLCD :: kUser_Line1, "E: %s S: %i\n", FlyWheelEnabled ? "Y" : "N", FlyWheelSpeed.Get () );
+	LCD -> UpdateLCD ();
+	
 	
 };
 
 void Serenity :: TestInit ()
 {
 	
-	ShooterWinch.Enable ();
+	
 	
 };
 
 void Serenity :: TestPeriodic ()
 {
 	
-	ShooterSpeed.Update ();
 	
-	//ShooterWinch.SetDrive ( JoyRotate.GetY () / 5, false );
 	
-	if ( JoyRotate.GetRawButton ( 11 ) )
-	{
-		
-		ShooterWinch.CalibrateHighAngle ();
-		WinchConfiguration.WriteConfig ();
-		
-	}
 	
-	else if ( JoyRotate.GetRawButton ( 6 ) )
-	{
-		
-		ShooterWinch.CalibrateLowAngle ();
-		WinchConfiguration.WriteConfig ();
-		
-	}
-	
-	//if ( ToggleMonitor.Update () )
-	//	Config.Write ();
 	
 };
 
@@ -116,8 +94,10 @@ void Serenity :: DisabledInit ()
 {
 	
 	Drive.Disable ();
-	ShooterWinch.Disable ();
-	DiscShooter.SetEnabled ( false );
+	
+	FlyWheelEncoder.Stop ();
+	
+	FlyWheelController.Disable ();
 	
 };
 

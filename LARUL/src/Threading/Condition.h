@@ -25,6 +25,8 @@ public:
 	void Signal ();
 	void Broadcast ();
 	
+	void PreLock ();
+	
 	void Wait ();
 	bool TimedWait ( double Seconds );
 	
@@ -41,6 +43,7 @@ private:
 	
 	RecursiveMutex LockingMutex;
 	
+	bool PreLocked;
 	bool Set;
 	uint32_t Waiters;
 	

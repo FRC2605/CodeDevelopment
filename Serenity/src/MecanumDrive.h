@@ -12,14 +12,6 @@
 #define PI_Div_4 0.78539816339
 #define SQRT_2 1.41421356237
 
-typedef struct
-{
-	
-	SpeedController * Motor;
-	bool Inverted;
-	
-} MecMotor;
-
 class MecanumDrive
 {
 public:
@@ -53,6 +45,16 @@ public:
 	void PushTransform ();
 	
 private:
+	
+	typedef struct MecMotorStruct
+	{
+		
+		MecMotorStruct ( SpeedController * Motor );
+		
+		SpeedController * Motor;
+		bool Inverted;
+		
+	} MecMotor;
 	
 	MecMotor MotorFL, MotorFR, MotorRL, MotorRR;
 	

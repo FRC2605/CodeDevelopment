@@ -6,32 +6,26 @@
 * WheelFRC Team Sehome Semonsters 2605
 */
 
-MecanumDrive :: MecanumDrive ( SpeedController * WheelFL, SpeedController * WheelFR, SpeedController * WheelRL, SpeedController * WheelRR )
+MecanumDrive :: MecMotorStruct :: MecMotorStruct ( SpeedController * Motor ):
+	Motor ( Motor ),
+	Inverted ( false )
 {
-	
-	MotorFL.Motor = WheelFL;
-	MotorFR.Motor = WheelFR;
-	MotorRL.Motor = WheelRL;
-	MotorRR.Motor = WheelRR;
-	
-	MotorFL.Inverted = false;
-	MotorFR.Inverted = false;
-	MotorRL.Inverted = false;
-	MotorRR.Inverted = false;
-	
-	TX = 0;
-	TY = 0;
-	TR = 0;
-	
-	PrescaleT = 1;
-	PrescaleR = 1;
-	
-	Scale = 1;
-	
-	SineInverted = false;
+};
 
-	Enabled = false;
-	
+MecanumDrive :: MecanumDrive ( SpeedController * WheelFL, SpeedController * WheelFR, SpeedController * WheelRL, SpeedController * WheelRR ):
+	MotorFL ( WheelFL ),
+	MotorFR ( WheelFR ),
+	MotorRL ( WheelRL ),
+	MotorRR ( WheelRR ),
+	TX ( 0 ),
+	TY ( 0 ),
+	TR ( 0 ),
+	Scale ( 1 ),
+	PrescaleR ( 1 ),
+	PrescaleT ( 1 ),
+	Enabled ( false ),
+	SineInverted ( false )
+{
 };
 
 MecanumDrive :: ~MecanumDrive () {};

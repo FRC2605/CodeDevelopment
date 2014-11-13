@@ -28,6 +28,8 @@ bool ButtonMonitor :: Update ()
 		
 	}
 	
-	return PState = Device -> GetRawButton ( Button );
+	PState = Device -> GetRawButton ( Button );
+	
+	return false;
 	
 };

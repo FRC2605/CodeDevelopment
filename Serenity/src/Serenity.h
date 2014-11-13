@@ -1,11 +1,11 @@
-#ifndef SERENITY_H
-#define SERENITY_H
+#ifndef FRC2605_SERENITY_H
+#define FRC2605_SERENITY_H
 
 #include <WPILib.h>
 
 #include "MecanumDrive.h"
-#include "Shooter.h"
 #include "Winch.h"
+#include "ShooterTrigger.h"
 
 #include "ButtonMonitor.h"
 #include "NumericStepper.h"
@@ -30,12 +30,20 @@ public:
 	
 private:
 	
+	ConfigFile Config;
+	
 	Talon WheelFL, WheelFR, WheelRL, WheelRR;
 	MecanumDrive Drive;
 	
 	Talon TriggerMotor, FlyWheel;
+	
 	Encoder FlyWheelEncoder;
+	DigitalInput TriggerSwitch;
+	AnalogChannel AngleInput;
+	
 	PIDController FlyWheelController;
+	ShooterTrigger TriggerController;
+	Winch WinchController;
 	
 	Talon WinchMotor;
 	
@@ -44,6 +52,7 @@ private:
 	
 	NumericStepper FlyWheelSpeed;
 	ButtonMonitor FlyWheelToggle;
+	ButtonMonitor Trigger;
 	
 	bool FlyWheelEnabled;
 	

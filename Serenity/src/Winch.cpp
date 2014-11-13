@@ -3,6 +3,7 @@
 Winch :: Winch ( AnalogChannel * Angle, SpeedController * WinchMotor ):
 	Angle ( Angle ),
 	WinchMotor ( WinchMotor ),
+	DriveScale ( 1.0 ),
 	Inverted ( false ),
 	Enabled ( false ),
 	HighLimit ( 1.0 ),

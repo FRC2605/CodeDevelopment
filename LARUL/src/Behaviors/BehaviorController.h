@@ -3,6 +3,8 @@
 
 #include "IBehavior.h"
 
+#include "../Threading/Mutex.h"
+
 #include "../Util/Vector.h"
 
 class BehaviorController
@@ -12,7 +14,7 @@ public:
 	BehaviorController ();
 	~BehaviorController ();
 	
-	void AddBehavior ( Behavior * NewBehavior, const char * Name );
+	void AddBehavior ( IBehavior * NewBehavior, const char * Name );
 	void RemoveBehavior ( const char * Name );
 	
 	void StartBehavior ( const char * Name );
@@ -21,6 +23,8 @@ public:
 	void Update ();
 	
 private:
+	
+	BehaviorRecord * GetBehavior ( const char * Name );
 	
 	typedef enum
 	{
@@ -36,9 +40,12 @@ private:
 		IBehavior * Behavior;
 		BehaviorState State;
 		
+		const char * Name;
+		
 	} BehaviorRecord;
 	
 	Vector <BehaviorRecord> Behaviors;
+	RecursiveMutex ListSync;
 	
 };
 

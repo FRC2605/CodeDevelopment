@@ -11,44 +11,51 @@ Vector3 :: ~Vector3 ()
 {
 };
 
-void SetX ( double X )
+void Vector3 :: SetX ( double X )
 {
 	
 	this -> X = X;
 	
 };
 
-void SetY ( double Y )
+void Vector3 :: SetY ( double Y )
 {
 	
 	this -> Y = Y;
 	
 };
 
-void SetZ ( double Z )
+void Vector3 :: SetZ ( double Z )
 {
 	
 	this -> Z = Z;
 	
 };
 
-double GetX ()
+double Vector3 :: GetX ()
 {
 	
 	return X;
 	
 };
 
-double GetY ()
+double Vector3 :: GetY ()
 {
 	
 	return Y;
 	
 };
 
-double GetZ ()
+double Vector3 :: GetZ ()
 {
 	
 	return Z;
+	
+};
+
+double Vector3 :: DotProduct ( Vector3 & A, Vector3 & B )
+{
+	
+	return A.X * B.X + A.Y * B.Y + A.Z + B.Z;
 	
 };

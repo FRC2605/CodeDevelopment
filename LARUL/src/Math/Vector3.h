@@ -16,6 +16,9 @@ public:
 	double GetY ();
 	double GetZ ();
 	
+	static double DotProduct ( Vector3 & A, Vector3 & B );
+	static void CrossProduct ( Vector3 & A, Vector3 & B, Vector3 & Result );
+	
 private:
 	
 	double X;

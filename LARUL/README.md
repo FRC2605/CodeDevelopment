@@ -3,7 +3,7 @@ LARUL
 Liam's Advanced Robotics Utility Library
 ----------------------------------------
 
-LARUL Is a c++ class library similar to WPILib designed to be an easy-to-use, powerful, and highly runtime-configurable abtraction to robot software design. It consists of many wrappers to cleanly encapsulate other libraries, controllers to delegate and manage software and hardware components, and both software and hardware abstration layers to generalize system design. It is designed with Usability, Robustness, and Utility in mind, with the goal of performing favorably for future FRC Robotics seasons.
+LARUL Is a C++ class library similar to WPILib designed to be an easy-to-use, powerful, and highly runtime-configurable abtraction to robot software design. It consists of many wrappers to cleanly encapsulate other libraries, controllers to delegate and manage software and hardware components, and both software and hardware abstration layers to generalize system design. It is designed with Usability, Robustness, and Utility in mind, with the goal of performing favorably for future FRC Robotics seasons.
 
 Current Features
 ----------------

@@ -1,9 +1,9 @@
 #include "EventController.h"
 
-EventController :: AREF_PAUSE = 0xFFFF;
-EventController :: AREF_PAUSE_AND_DISCARD = 0xFFFF;
-EventController :: AREF_RESUME = 0xFFFF;
-EventController :: AREF_KILL = 0xFFFF;
+volatile const int EventController :: AREF_PAUSE = 0x01;
+volatile const int EventController :: AREF_PAUSE_AND_DISCARD = 0x02;
+volatile const int EventController :: AREF_RESUME = 0x03;
+volatile const int EventController :: AREF_KILL = 0x04;
 
 EventController :: EventController ():
 	EventSync (),
@@ -25,14 +25,14 @@ EventController :: ~EventController ()
 {
 	
 	if ( State != kControllerState_Dead )
-		InsertionQueue.SendMessage ( & AREF_KILL, true );
+		InsertionQueue.SendMessage ( static_cast <void *> ( const_cast <int *> ( & AREF_KILL ) ), true );
 	
 };
 
 void EventController :: RunLoop ()
 {
 	
-	volatile bool Running = true;
+	bool Running = true;
 	bool EventWait;
 	void * Message;
 	
@@ -48,10 +48,9 @@ void EventController :: RunLoop ()
 	do
 	{
 		
-		switch ( Message )
+		if ( Message == reinterpret_cast <void *> ( const_cast <int *> ( & AREF_KILL ) ) )
 		{
-		case & AREF_KILL:
-		
+			
 			Running = false;
 			EventWait = false;
 			
@@ -61,23 +60,23 @@ void EventController :: RunLoop ()
 			
 			StateChange.Signal ();
 			
-			break;
+		}
+		else if ( reinterpret_cast <void *> ( const_cast <int *> ( & AREF_PAUSE ) ) )
+		{
 			
-		case & AREF_PAUSE:
-		
 			StateSync.Lock ();
 			State = kControllerState_Paused;
 			StateSync.Unlock ();
 			
 			StateChange.Signal ();
-		
+			
 			InsertionQueue.ReceiveMessage ( & Message );
 			EventWait = false;
 			
-			break;
+		}
+		else if ( Message == reinterpret_cast <void *> ( const_cast <int *> ( & AREF_PAUSE_AND_DISCARD ) ) )
+		{
 			
-		case & AREF_PAUSE_AND_DISCARD:
-		
 			StateSync.Lock ();
 			State = kControllerState_Paused;
 			StateSync.Unlock ();
@@ -85,13 +84,13 @@ void EventController :: RunLoop ()
 			StateChange.Signal ();
 			
 			ScheduleList.Clear ();
-		
+			
 			InsertionQueue.ReceiveMessage ( & Message );
 			EventWait = false;
 			
-			break;
-			
-		case & AREF_RESUME:
+		}
+		else if ( Message == reinterpret_cast <void *> ( const_cast <int *> ( & AREF_RESUME ) ) )
+		{
 			
 			StateSync.Lock ();
 			State = kControllerState_Running;
@@ -109,7 +108,7 @@ void EventController :: RunLoop ()
 					
 					ScheduleRecord Record = ScheduleList [ 0 ];
 				
-					uint64_t CurrentTime = Timer :: GetTimeMonotonicMS ();
+					uint64_t CurrentTime = Clock :: GetTimeMonotonicMS ();
 					
 					if ( Record.TimeMS <= CurrentTime )
 					{
@@ -164,26 +163,22 @@ void EventController :: RunLoop ()
 				
 			}
 			
-			break;
-		
-		default:
-		
+		}
+		else
+		{
+			
 			ScheduleRecord Temporary;
 			
 			Temporary.TimeMS = reinterpret_cast <ScheduleRecord *> ( Message ) -> TimeMS;
 			Temporary.Type = reinterpret_cast <ScheduleRecord *> ( Message ) -> Type;
-			Temporary.DeallocTypeString = reinterpret_cast <ScheduleRecord *> ( Message ) -? DeallocTypeString;
-			
-			
-			
-			break;
+			Temporary.DeallocTypeString = reinterpret_cast <ScheduleRecord *> ( Message ) -> DeallocTypeString;
 			
 		}
 		
 		if ( EventWait )
 		{
 			
-			uint64_t CurrentTime = Timer :: GetTimeMonotonicMS ();
+			uint64_t CurrentTime = Clock :: GetTimeMonotonicMS ();
 			uint64_t Delta = NextEventMS - CurrentTime;
 			
 			if ( NextEventMS < CurrentTime )
@@ -206,7 +201,7 @@ void EventController :: RunLoop ()
 					NextEvent = FindEvent ( ScheduleList [ 0 ].Type );
 					NextEventMS = ScheduleList [ 0 ].TimeMS;
 					
-					CurrentTime = Timer :: GetTimeMonotonicMS ();
+					CurrentTime = Clock :: GetTimeMonotonicMS ();
 					Delta = NextEventMS - CurrentTime;
 					
 				}
@@ -244,7 +239,7 @@ void EventController :: KillRunLoop ()
 		
 	}
 	
-	InsertionQueue.SendMessage ( & AREF_KILL, true );
+	InsertionQueue.SendMessage ( static_cast <void *> ( const_cast <int *> ( & AREF_KILL ) ), true );
 	
 	StateChange.LockWait ();
 	StateChange.Reset ();
@@ -256,9 +251,9 @@ void EventController :: PauseRunLoop ( bool DiscardSchedule )
 {
 	
 	if ( DiscardSchedule )
-		InsertionQueue.SendMessage ( & AREF_PAUSE_AND_DISCARD, true );
+		InsertionQueue.SendMessage ( static_cast <void *> ( const_cast <int *> ( & AREF_PAUSE_AND_DISCARD ) ), true );
 	else
-		InsertionQueue.SendMessage ( & AREF_PAUSE, true );
+		InsertionQueue.SendMessage ( static_cast <void *> ( const_cast <int *> ( & AREF_PAUSE ) ), true );
 	
 	StateChange.LockWait ();
 	StateChange.Reset ();
@@ -269,7 +264,7 @@ void EventController :: PauseRunLoop ( bool DiscardSchedule )
 void EventController :: ResumeRunLoop ()
 {
 	
-	InsertionQueue.SendMessage ( & AREF_RESUME );
+	InsertionQueue.SendMessage ( static_cast <void *> ( const_cast <int *> ( & AREF_RESUME ) ) );
 	
 	StateChange.LockWait ();
 	StateChange.Reset ();
@@ -277,7 +272,7 @@ void EventController :: ResumeRunLoop ()
 	
 };
 
-ControllerState EventController :: GetState ()
+EventController :: ControllerState EventController :: GetState ()
 {
 	
 	StateSync.Lock ();

@@ -2,19 +2,14 @@
 #define LARUL_TIMER_H
 
 #include <stdint.h>
-#include <time.h>
-#include <sys/types.h>
 
-#if _POSIX_TIMERS == 0
-	#include <sys/time.h>
-#endif
-
-#include "../Util/Error.h"
+#include "../Util/LError.h"
 
 #include "../Threading/Mutex.h"
-#include "../Threading/Synchronized.h"
 
-class Timer
+#include "Clock.h"
+
+class IntervalTimer
 {
 public:
 	
@@ -26,8 +21,8 @@ public:
 		
 	} TimeMode;
 	
-	Timer ( TimeMode Mode = kTimeMode_Monotonic );
-	~Timer ();
+	IntervalTimer ( TimeMode Mode = kTimeMode_Monotonic );
+	~IntervalTimer ();
 	
 	void Start ();
 	void Stop ();
@@ -38,9 +33,6 @@ public:
 	double GetTimeS ();
 	
 	void SetTimeMode ( TimeMode Mode );
-	
-	static uint64_t GetTimeMonotonicMS ();
-	static uint64_t GetTimeSystemMS ();
 
 private:
 	

@@ -1,5 +1,16 @@
 #include "TCPSocket.h"
 
+#include <cstring>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+
+#ifdef __VXWORKS__
+	#include <ioLib.h>
+	#include <sockLib.h>
+#endif
+
 TCPSocket :: TCPSocket ( TCP :: AddressType Type, DisconnectBehavior Disconnection ):
 	SocketFD ( - 1 ),
 	SendCounter ( 0 ),
@@ -91,16 +102,18 @@ TCPSocket :: TCPSocket ( TCP :: AddressType Type, DisconnectBehavior Disconnecti
 void TCPSocket :: SetDisconnectionCallback ( IDelegate1 <void, TCPSocket *> * Callback )
 {
 	
-	Synchronized Sync ( & SocketSync );
+	SocketSync.Lock ();
 	
 	DisconnectCallback = Callback;
+	
+	SocketSync.Unlock ();
 	
 };
 
 void TCPSocket :: Connect ( const char * Address, uint16_t Port )
 {
 	
-	Synchronized Sync ( & SocketSync );
+	SocketSync.Lock ();
 	
 	if ( Connected )
 		return;
@@ -151,12 +164,14 @@ void TCPSocket :: Connect ( const char * Address, uint16_t Port )
 	
 	Connected = true;
 	
+	SocketSync.Unlock ();
+	
 };
 
 void TCPSocket :: Disconnect ( bool Callback )
 {
 	
-	Synchronized Sync ( & SocketSync );
+	SocketSync.Lock ();
 	
 	if ( ! Connected )
 		return;
@@ -185,12 +200,18 @@ void TCPSocket :: Disconnect ( bool Callback )
 	if ( Callback && DisconnectCallback != NULL )
 		DisconnectCallback -> Call ( this );
 	
+	SocketSync.Unlock ();
+	
 };
 
 bool TCPSocket :: IsConnected ()
 {
 	
-	Synchronized Sync ( & SocketSync );
+	SocketSync.Lock ();
+	
+	bool Con = Connected;
+	
+	SocketSync.Unlock ();
 	
 	return Connected;
 	
@@ -199,30 +220,38 @@ bool TCPSocket :: IsConnected ()
 uint32_t TCPSocket :: GetWriteCount ()
 {
 	
-	Synchronized Sync ( & SocketSync );
+	SocketSync.Lock ();
 	
-	return SendCounter;
+	uint32_t Writes = SendCounter;
+	
+	SocketSync.Unlock ();
+	
+	return Writes;
 	
 };
 
 uint32_t TCPSocket :: GetReadCount ()
 {
 	
-	Synchronized Sync ( & SocketSync );
+	SocketSync.Lock ();
 	
-	return ReceiveCounter;
+	uint32_t Reads = ReceiveCounter;
+	
+	SocketSync.Unlock ();
+	
+	return Reads;
 	
 };
 
 void TCPSocket :: Write ( const void * Buffer, size_t Length, bool DontBlock )
 {
 	
-	Synchronized Sync ( & SocketSync );
+	SocketSync.Lock ();
 	
 	if ( ! Connected )
 		THROW_ERROR ( "Attempt to write from unconnected TCP socket!" );
 	
-	if ( send ( SocketFD, Buffer, Length, DontBlock ? MSG_DONTWAIT : 0 ) == - 1 )
+	if ( send ( SocketFD, reinterpret_cast <const char *> ( Buffer ), Length, DontBlock ? MSG_DONTWAIT : 0 ) == - 1 )
 	{
 		
 		switch ( errno )
@@ -246,6 +275,8 @@ void TCPSocket :: Write ( const void * Buffer, size_t Length, bool DontBlock )
 				if ( DisconnectCallback != NULL )
 				{
 					
+					SocketSync.Unlock ();
+					
 					DisconnectCallback -> Call ( this );
 					return;
 					
@@ -260,6 +291,9 @@ void TCPSocket :: Write ( const void * Buffer, size_t Length, bool DontBlock )
 			case kDisconnectBehavior_SpinReconnect:
 			
 				Connect ( Address, Port );
+				
+				SocketSync.Unlock ();
+				
 				return Write ( Buffer, Length, DontBlock );
 				
 			}
@@ -294,14 +328,16 @@ void TCPSocket :: Write ( const void * Buffer, size_t Length, bool DontBlock )
 	
 	SendCounter ++;
 	
+	SocketSync.Unlock ();
+	
 };
 
 void TCPSocket :: Read ( void * Buffer, size_t Length, bool Fill, size_t * Received, bool * Closed )
 {
 	
-	Synchronized Sync ( & SocketSync );
+	SocketSync.Lock ();
 	
-	size_t ReceivedBytes;
+	ssize_t ReceivedBytes;
 	
 	if ( ! Connected )
 		THROW_ERROR ( "Attempt to read from unconnected TCP Socket!" );
@@ -312,7 +348,7 @@ void TCPSocket :: Read ( void * Buffer, size_t Length, bool Fill, size_t * Recei
 	if ( Fill )
 	{
 		
-		ReceivedBytes = recv ( SocketFD, Buffer, Length, MSG_WAITALL );
+		ReceivedBytes = recv ( SocketFD, reinterpret_cast <char *> ( Buffer ), Length, MSG_WAITALL );
 		
 		if ( ReceivedBytes == -1 )
 		{
@@ -349,7 +385,7 @@ void TCPSocket :: Read ( void * Buffer, size_t Length, bool Fill, size_t * Recei
 	else
 	{
 		
-		ReceivedBytes = recv ( SocketFD, Buffer, Length, 0 );
+		ReceivedBytes = recv ( SocketFD, reinterpret_cast <char *> ( Buffer ), Length, 0 );
 		
 		if ( ReceivedBytes == -1 )
 		{
@@ -387,15 +423,22 @@ void TCPSocket :: Read ( void * Buffer, size_t Length, bool Fill, size_t * Recei
 	if ( Received != NULL )
 		* Received = ReceivedBytes;
 	
+	SocketSync.Unlock ();
+	
 };
 
 size_t TCPSocket :: GetBytesAvailible ()
 {
 	
-	Synchronized Sync ( & SocketSync );
+	SocketSync.Lock ();
 	
 	int Value;
+	
+#ifdef __VXWORKS__
+	int ErrorCode = ioctl ( SocketFD, FIONREAD, reinterpret_cast <int> ( & Value ) );
+#else
 	int ErrorCode = ioctl ( SocketFD, FIONREAD, & Value );
+#endif
 	
 	switch ( ErrorCode )
 	{
@@ -406,6 +449,8 @@ size_t TCPSocket :: GetBytesAvailible ()
 		THROW_ERROR ( "Unspecified error getting the number of availible bytes in the TCP buffer!" );
 		
 	}
+	
+	SocketSync.Unlock ();
 	
 	return static_cast <size_t> ( Value );
 	

@@ -1,13 +1,13 @@
 #include "Vector3.h"
 
-Vector3 :: UP = Vector3 ( 0, 0, 1 );
-Vector3 :: DOWN = Vector3 ( 0, 0, - 1 );
-Vector3 :: LEFT = Vector3 ( 0, - 1, 0 );
-Vector3 :: RIGHT = Vector3 ( 0, 1, 0 );
-Vector3 :: FORWARD = Vector3 ( 1, 0, 0 );
-Vector3 :: BACKWARD = Vector3 ( - 1, 0, 0 );
-Vector3 :: IDENTITY = Vector3 ( 1, 1, 1 );
-Vector3 :: ZERO = Vector3 ( 0, 0, 0 );
+const Vector3 Vector3 :: UP ( 0, 0, 1 );
+const Vector3 Vector3 :: DOWN ( 0, 0, - 1 );
+const Vector3 Vector3 :: LEFT ( 0, - 1, 0 );
+const Vector3 Vector3 :: RIGHT ( 0, 1, 0 );
+const Vector3 Vector3 :: FORWARD ( 1, 0, 0 );
+const Vector3 Vector3 :: BACKWARD ( - 1, 0, 0 );
+const Vector3 Vector3 :: IDENTITY ( 1, 1, 1 );
+const Vector3 Vector3 :: ZERO ( 0, 0, 0 );
 
 Vector3 :: Vector3 ( double X, double Y, double Z ):
 	X ( X ),
@@ -56,7 +56,7 @@ void Vector3 :: Multiply ( Vector3 & A, double B )
 	
 };
 
-void Multiply ( Vector3 & A, double B, Vector3 & Result )
+void Vector3 :: Multiply ( Vector3 & A, double B, Vector3 & Result )
 {
 	
 	Result.X = A.X * B;
@@ -65,7 +65,7 @@ void Multiply ( Vector3 & A, double B, Vector3 & Result )
 	
 };
 
-void Add ( Vector3 & A, Vector3 & B, Vector3 & Result )
+void Vector3 :: Add ( Vector3 & A, Vector3 & B, Vector3 & Result )
 {
 	
 	Result.X = A.X + B.X;
@@ -74,7 +74,7 @@ void Add ( Vector3 & A, Vector3 & B, Vector3 & Result )
 	
 };
 
-void Add ( Vector3 & A, Vector3 & B )
+void Vector3 :: Add ( Vector3 & A, Vector3 & B )
 {
 	
 	A.X += B.X;
@@ -83,7 +83,7 @@ void Add ( Vector3 & A, Vector3 & B )
 	
 };
 
-void Subtract ( Vector3 & A, Vector3 & B, Vector3 & Result )
+void Vector3 :: Subtract ( Vector3 & A, Vector3 & B, Vector3 & Result )
 {
 	
 	Result.X = A.X - B.X;
@@ -92,7 +92,7 @@ void Subtract ( Vector3 & A, Vector3 & B, Vector3 & Result )
 	
 };
 
-void Subtract ( Vector3 & A, Vector3 & B )
+void Vector3 :: Subtract ( Vector3 & A, Vector3 & B )
 {
 	
 	A.X -= B.X;
@@ -101,35 +101,35 @@ void Subtract ( Vector3 & A, Vector3 & B )
 	
 };
 
-void Normalize ( Vector3 & A )
+void Vector3 :: Normalize ( Vector3 & A )
 {
 	
 	Multiply ( A, 1 / Length ( A ) );
 	
 };
 
-void Normalize ( Vector3 & A, Vector3 & Result )
+void Vector3 :: Normalize ( Vector3 & A, Vector3 & Result )
 {
 	
 	Multiply ( A, 1 / Length ( A ), Result );
 	
 };
 
-double Length ( Vector3 & A )
+double Vector3 :: Length ( Vector3 & A )
 {
 	
 	return sqrt ( A.X * A.X + A.Y * A.Y + A.Z * A.Z );
 	
 };
 
-double LengthSquared ( Vector3 & A )
+double Vector3 :: LengthSquared ( Vector3 & A )
 {
 	
 	return A.X * A.X + A.Y * A.Y + A.Z * A.Z;
 	
 };
 
-double AngleBetween ( Vector3 & A, Vector3 & B )
+double Vector3 :: AngleBetween ( Vector3 & A, Vector3 & B )
 {
 	
 	return acos ( DotProduct ( A, B ) / ( Length ( A ) * Length ( B ) ) );

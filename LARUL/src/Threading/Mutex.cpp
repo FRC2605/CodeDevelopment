@@ -1,8 +1,8 @@
 #include "Mutex.h"
 
 Mutex :: Mutex ( bool ErrorChecking, bool Robust ):
-	Robust ( Robust ),
-	MutexOptions ()
+	MutexOptions (),
+	Robust ( Robust )
 {
 	
 	int ErrorCode = pthread_mutexattr_init ( & MutexOptions );
@@ -21,11 +21,13 @@ Mutex :: Mutex ( bool ErrorChecking, bool Robust ):
 		
 	}
 	
+#ifdef PTHREAD_MUTEX_ERRORCHECK
 	if ( ErrorChecking )
 		pthread_mutexattr_settype ( & MutexOptions, PTHREAD_MUTEX_ERRORCHECK );
 	else
 		pthread_mutexattr_settype ( & MutexOptions, PTHREAD_MUTEX_NORMAL );
-	
+#endif	
+
 #ifdef PTHREAD_MUTEX_ROBUST
 	
 	if ( Robust )
@@ -83,7 +85,8 @@ void Mutex :: Lock ()
 		
 	case EDEADLK:
 		THROW_ERROR ( "Deadlock condition encountered!" );
-		
+
+#ifdef EOWNERDEAD
 	case EOWNERDEAD:
 
 #ifdef PTHREAD_MUTEX_ROBUST
@@ -108,6 +111,7 @@ void Mutex :: Lock ()
 		
 		break;
 		
+#endif
 #endif
 		
 	}

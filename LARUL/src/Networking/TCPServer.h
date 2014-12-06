@@ -1,18 +1,16 @@
 #ifndef LARUL_TCPSERVER_H
 #define LARUL_TCPSERVER_H
 
-#include "../Util/Error.h"
+#include <arpa/inet.h>
+
+#ifdef __VXWORKS__
+	#include <inetLib.h>
+#endif
+
+#include "../Util/LError.h"
 #include "../Util/Delegate.h"
 
-#include <cstring>
-#include <sys/socket.h>
-#include <netdb.h>
-#include <stdint.h>
-#include <arpa/inet.h>
-#include <unistd.h>
-
 #include "../Threading/Mutex.h"
-#include "../Threading/Synchronized.h"
 
 #include "TCPServerSocket.h"
 

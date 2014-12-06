@@ -3,13 +3,12 @@
 
 #include <stdint.h>
 #include <stddef.h>
-#include <stdlib.h>
 
 #include "IAllocSpec.h"
 
 #include "../Threading/Mutex.h"
 
-#include "../Util/Error.h"
+#include "../Util/LError.h"
 
 class CachingAllocator
 {

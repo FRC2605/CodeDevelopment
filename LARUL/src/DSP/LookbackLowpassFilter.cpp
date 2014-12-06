@@ -1,9 +1,9 @@
 #include "LookbackLowpassFilter.h"
 
 LookbackLowpassFilter :: LookbackLowpassFilter ( double MaximumSlew, uint32_t LookbackSize, LookbackLowpassFilter :: LookbackLowpassFilterMode Mode ):
+	LookbackSize ( LookbackSize ),
 	MaxSlew ( MaximumSlew ),
 	Mode ( Mode ),
-	LookbackSize ( LookbackSize ),
 	Offset ( 0 )
 {
 	

@@ -117,7 +117,7 @@ public:
 };
 
 template <typename Class, typename Return, typename Arg1>
-class IMemberDelegate1 : IDelegate2 <Return, Class, Arg1>
+class IMemberDelegate1 : IDelegate2 <Return, Class *, Arg1>
 {
 public:
 	
@@ -129,7 +129,7 @@ public:
 };
 
 template <typename Class, typename Return, typename Arg1, typename Arg2>
-class IMemberDelegate2 : IDelegate3 <Return, Class, Arg1, Arg2>
+class IMemberDelegate2 : IDelegate3 <Return, Class *, Arg1, Arg2>
 {
 public:
 	
@@ -141,7 +141,7 @@ public:
 };
 
 template <typename Class, typename Return, typename Arg1, typename Arg2, typename Arg3>
-class IMemberDelegate3 : IDelegate4 <Return, Class, Arg1, Arg2, Arg3>
+class IMemberDelegate3 : IDelegate4 <Return, Class *, Arg1, Arg2, Arg3>
 {
 public:
 	
@@ -153,7 +153,7 @@ public:
 };
 
 template <typename Class, typename Return, typename Arg1, typename Arg2, typename Arg3, typename Arg4>
-class IMemberDelegate4 : IDelegate5 <Return, Class, Arg1, Arg2, Arg3, Arg4>
+class IMemberDelegate4 : IDelegate5 <Return, Class *, Arg1, Arg2, Arg3, Arg4>
 {
 public:
 	

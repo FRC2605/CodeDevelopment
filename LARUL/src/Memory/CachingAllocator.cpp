@@ -1,5 +1,11 @@
 #include "CachingAllocator.h"
 
+#include <stdlib.h>
+
+#ifdef __VXWORKS__
+	#include "VxWorksMemalignPatch.h"
+#endif
+
 CachingAllocator :: CachingAllocator ( IAllocSpec * Spec, uint32_t CacheSize, uint32_t PreFill ):
 	AllocSize ( Spec -> GetSize () ),
 	AllocAlign ( Spec -> GetAlign () ),

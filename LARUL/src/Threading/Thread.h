@@ -6,11 +6,11 @@
 #include <errno.h>
 
 #include "../Util/Delegate.h"
-#include "../Util/Error.h"
+#include "../Util/LError.h"
 
 #include "../Logging/Logger.h"
 
-#include "RecursiveMutex.h"
+#include "Mutex.h"
 
 /*
 * Thread is the class used for managing and creating an application thread. It is based on POSIX threads, with some optional extensions.
@@ -82,6 +82,7 @@ public:
 	static Thread * GetCurrentThread ();
 	static void Terminate ( void * Status = NULL );
 	static void SetCancelable ( bool Cancelable );
+	static void TestCancelation ();
 	
 private:
 	
@@ -105,7 +106,7 @@ private:
 	
 	void * Status;
 	
-	RecursiveMutex ThreadMutex;
+	Mutex ThreadMutex;
 	
 	friend void * ThreadStub ( void * Instance );
 	friend void CleanupStub ( void * Instance );

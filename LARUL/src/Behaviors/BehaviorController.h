@@ -24,8 +24,6 @@ public:
 	
 private:
 	
-	BehaviorRecord * GetBehavior ( const char * Name );
-	
 	typedef enum
 	{
 		
@@ -44,8 +42,10 @@ private:
 		
 	} BehaviorRecord;
 	
+	BehaviorRecord * GetBehavior ( const char * Name );
+	
 	Vector <BehaviorRecord> Behaviors;
-	RecursiveMutex ListSync;
+	Mutex ListSync;
 	
 };
 

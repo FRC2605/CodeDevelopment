@@ -1,10 +1,24 @@
 #include "TCPServer.h"
 
+#include <cstring>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <stdint.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+
+#ifdef __VXWORKS__
+	#include <VxWorks.h>
+	#include <sockLib.h>
+	#undef socklen_t
+	#define socklen_t int
+#endif
+
 TCPServer :: TCPServer ( TCP :: AddressType Type, uint16_t Port ):
 	ServerSocketFD ( - 1 ),
 	Type ( Type ),
-	Port ( Port ),
 	DefaultDisconnectionBehavior ( TCPServerSocket :: kDisconnectBehavior_ThrowError ),
+	Port ( Port ),
 	SocketSync ( true ),
 	Active ( false )
 {
@@ -49,7 +63,7 @@ TCPServer :: ~TCPServer ()
 void TCPServer :: Open ( int PendableConnections )
 {
 	
-	Synchronized Sync ( & SocketSync );
+	SocketSync.Lock ();
 	
 	if ( Active )
 		return;
@@ -108,12 +122,14 @@ void TCPServer :: Open ( int PendableConnections )
 	
 	Active = true;
 	
+	SocketSync.Unlock ();
+	
 };
 
 TCPServerSocket * TCPServer :: Accept ()
 {
 	
-	Synchronized Sync ( & SocketSync );
+	SocketSync.Lock ();
 	
 	if ( ! Active )
 		return NULL;
@@ -123,7 +139,7 @@ TCPServerSocket * TCPServer :: Accept ()
 	struct sockaddr SocketAddress;
 	socklen_t AddressSize;
 	
-	int NewSocketFD = accept ( ServerSocketFD, & SocketAddress, &AddressSize );
+	int NewSocketFD = accept ( ServerSocketFD, & SocketAddress, & AddressSize );
 	
 	if ( NewSocketFD < 0 )
 	{
@@ -179,6 +195,8 @@ TCPServerSocket * TCPServer :: Accept ()
 	
 	Socket -> Connected = true;
 	
+	SocketSync.Unlock ();
+	
 	return Socket;
 	
 };
@@ -186,7 +204,7 @@ TCPServerSocket * TCPServer :: Accept ()
 void TCPServer :: Close ()
 {
 	
-	Synchronized Sync ( & SocketSync );
+	SocketSync.Lock ();
 	
 	if ( ! Active )
 		return;
@@ -213,5 +231,7 @@ void TCPServer :: Close ()
 	}
 	
 	ServerSocketFD = - 1;
+	
+	SocketSync.Unlock ();
 	
 };

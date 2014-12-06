@@ -7,6 +7,11 @@
 
 #include "../Util/Vector.h"
 
+/*
+* Global locking mechanism for arbitrary pointers. 
+*
+*/
+
 class ObjectLock
 {
 public:

@@ -27,6 +27,7 @@ public:
 	static void Normalize ( Vector3 & A, Vector3 & Result );
 	
 	static double Length ( Vector3 & A );
+	static double LengthSquared ( Vector3 & A );
 	
 	static double AngleBetween ( Vector3 & A, Vector3 & B );
 	

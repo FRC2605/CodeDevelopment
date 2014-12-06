@@ -5,10 +5,10 @@ class IEvent
 {
 public:
 	
-	~IEvent () {};
+	 virtual ~IEvent () = 0;
 	
-	void Trigger () = 0;
-	const char * GetType () = 0;
+	virtual void Trigger () = 0;
+	virtual const char * GetType () = 0;
 	
 };
 

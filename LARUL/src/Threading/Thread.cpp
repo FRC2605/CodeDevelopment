@@ -36,6 +36,13 @@ void Thread :: SetCancelable ( bool Cancelable )
 	
 };
 
+void Thread :: TestCancelation ()
+{
+	
+	pthread_testcancel ();
+	
+};
+
 void * ThreadStub ( void * Instance );
 void CleanupStub ( void * Instance );
 
@@ -142,8 +149,6 @@ void Thread :: SetDestructorBehavior ( DestructorBehavior Destruction )
 Thread :: ~Thread ()
 {
 	
-	ThreadMutex.Lock ();
-	
 	if ( State == kThreadState_Running )
 	{
 		
@@ -170,10 +175,6 @@ Thread :: ~Thread ()
 		}
 		
 	}
-	
-	State = kThreadState_Destructing;
-	
-	ThreadMutex.Unlock ();
 	
 };
 
@@ -328,7 +329,7 @@ void * Thread :: Entry ()
 		Function -> Call ( this );
 		
 	}
-	catch ( Error E )
+	catch ( LError E )
 	{
 		
 		State = kThreadState_Error;

@@ -13,6 +13,8 @@ class SingleAllocSpec : public IAllocSpec
 {
 public:
 	
+	virtual ~SingleAllocSpec () {};
+	
 	SingleAllocSpec ()
 	{
 		

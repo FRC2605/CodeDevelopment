@@ -1,13 +1,17 @@
 #ifndef LARUL_EVENTCONTROLLER_H
 #define LARUL_EVENTCONTROLLER_H
 
+#include "../Threading/Thread.h"
 #include "../Threading/Mutex.h"
 #include "../Threading/Condition.h"
 #include "../Threading/MessageQueue.h"
 
-#include "../Timing/Timer.h"
+#include "../Timing/Clock.h"
 
 #include "../Util/Vector.h"
+
+#include "../Memory/CachingAllocator.h"
+#include "../Memory/SingleAllocSpec.h"
 
 #include "IEvent.h"
 
@@ -42,15 +46,15 @@ public:
 	
 private:
 	
-	static volatile const int AREF_PAUSE;
-	static volatile const int AREF_PAUSE_AND_DISCARD;
-	static volatile const int AREF_RESUME;
-	static volatile const int AREF_KILL;
+	static const volatile int AREF_PAUSE;
+	static const volatile int AREF_PAUSE_AND_DISCARD;
+	static const volatile int AREF_RESUME;
+	static const volatile int AREF_KILL;
 	
 	typedef struct
 	{
 		
-		const char * Type;
+		char * Type;
 		uint64_t TimeMS;
 		bool DeallocTypeString;
 		
@@ -71,7 +75,7 @@ private:
 	
 	Vector <ScheduleRecord> ScheduleList;
 	
-	Vector.<IEvent> Events;
+	Vector<IEvent *> Events;
 	
 	ControllerState State;
 	

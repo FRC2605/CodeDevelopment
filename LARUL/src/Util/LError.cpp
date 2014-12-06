@@ -1,29 +1,29 @@
-#include "Error.h"
+#include "LError.h"
 
-Error :: Error ( std :: string Type, std :: string File, uint32_t Line ):
+LError :: LError ( std :: string Type, std :: string File, uint32_t Line ):
 	Type ( Type ),
 	File ( File ),
 	Line ( Line )
 {
 };
 
-Error :: Error ( const char * Type, const char * File, uint32_t Line ):
+LError :: LError ( const char * Type, const char * File, uint32_t Line ):
 	Type ( Type ),
 	File ( File ),
 	Line ( Line )
 {	
 };
 
-Error :: ~Error () {};
+LError :: ~LError () {};
 
-std :: string Error :: GetErrorType () const
+std :: string LError :: GetErrorType () const
 {
 	
 	return static_cast <const std :: string> ( Type );
 	
 };
 
-std :: string Error :: GetErrorString ()
+std :: string LError :: GetErrorString ()
 {
 	
 	std :: stringstream Out ( File );

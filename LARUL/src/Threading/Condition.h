@@ -3,17 +3,10 @@
 
 #include <stdint.h>
 #include <pthread.h>
-#include <time.h>
-#include <sys/types.h>
-#include <errno.h>
 
-#if _POSIX_TIMERS == 0
-	#include <sys/time.h>
-#endif
+#include "../Util/LError.h"
 
-#include "../Util/Error.h"
-
-#include "RecursiveMutex.h"
+#include "Mutex.h"
 
 class Condition
 {
@@ -41,7 +34,8 @@ private:
 	pthread_cond_t ConditionHandle;
 	pthread_condattr_t ConditionAttributes;
 	
-	RecursiveMutex LockingMutex;
+	Mutex LockingMutex;
+	Mutex PreLockedSync;
 	
 	bool PreLocked;
 	bool Set;

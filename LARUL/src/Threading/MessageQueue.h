@@ -7,7 +7,7 @@
 #include "Condition.h"
 #include "Mutex.h"
 
-#include "../Util/Error.h"
+#include "../Util/LError.h"
 
 class MessageQueue
 {

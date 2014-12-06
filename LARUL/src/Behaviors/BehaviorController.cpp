@@ -8,9 +8,6 @@ BehaviorController :: BehaviorController ():
 
 BehaviorController :: ~BehaviorController ()
 {
-	
-	
-	
 };
 
 void BehaviorController :: AddBehavior ( IBehavior * NewBehavior, const char * Name )
@@ -37,7 +34,7 @@ void BehaviorController :: AddBehavior ( IBehavior * NewBehavior, const char * N
 		
 		Behaviors.Push ( BehaviorRecord () );
 		
-		CurrentBehavior = & Behaviors [ Behaviors.Length () - 1 ];
+		CurrentRecord = & Behaviors [ Behaviors.Length () - 1 ];
 		
 	}
 	
@@ -65,7 +62,7 @@ void BehaviorController :: RemoveBehavior ( const char * Name )
 			if ( Behaviors [ i ].State == kBehaviorState_Running )
 				Behaviors [ i ].Behavior -> Stop ();
 			
-			Behaviors [ i ].Destroy ();
+			Behaviors [ i ].Behavior -> Destroy ();
 			
 			Behaviors.Remove ( i, 1 );
 			
@@ -81,8 +78,6 @@ void BehaviorController :: RemoveBehavior ( const char * Name )
 
 void BehaviorController :: StartBehavior ( const char * Name )
 {
-	
-	IBehavior * Behavior = NULL;
 	
 	ListSync.Lock ();
 	
@@ -110,8 +105,6 @@ void BehaviorController :: StartBehavior ( const char * Name )
 
 void BehaviorController :: StopBehavior ( const char * Name )
 {
-	
-	IBehavior * Behavior = NULL;
 	
 	ListSync.Lock ();
 	
@@ -149,10 +142,10 @@ void BehaviorController :: Update ()
 	
 };
 
-BehaviorRecord * BehaviorController :: GetBehavior ( const char * Name )
+BehaviorController :: BehaviorRecord * BehaviorController :: GetBehavior ( const char * Name )
 {
 	
-	for ( int32_t i = 0; i < Behaviors.Length (); i ++ )
+	for ( uint32_t i = 0; i < Behaviors.Length (); i ++ )
 	{
 		
 		if ( strcmp ( Behaviors [ i ].Name, Name ) == 0 )

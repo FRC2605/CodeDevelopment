@@ -5,7 +5,7 @@
 #include <pthread.h>
 #include <errno.h>
 
-#include "../Util/Error.h"
+#include "../Util/LError.h"
 
 #include "IMutex.h"
 
@@ -15,12 +15,14 @@
 	#endif
 #endif
 
+class Condition;
+
 class Mutex : public IMutex
 {
 public:
 	
 	explicit Mutex ( bool ErrorChecking = false, bool Robust = false );
-	~Mutex ();
+	virtual ~Mutex ();
 	
 	void Lock ();
 	void Unlock ();
@@ -32,6 +34,8 @@ private:
 	pthread_mutexattr_t MutexOptions;
 	
 	bool Robust;
+	
+	friend class Condition;
 	
 };
 

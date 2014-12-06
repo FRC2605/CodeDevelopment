@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-#include "../Util/Error.h"
+#include "../Util/LError.h"
 
 #include "../Threading/Mutex.h"
 #include "../Threading/Thread.h"

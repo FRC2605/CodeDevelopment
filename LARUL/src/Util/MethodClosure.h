@@ -19,21 +19,21 @@ public:
 	
 	~MethodClosure0 () {};
 	
-	inline Return operator() ()
+	Return operator() ()
 	{
 		
 		return ( DefaultObject ->* Callback ) ();
 		
 	};
 	
-	inline Return Call ()
+	Return Call ()
 	{
 		
 		return ( DefaultObject ->* Callback ) ();
 		
 	};
 	
-	inline Return operator() ( EnclosedClass * Object )
+	Return operator() ( EnclosedClass * Object )
 	{
 		
 		if ( OverrideMethodContext )
@@ -43,7 +43,7 @@ public:
 		
 	};
 	
-	inline Return Call ( EnclosedClass * Object )
+	Return Call ( EnclosedClass * Object )
 	{
 		
 		if ( OverrideMethodContext )
@@ -82,21 +82,21 @@ public:
 	
 	~MethodClosure1 () {};
 	
-	inline Return operator() ( Arg1 _1 )
+	Return operator() ( Arg1 _1 )
 	{
 		
 		return ( DefaultObject ->* Callback ) ( _1 );
 		
 	};
 	
-	inline Return Call ( Arg1 _1 )
+	Return Call ( Arg1 _1 )
 	{
 		
 		return ( DefaultObject ->* Callback ) ( _1 );
 		
 	};
 	
-	inline Return operator() ( EnclosedClass * Object, Arg1 _1 )
+	Return operator() ( EnclosedClass * Object, Arg1 _1 )
 	{
 		
 		if ( OverrideMethodContext )
@@ -106,7 +106,7 @@ public:
 		
 	};
 	
-	inline Return Call ( EnclosedClass * Object, Arg1 _1 )
+	Return Call ( EnclosedClass * Object, Arg1 _1 )
 	{
 		
 		if ( OverrideMethodContext )
@@ -145,28 +145,28 @@ public:
 	
 	~MethodClosure2 () {};
 	
-	inline Return operator () ( Arg1 _1, Arg2 _2 )
+	Return operator () ( Arg1 _1, Arg2 _2 )
 	{
 		
 		return ( DefaultObject ->* Callback ) ( _1, _2 );
 		
 	};
 	
-	inline Return Call ( Arg1 _1, Arg2 _2 )
+	Return Call ( Arg1 _1, Arg2 _2 )
 	{
 		
 		return ( DefaultObject ->* Callback ) ( _1, _2 );
 		
 	};
 	
-	inline Return operator () ( EnclosedClass * Object, Arg1 _1, Arg2 _2 )
+	Return operator () ( EnclosedClass * Object, Arg1 _1, Arg2 _2 )
 	{
 		
 		return ( DefaultObject ->* Callback ) ( _1, _2 );
 		
 	};
 	
-	inline Return Call ( EnclosedClass * Object, Arg1 _1, Arg2 _2 )
+	Return Call ( EnclosedClass * Object, Arg1 _1, Arg2 _2 )
 	{
 		
 		return ( DefaultObject ->* Callback ) ( _1, _2 );
@@ -203,28 +203,28 @@ public:
 	
 	~MethodClosure3 () {};
 	
-	inline Return operator () ( Arg1 _1, Arg2 _2, Arg3 _3 )
+	Return operator () ( Arg1 _1, Arg2 _2, Arg3 _3 )
 	{
 		
 		return ( DefaultObject ->* Callback ) ( _1, _2, _3 );
 		
 	};
 	
-	inline Return Call ( Arg1 _1, Arg2 _2, Arg3 _3 )
+	Return Call ( Arg1 _1, Arg2 _2, Arg3 _3 )
 	{
 		
 		return ( DefaultObject ->* Callback ) ( _1, _2, _3 );
 		
 	};
 	
-	inline Return operator () ( EnclosedClass * Object, Arg1 _1, Arg2 _2, Arg3 _3 )
+	Return operator () ( EnclosedClass * Object, Arg1 _1, Arg2 _2, Arg3 _3 )
 	{
 		
 		return ( DefaultObject ->* Callback ) ( _1, _2, _3 );
 		
 	};
 	
-	inline Return Call ( EnclosedClass * Object, Arg1 _1, Arg2 _2, Arg3 _3 )
+	Return Call ( EnclosedClass * Object, Arg1 _1, Arg2 _2, Arg3 _3 )
 	{
 		
 		return ( DefaultObject ->* Callback ) ( _1, _2, _3 );
@@ -261,28 +261,28 @@ public:
 	
 	~MethodClosure4 () {};
 	
-	inline Return operator () ( Arg1 _1, Arg2 _2, Arg3 _3, Arg4 _4 )
+	Return operator () ( Arg1 _1, Arg2 _2, Arg3 _3, Arg4 _4 )
 	{
 		
 		return ( DefaultObject ->* Callback ) ( _1, _2, _3, _4 );
 		
 	};
 	
-	inline Return Call ( Arg1 _1, Arg2 _2, Arg3 _3, Arg4 _4 )
+	Return Call ( Arg1 _1, Arg2 _2, Arg3 _3, Arg4 _4 )
 	{
 		
 		return ( DefaultObject ->* Callback ) ( _1, _2, _3, _4 );
 		
 	};
 	
-	inline Return operator () ( EnclosedClass * Object, Arg1 _1, Arg2 _2, Arg3 _3, Arg4 _4 )
+	Return operator () ( EnclosedClass * Object, Arg1 _1, Arg2 _2, Arg3 _3, Arg4 _4 )
 	{
 		
 		return ( DefaultObject ->* Callback ) ( _1, _2, _3, _4 );
 		
 	};
 	
-	inline Return Call ( EnclosedClass * Object, Arg1 _1, Arg2 _2, Arg3 _3, Arg4 _4 )
+	Return Call ( EnclosedClass * Object, Arg1 _1, Arg2 _2, Arg3 _3, Arg4 _4 )
 	{
 		
 		return ( DefaultObject ->* Callback ) ( _1, _2, _3, _4 );

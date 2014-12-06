@@ -1,7 +1,21 @@
 #include "Condition.h"
 
+#include <sys/types.h>
+#include <errno.h>
+#include <time.h>
+#include <sys/types.h>
+
+#if _POSIX_TIMERS >= 0
+	#ifndef __VXWORKS__
+		#include <sys/time.h>
+	#else
+		#include <timers.h>
+	#endif
+#endif
+
 Condition :: Condition ( bool InitiallySet, bool ProcessShared ):
 	LockingMutex (),
+	PreLockedSync (),
 	PreLocked ( false ),
 	Set ( InitiallySet ),
 	Waiters ( 0 )
@@ -23,8 +37,10 @@ Condition :: Condition ( bool InitiallySet, bool ProcessShared ):
 	
 	}
 	
+#ifdef  PTHREAD_PROCESS_SHARED
 	if ( pthread_condattr_setpshared ( & ConditionAttributes, ProcessShared ? PTHREAD_PROCESS_SHARED : PTHREAD_PROCESS_PRIVATE ) != 0 )
 		THROW_ERROR ( "Unspecified error setting process shared attribute of condition attribute object!" );
+#endif
 	
 	ErrorCode = pthread_cond_init ( & ConditionHandle, & ConditionAttributes );
 	
@@ -86,24 +102,12 @@ void Condition :: Unlock ()
 	
 	LockingMutex.Unlock ();
 	
-	if ( PreLocked )
-		LockingMutex.Unlock ();
-	
 };
 
 void Condition :: PreLock ()
 {
 	
 	LockingMutex.Lock ();
-	
-	if ( PreLocked )
-	{
-		
-		LockingMutex.Unlock ();
-		
-		return;
-		
-	}
 	
 	PreLocked = true;
 	
@@ -165,7 +169,8 @@ void Condition :: Reset ()
 void Condition :: Wait ()
 {
 	
-	LockingMutex.Lock ();
+	if ( ! PreLocked )
+		LockingMutex.Lock ();
 	
 	Waiters ++;
 	
@@ -182,6 +187,8 @@ void Condition :: Wait ()
 			
 		default:
 		
+			LockingMutex.Unlock ();
+			
 			Waiters --;
 			
 			THROW_ERROR ( "Unspecified error waiting on condition!" );
@@ -192,14 +199,13 @@ void Condition :: Wait ()
 	
 	Waiters --;
 	
-	LockingMutex.Unlock ();
-	
 };
 
 bool Condition :: TimedWait ( double Seconds )
 {
 	
-	LockingMutex.Lock ();
+	if ( ! PreLocked )
+		LockingMutex.Lock ();
 	
 	if ( Set )
 	{
@@ -215,16 +221,20 @@ bool Condition :: TimedWait ( double Seconds )
 	struct timespec Time;
 	int ErrorCode;
 	
-#if _POSIX_TIMERS > 0
+#if _POSIX_TIMERS >= 0
 	
 	clockid_t Clock;
 	
+#ifndef __VXWORKS__
 	ErrorCode = pthread_getcpuclockid ( pthread_self (), & Clock );
+#else
+	Clock = CLOCK_MONOTONIC;
+#endif
 	
 	if ( ErrorCode != 0 )
 		THROW_ERROR ( "Unspecified error getting thread clock ID for condition timed wait!" );
 	
-	ErrorCode = clock_getttime ( Clock, & Time );
+	ErrorCode = clock_gettime ( Clock, & Time );
 	
 	if ( ErrorCode != 0 )
 		THROW_ERROR ( "Unspecified error getting time for condition timed wait!" );
@@ -246,10 +256,10 @@ bool Condition :: TimedWait ( double Seconds )
 	
 #endif
 	
-	Time.tv_sec += Seconds;
+	Time.tv_sec += static_cast <uint64_t> ( Seconds );
 	Seconds -= (uint64_t) Seconds;
 	
-	Time.tv_nsec = Seconds * 1000000000L;
+	Time.tv_nsec = static_cast <uint64_t > ( Seconds * 1000000000.0 );
 	
 	while ( ! Set )
 	{
@@ -297,7 +307,8 @@ bool Condition :: TimedWait ( double Seconds )
 void Condition :: LockWait ()
 {
 	
-	LockingMutex.Lock ();
+	if ( ! PreLocked )
+		LockingMutex.Lock ();
 	
 	Waiters ++;
 	
@@ -329,7 +340,8 @@ void Condition :: LockWait ()
 bool Condition :: TimedLockWait ( double Seconds )
 {
 	
-	LockingMutex.Lock ();
+	if ( ! PreLocked )
+		LockingMutex.Lock ();
 	
 	if ( Set )
 		return true;
@@ -339,16 +351,20 @@ bool Condition :: TimedLockWait ( double Seconds )
 	struct timespec Time;
 	int ErrorCode;
 	
-#if _POSIX_TIMERS > 0
+#if _POSIX_TIMERS >= 0
 	
 	clockid_t Clock;
 	
+#ifndef __VXWORKS__
 	ErrorCode = pthread_getcpuclockid ( pthread_self (), & Clock );
+#else
+	Clock = CLOCK_MONOTONIC;
+#endif
 	
 	if ( ErrorCode != 0 )
 		THROW_ERROR ( "Unspecified error getting thread clock ID for condition timed wait!" );
 	
-	ErrorCode = clock_getttime ( Clock, & Time );
+	ErrorCode = clock_gettime ( Clock, & Time );
 	
 	if ( ErrorCode != 0 )
 		THROW_ERROR ( "Unspecified error getting time for condition timed wait!" );
@@ -370,10 +386,10 @@ bool Condition :: TimedLockWait ( double Seconds )
 	
 #endif
 	
-	Time.tv_sec += Seconds;
+	Time.tv_sec += static_cast <uint64_t> ( Seconds );
 	Seconds -= (uint64_t) Seconds;
 	
-	Time.tv_nsec = Seconds * 1000000000L;
+	Time.tv_nsec = static_cast <uint64_t> ( Seconds * 1000000000.0 );
 	
 	while ( ! Set )
 	{

@@ -1,19 +1,13 @@
 #ifndef LARUL_TCPSOCKET_H
 #define LARUL_TCPSOCKET_H
 
-#include "../Util/Error.h"
-#include "../Util/Delegate.h"
-
-#include <cstring>
-#include <sys/socket.h>
-#include <netdb.h>
 #include <stdint.h>
 #include <arpa/inet.h>
-#include <unistd.h>
-#include <sys/ioctl.h>
+
+#include "../Util/LError.h"
+#include "../Util/Delegate.h"
 
 #include "../Threading/Mutex.h"
-#include "../Threading/Synchronized.h"
 
 #include "TCP.h"
 

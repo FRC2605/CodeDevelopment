@@ -1,5 +1,17 @@
 #include "TCPServerSocket.h"
 
+#include <cstring>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <stdint.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+
+#ifdef __VXWORKS__
+	#include <ioLib.h>
+	#include <sockLib.h>
+#endif
+
 TCPServerSocket :: TCPServerSocket ( TCP :: AddressType Type, DisconnectBehavior Behavior ):
 	Type ( Type ),
 	Disconnection ( Behavior ),
@@ -59,7 +71,7 @@ void TCPServerSocket :: SetDisconnectionCallback ( IDelegate1 <void, TCPServerSo
 void TCPServerSocket :: Disconnect ( bool Callback )
 {
 	
-	Synchronized Sync ( & SocketSync );
+	SocketSync.Lock ();
 	
 	if ( ! Connected )
 		return;
@@ -86,19 +98,28 @@ void TCPServerSocket :: Disconnect ( bool Callback )
 	Connected = false;
 	
 	if ( Callback && DisconnectCallback != NULL )
+	{
+		
+		SocketSync.Unlock ();
+		
 		DisconnectCallback -> Call ( this );
+		return;
+	
+	}
+	
+	SocketSync.Unlock ();
 	
 };
 
 void TCPServerSocket :: Write ( const void * Buffer, size_t Length, bool DontBlock )
 {
 	
-	Synchronized Sync ( & SocketSync );
+	SocketSync.Lock ();
 	
 	if ( ! Connected )
 		THROW_ERROR ( "Attempt to write from unconnected TCP socket!" );
 	
-	if ( send ( SocketFD, Buffer, Length, DontBlock ? MSG_DONTWAIT : 0 ) == - 1 )
+	if ( send ( SocketFD, reinterpret_cast <const char *> ( Buffer ), Length, DontBlock ? MSG_DONTWAIT : 0 ) == - 1 )
 	{
 		
 		switch ( errno )
@@ -122,7 +143,10 @@ void TCPServerSocket :: Write ( const void * Buffer, size_t Length, bool DontBlo
 				if ( DisconnectCallback != NULL )
 				{
 					
+					SocketSync.Unlock ();
+					
 					DisconnectCallback -> Call ( this );
+					
 					return;
 					
 				}
@@ -165,14 +189,16 @@ void TCPServerSocket :: Write ( const void * Buffer, size_t Length, bool DontBlo
 	
 	SendCounter ++;
 	
+	SocketSync.Unlock ();
+	
 };
 
 void TCPServerSocket :: Read ( void * Buffer, size_t Length, bool Fill, size_t * Received, bool * Closed )
 {
 	
-	Synchronized Sync ( & SocketSync );
+	SocketSync.Lock ();
 	
-	size_t ReceivedBytes;
+	ssize_t ReceivedBytes;
 	
 	if ( ! Connected )
 		THROW_ERROR ( "Attempt to read from unconnected TCP Socket!" );
@@ -183,7 +209,7 @@ void TCPServerSocket :: Read ( void * Buffer, size_t Length, bool Fill, size_t *
 	if ( Fill )
 	{
 		
-		ReceivedBytes = recv ( SocketFD, Buffer, Length, MSG_WAITALL );
+		ReceivedBytes = recv ( SocketFD, reinterpret_cast <char *> ( Buffer ), Length, MSG_WAITALL );
 		
 		if ( ReceivedBytes == -1 )
 		{
@@ -220,7 +246,7 @@ void TCPServerSocket :: Read ( void * Buffer, size_t Length, bool Fill, size_t *
 	else
 	{
 		
-		ReceivedBytes = recv ( SocketFD, Buffer, Length, 0 );
+		ReceivedBytes = recv ( SocketFD, reinterpret_cast <char *> ( Buffer ), Length, 0 );
 		
 		if ( ReceivedBytes == -1 )
 		{
@@ -257,5 +283,7 @@ void TCPServerSocket :: Read ( void * Buffer, size_t Length, bool Fill, size_t *
 	
 	if ( Received != NULL )
 		* Received = ReceivedBytes;
+	
+	SocketSync.Unlock ();
 	
 };

@@ -1,5 +1,9 @@
 #include "Vector3.h"
 
+#include "Quaternion.h"
+
+#include <math.h>
+
 const Vector3 Vector3 :: UP ( 0, 0, 1 );
 const Vector3 Vector3 :: DOWN ( 0, 0, - 1 );
 const Vector3 Vector3 :: LEFT ( 0, - 1, 0 );
@@ -135,3 +139,60 @@ double Vector3 :: AngleBetween ( Vector3 & A, Vector3 & B )
 	return acos ( DotProduct ( A, B ) / ( Length ( A ) * Length ( B ) ) );
 	
 };
+
+void Vector3 :: Interpolate ( Vector3 & A, Vector3 & B, double Fraction )
+{
+	
+	Vector3 Tem;
+	
+	Multiply ( A, Fraction );
+	Multiply ( B, 1 - Fraction, Tem );
+	Add ( A, Tem );
+	
+};
+
+void Vector3 :: Interpolate ( Vector3 & A, Vector3 & B, double Fraction, Vector3 & Result )
+{
+	
+	Vector3 Tem;
+	
+	Multiply ( Result, Fraction );
+	Multiply ( B, 1 - Fraction, Tem );
+	Add ( Result, Tem );
+	
+};
+
+void Vector3 :: Rotate ( Vector3 & A, Quaternion & Rotation )
+{
+	
+	Vector3 Dir ( Rotation.X, Rotation.Y, Rotation.Z );
+	Vector3 ACross;
+	Vector3 BCross;
+	
+	CrossProduct ( Temp, A, ACross );
+	Multiply ( ACross, 2.0 );
+	CrossProduct ( ACross, Dir, BCross );
+	
+	A.X += T.X * Rotation.W + BCross.X;
+	A.Y += T.Y * Rotation.W + BCross.Y;
+	A.Z += T.Z * Rotation.W + BCross.Z;
+	
+};
+
+void Vector3 :: Rotate ( Vector3 & A, Quaternion & Rotation, Vector3 & Result )
+{
+	
+	Vector3 Dir ( Rotation.X, Rotation.Y, Rotation.Z );
+	Vector3 ACross;
+	Vector3 BCross;
+	
+	CrossProduct ( Temp, A, ACross );
+	Multiply ( ACross, 2.0 );
+	CrossProduct ( ACross, Dir, BCross );
+	
+	Result.X = A.X + T.X * Rotation.W + BCross.X;
+	Result.Y = A.Y + T.Y * Rotation.W + BCross.Y;
+	Result.Z = A.Z + T.Z * Rotation.W + BCross.Z;
+	
+};
+

@@ -1,7 +1,7 @@
 #ifndef LARUL_VEC3_H
 #define LARUL_VEC3_H
 
-#include <math.h>
+class Quaternion;
 
 class Vector3
 {
@@ -30,6 +30,12 @@ public:
 	static double LengthSquared ( Vector3 & A );
 	
 	static double AngleBetween ( Vector3 & A, Vector3 & B );
+	
+	static void Interpolate ( Vector3 & A, Vector3 & B, double Fraction );
+	static void Interpolate ( Vector3 & A, Vector3 & B, double Fraction, Vector3 & Result );
+	
+	static void Rotate ( Vector3 & A, Quaternion & Rotation );
+	static void Rotate ( Vector3 & A, Quaternion & Rotation, Vector3 & Result );
 	
 	double X;
 	double Y;

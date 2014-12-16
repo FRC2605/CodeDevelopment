@@ -7,7 +7,7 @@ class Vector3
 {
 public:
 	
-	Vector3 ( double X = 0.0, double Y = 0.0, double Z = 0.0 );
+	explicit Vector3 ( double X = 0.0, double Y = 0.0, double Z = 0.0 );
 	~Vector3 ();
 	
 	static double DotProduct ( Vector3 & A, Vector3 & B );
@@ -15,7 +15,6 @@ public:
 	static void CrossProduct ( Vector3 & A, Vector3 & B );
 	
 	static void Multiply ( Vector3 & A, double B );
-	
 	static void Multiply ( Vector3 & A, double B, Vector3 & Result );
 	
 	static void Add ( Vector3 & A, Vector3 & B, Vector3 & Result );

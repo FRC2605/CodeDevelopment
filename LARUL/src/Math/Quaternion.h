@@ -7,7 +7,7 @@ class Quaternion
 {
 public:
 	
-	Quaternion ( double X = 0.0, double Y = 0.0, double Z = 0.0, double W = 0.0 );
+	explicit Quaternion ( double X = 0.0, double Y = 0.0, double Z = 0.0, double W = 0.0 );
 	~Quaternion ();
 	
 	static void Add ( Quaternion & A, Quaternion & B );

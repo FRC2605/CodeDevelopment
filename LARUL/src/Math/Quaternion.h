@@ -27,18 +27,23 @@ public:
 	static void InterpolateSLERP ( Quaternion & A, Quaternion & B, double Fraction, Quaternion & Result );
 	
 	static void FromYPR ( double Yaw, double Pitch, double Roll, Quaternion & Result );
-	static void FromDirectionRotation ( Vector3 & Direction, double Rotation, Quaternion & Result );
+	static void FromAxisAngle ( Vector3 & Axis, double Angle, Quaternion & Result );
+	
+	static void Normalise ( Quaternion & A );
+	
+	static double GetNorm ( Quaternion & A );
 	
 	static double GetYaw ( Quaternion & A );
 	static double GetPitch ( Quaternion & A );
 	static double GetRoll ( Quaternion & A );
 	
+	static void GetAxis ( Quaternion & A, Vector3 & Result );
+	static double GetAngle ( Quaternion & A );
+	
 	double X;
 	double Y;
 	double Z;
 	double W;
-	
-private:
 	
 };
 

@@ -180,15 +180,29 @@ void Quaternion :: FromYPR ( double Yaw, double Pitch, double Roll, Quaternion &
 	
 };
 
-void Quaternion :: FromDirectionRotation ( Vector3 & Direction, double Rotation, Quaternion & Result )
+void Quaternion :: FromAxisAngle ( Vector3 & Axis, double Angle, Quaternion & Result );
 {
 	
-	double RSin = sin ( Rotation / 2 );
+	double RSin = sin ( Angle / 2 );
 	
-	A.W = cos ( Rotation / 2 );
-	A.X = RSin * cos ( Direction.X );
-	A.Y = RSin * cos ( Direction.Y );
-	A.Z = RSin * cos ( Direction.Z );
+	A.W = cos ( Angle / 2 );
+	A.X = RSin * cos ( Axis.X );
+	A.Y = RSin * cos ( Axis.Y );
+	A.Z = RSin * cos ( Axis.Z );
+	
+};
+
+void Quaternion :: Normalise ( Quaternion & A )
+{
+	
+	Multiply ( A, 1.0 / GetNorm ( A ) );
+	
+};
+
+double Quaternion :: GetNorm ( Quaternion & A )
+{
+	
+	return sqrt ( A.X * A.X + A.Y * A.Y + A.Z * A.Z + A.W * A.W );
 	
 };
 
@@ -210,5 +224,23 @@ double Quaternion :: GetRoll ( Quaternion & A )
 {
 	
 	return atan2 ( 2.0 * ( A.W * A.X + A.Y * A.Z ), 1.0 - 2.0 * ( A.X * A.X + A.Y * A.Y ) );
+	
+};
+
+void Quaternion :: GetAxis ( Quaternion & A, Vector3 & Result )
+{
+	
+	double Div = sqrt ( 1.0 - A.W * A.W );
+	
+	Result.X = A.X / Div;
+	Result.Y = A.Y / Div;
+	Result.Z = A.Z / Div;
+	
+};
+
+double Quaternion :: GetAngle ( Quaternion & A )
+{
+	
+	return 2.0 * acos ( A.W );
 	
 };

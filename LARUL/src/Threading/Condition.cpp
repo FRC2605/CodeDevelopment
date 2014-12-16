@@ -5,12 +5,10 @@
 #include <time.h>
 #include <sys/types.h>
 
-#if _POSIX_TIMERS >= 0
-	#ifndef __VXWORKS__
-		#include <sys/time.h>
-	#else
-		#include <timers.h>
-	#endif
+#ifdef __VXWORKS__
+	#include <timers.h>
+#else
+	#include <sys/time.h>
 #endif
 
 Condition :: Condition ( bool InitiallySet, bool ProcessShared ):
@@ -221,7 +219,7 @@ bool Condition :: TimedWait ( double Seconds )
 	struct timespec Time;
 	int ErrorCode;
 	
-#if _POSIX_TIMERS >= 0
+#if _POSIX_TIMERS > 0
 	
 	clockid_t Clock;
 	
@@ -351,7 +349,7 @@ bool Condition :: TimedLockWait ( double Seconds )
 	struct timespec Time;
 	int ErrorCode;
 	
-#if _POSIX_TIMERS >= 0
+#if _POSIX_TIMERS > 0
 	
 	clockid_t Clock;
 	

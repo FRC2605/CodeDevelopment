@@ -8,7 +8,7 @@
 #include "Util/Delegate.h"
 #include "Util/MethodClosure.h"
 #include "Util/DefaultParameterClosure.h"
-#include "Util/Error.h"
+#include "Util/LError.h"
 #include "Util/Vector.h"
 #include "Util/Unused.h"
 
@@ -17,14 +17,12 @@
 
 #include "Threading/Mutex.h"
 #include "Threading/Thread.h"
-#include "Threading/Synchronized.h"
-#include "Threading/RecursiveMutex.h"
-#include "Threading/IMutex.h"
 #include "Threading/Condition.h"
 #include "Threading/MessageQueue.h"
 #include "Threading/ObjectLock.h"
 
-#include "Timing/Timer.h"
+#include "Timing/Clock.h"
+#include "Timing/IntervalTimer.h"
 
 #include "Logging/Logger.h"
 

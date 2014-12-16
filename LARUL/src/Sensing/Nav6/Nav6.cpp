@@ -75,10 +75,12 @@ void Nav6 :: SendStreamCommand ( uint8_t UpdateRate )
 	
 	Buff [ 0 ] = PACKET_START_CHAR;
 	Buff [ 1 ] = MSGID_STREAM_CMD;
-	
 	Buff [ 2 ] = STREAM_CMD_STREAM_TYPE_QUATERNION;
+	SetStreamUint8 ( Buff, 3, UpdateRate );
 	
+	SetStreamTermination ( Buff, 5 );
 	
+	Serial -> Write ( Buff, 8 );
 	
 };
 

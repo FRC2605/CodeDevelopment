@@ -3,12 +3,12 @@
 #include <time.h>
 #include <sys/types.h>
 
-#if _POSIX_TIMERS >= 0
-	#ifndef __VXWORKS__
-		#include <sys/time.h>
-	#else
-		#include <timers.h>
-	#endif
+#include "../Util/LError.h"
+
+#ifndef __VXWORKS__
+	#include <sys/time.h>
+#else
+	#include <timers.h>
 #endif
 
 uint64_t Clock :: GetTimeMonotonicMS ()
@@ -16,7 +16,7 @@ uint64_t Clock :: GetTimeMonotonicMS ()
 	
 	uint64_t TimeMS;
 	
-#if (defined(_POSIX_TIMERS) && (_POSIX_TIMERS+0 >= 0)) || defined(__VXWORKS__)
+#if (defined(_POSIX_TIMERS) && (_POSIX_TIMERS+0 > 0)) || defined(__VXWORKS__)
 	
 	struct timespec Time;
 	clock_gettime ( CLOCK_MONOTONIC, & Time );
@@ -52,7 +52,7 @@ uint64_t Clock :: GetTimeSystemMS ()
 	
 	uint64_t TimeMS;
 	
-#if (defined(_POSIX_TIMERS) && (_POSIX_TIMERS+0 >= 0)) || defined(__VXWORKS__)
+#if (defined(_POSIX_TIMERS) && (_POSIX_TIMERS+0 > 0)) || defined(__VXWORKS__)
 	
 	struct timespec Time;
 	clock_gettime ( CLOCK_REALTIME, & Time );

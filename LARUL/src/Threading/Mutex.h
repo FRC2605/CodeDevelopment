@@ -7,8 +7,6 @@
 
 #include "../Util/LError.h"
 
-#include "IMutex.h"
-
 #ifndef PTHREAD_MUTEX_ROBUST
 	#ifdef PTHREAD_MUTEX_ROBUST_NP
 		#define PTHREAD_MUTEX_ROBUST PTHREAD_MUTEX_ROBUST_NP
@@ -17,7 +15,7 @@
 
 class Condition;
 
-class Mutex : public IMutex
+class Mutex
 {
 public:
 	

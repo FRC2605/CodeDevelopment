@@ -84,6 +84,9 @@ public:
 	static void SetCancelable ( bool Cancelable );
 	static void TestCancelation ();
 	
+	//static void Wait ( double Seconds );
+	//static void WaitMS ( double Seconds );
+	
 private:
 	
 	Thread ();

@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 
-#include "Error.h"
+#include "LError.h"
 
 #include "../LARULTuning.h"
 

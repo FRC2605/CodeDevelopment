@@ -218,6 +218,6 @@ void Nav6 :: SetStreamTermination ( uint8_t * Buffer, uint32_t MessageLength )
 void Nav6 :: SerialUpdate ( Thread * UpdateThread )
 {
 	
-	
+	SendStreamCommand ( UpdateRate );
 	
 };

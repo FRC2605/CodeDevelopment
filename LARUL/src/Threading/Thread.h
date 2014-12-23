@@ -84,8 +84,10 @@ public:
 	static void SetCancelable ( bool Cancelable );
 	static void TestCancelation ();
 	
-	//static void Wait ( double Seconds );
-	//static void WaitMS ( double Seconds );
+	static void Wait ( double Seconds );
+	static void WaitMS ( uint64_t MS );
+	
+	static Thread * __ConstructMainThread ();
 	
 private:
 	

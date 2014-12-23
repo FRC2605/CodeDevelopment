@@ -1,14 +1,32 @@
 #include "Thread.h"
 
-__thread Thread * CurrentThread = NULL;
+#include <time.h>
+#include <sys/types.h>
+
+#include <math.h>
+
+#include "../Util/LError.h"
+
+#ifndef __VXWORKS__
+	#include <sys/time.h>
+#else
+	#include <timers.h>
+#endif
+
+pthread_key_t CurrentThreadKey;
+Thread * __MainThread = Thread :: __ConstructMainThread ();
+
+Thread * Thread :: __ConstructMainThread ()
+{
+	
+	return new Thread ();
+	
+};
 
 Thread * Thread :: GetCurrentThread ()
 {
-	
-	if ( CurrentThread == NULL )
-		CurrentThread = new Thread ();
-	
-	return CurrentThread;
+		
+	return reinterpret_cast <Thread *> ( pthread_getspecific ( CurrentThreadKey ) );
 	
 };
 
@@ -91,6 +109,9 @@ Thread :: Thread ():
 	
 	ThreadHandle = pthread_self ();
 	
+	pthread_key_create ( & CurrentThreadKey, NULL );
+	pthread_setspecific ( CurrentThreadKey, reinterpret_cast <const void *> ( this ) );
+	
 	int Policy;
 	struct sched_param Param;
 	
@@ -160,14 +181,14 @@ Thread :: ~Thread ()
 			
 		case kDestructorBehavior_Join:
 			
-			if ( CurrentThread != this )
+			if ( GetCurrentThread () != this )
 				Join ();
 			
 			break;
 			
 		case kDestructorBehavior_Cancel:
 		
-			if ( CurrentThread != this )
+			if ( GetCurrentThread () != this )
 				Cancel ();
 			
 			break;
@@ -310,7 +331,7 @@ void * Thread :: Entry ()
 	
 	ThreadMutex.Lock ();
 	
-	CurrentThread = this;
+	pthread_setspecific ( CurrentThreadKey, reinterpret_cast <const void *> ( this ) );
 	
 	int OldStateType;
 	
@@ -378,6 +399,32 @@ void Thread :: SetName ( const char * Name )
 	this -> Name = Name;
 
 	ThreadMutex.Unlock ();
+	
+};
+
+void Wait ( double Seconds )
+{
+	
+	struct timespec WaitTime;
+	struct timespec TimeLeft;
+	
+	WaitTime.tv_sec = static_cast <time_t> ( trunc ( Seconds ) );
+	WaitTime.tv_nsec = static_cast <long> ( fmod ( Seconds, 1.0 ) * 1000000000.0 );
+	
+	nanosleep ( & WaitTime, NULL );
+	
+};
+
+void WaitMS ( uint64_t MS )
+{
+	
+	struct timespec WaitTime;
+	struct timespec TimeLeft;
+	
+	WaitTime.tv_sec = MS / 1000;
+	WaitTime.tv_nsec = ( MS % 1000 ) * 1000000;
+	
+	nanosleep ( & WaitTime, NULL );
 	
 };
 

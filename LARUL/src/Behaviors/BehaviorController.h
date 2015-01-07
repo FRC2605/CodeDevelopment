@@ -1,6 +1,8 @@
 #ifndef LARUL_BEHAVIORCONTROLLER_H
 #define LARUL_BEHAVIORCONTROLLER_H
 
+#include <string.h>
+
 #include "IBehavior.h"
 
 #include "../Threading/Mutex.h"

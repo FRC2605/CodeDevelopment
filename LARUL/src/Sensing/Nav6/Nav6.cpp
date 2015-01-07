@@ -43,28 +43,28 @@ void Nav6 :: Stop ()
 double Nav6 :: GetYaw ()
 {
 	
-	
+	return 0.0;
 	
 };
 
 double Nav6 :: GetPitch ()
 {
 	
-	
+	return 0.0;
 	
 };
 
 double Nav6 :: GetRoll ()
 {
 	
-	
+	return 0.0;
 	
 };
 
 double Nav6 :: GetCompassHeading ()
 {
 	
-	
+	return 0.0;
 	
 };
 

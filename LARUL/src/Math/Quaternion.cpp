@@ -4,7 +4,7 @@
 
 #include <math.h>
 
-Quaternion :: Quaternion ( double X = 0.0, double Y = 0.0, double Z = 0.0, double W = 0.0 ):
+Quaternion :: Quaternion ( double X, double Y, double Z, double W ):
 	X ( X ),
 	Y ( Y ),
 	Z ( Z ),
@@ -46,15 +46,13 @@ void Quaternion :: Subtract ( Quaternion & A, Quaternion & B )
 	
 };
 
-void Quaternion :: Subtract ( Quaternion & A, Quaternion & B, Quaternion & Result );
+void Quaternion :: Subtract ( Quaternion & A, Quaternion & B, Quaternion & Result )
 {
 	
 	Result.X = A.X - B.X;
 	Result.Y = A.Y - B.Y;
 	Result.Z = A.Z - B.Z;
 	Result.W = A.W - B.W;
-	
-	NormalizeV3 ( A.X, A.Y, A.Z );
 	
 };
 
@@ -173,22 +171,22 @@ void Quaternion :: FromYPR ( double Yaw, double Pitch, double Roll, Quaternion &
 	double RCos = cos ( Roll / 2 );
 	double RSin = sin ( Roll / 2 );
 	
-	A.W = RCos * PCos * YCos + RSin * PSin * YSin;
-	A.X = RSin * PCos * YCos - RCos * PSin * YSin;
-	A.Y = RCos * PSin * YCos + RSin * PCos * YSin;
-	A.Z = RCos * PCos * YSin - RSin * PSin * YCos;
+	Result.W = RCos * PCos * YCos + RSin * PSin * YSin;
+	Result.X = RSin * PCos * YCos - RCos * PSin * YSin;
+	Result.Y = RCos * PSin * YCos + RSin * PCos * YSin;
+	Result.Z = RCos * PCos * YSin - RSin * PSin * YCos;
 	
 };
 
-void Quaternion :: FromAxisAngle ( Vector3 & Axis, double Angle, Quaternion & Result );
+void Quaternion :: FromAxisAngle ( Vector3 & Axis, double Angle, Quaternion & Result )
 {
 	
 	double RSin = sin ( Angle / 2 );
 	
-	A.W = cos ( Angle / 2 );
-	A.X = RSin * cos ( Axis.X );
-	A.Y = RSin * cos ( Axis.Y );
-	A.Z = RSin * cos ( Axis.Z );
+	Result.W = cos ( Angle / 2 );
+	Result.X = RSin * cos ( Axis.X );
+	Result.Y = RSin * cos ( Axis.Y );
+	Result.Z = RSin * cos ( Axis.Z );
 	
 };
 

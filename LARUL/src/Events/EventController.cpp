@@ -1,5 +1,7 @@
 #include "EventController.h"
 
+#include <string.h>
+
 volatile const int EventController :: AREF_PAUSE = 0x01;
 volatile const int EventController :: AREF_PAUSE_AND_DISCARD = 0x02;
 volatile const int EventController :: AREF_RESUME = 0x03;
@@ -61,7 +63,7 @@ void EventController :: RunLoop ()
 			StateChange.Signal ();
 			
 		}
-		else if ( reinterpret_cast <void *> ( const_cast <int *> ( & AREF_PAUSE ) ) )
+		else if ( Message == reinterpret_cast <void *> ( const_cast <int *> ( & AREF_PAUSE ) ) )
 		{
 			
 			StateSync.Lock ();
@@ -167,46 +169,45 @@ void EventController :: RunLoop ()
 		else
 		{
 			
-			ScheduleRecord Temporary;
-			
-			Temporary.TimeMS = reinterpret_cast <ScheduleRecord *> ( Message ) -> TimeMS;
-			Temporary.Type = reinterpret_cast <ScheduleRecord *> ( Message ) -> Type;
-			Temporary.DeallocTypeString = reinterpret_cast <ScheduleRecord *> ( Message ) -> DeallocTypeString;
-			
+
+			//ScheduleRecord TempRecord;
+
+
 		}
-		
 		if ( EventWait )
 		{
 			
 			uint64_t CurrentTime = Clock :: GetTimeMonotonicMS ();
 			uint64_t Delta = NextEventMS - CurrentTime;
 			
-			if ( NextEventMS < CurrentTime )
-				Delta = 0;
-			
-			while ( ! InsertionQueue.TryReceiveMessage ( & Message, static_cast <double> ( Delta ) / 1000 ) )
+			if ( NextEventMS > CurrentTime )
 			{
 				
-				if ( ScheduleList [ 0 ].DeallocTypeString )
-					free ( ScheduleList [ 0 ].Type );
-				
-				ScheduleList.Shift ();
-				
-				NextEvent -> Trigger ();
-				NextEvent = NULL;
-				
-				if ( ScheduleList.Length () != 0 )
+				while ( ! InsertionQueue.TryReceiveMessage ( & Message, static_cast <double> ( Delta ) / 1000 ) )
 				{
 					
-					NextEvent = FindEvent ( ScheduleList [ 0 ].Type );
-					NextEventMS = ScheduleList [ 0 ].TimeMS;
+					if ( ScheduleList [ 0 ].DeallocTypeString )
+						free ( ScheduleList [ 0 ].Type );
+
+					ScheduleList.Shift ();
+
+					NextEvent -> Trigger ();
+					NextEvent = NULL;
 					
-					CurrentTime = Clock :: GetTimeMonotonicMS ();
-					Delta = NextEventMS - CurrentTime;
+					if ( ScheduleList.Length () != 0 )
+					{
+
+						NextEvent = FindEvent ( ScheduleList [ 0 ].Type );
+						NextEventMS = ScheduleList [ 0 ].TimeMS;
+
+						CurrentTime = Clock :: GetTimeMonotonicMS ();
+						Delta = NextEventMS - CurrentTime;
+
+					}
+					else
+						break;
 					
 				}
-				else
-					break;
 				
 			}
 			
@@ -306,6 +307,17 @@ void EventController :: RemoveEvent ( IEvent * Event )
 		
 	EventSync.Unlock ();
 	
+};
+
+IEvent * EventController :: FindEvent ( const char * Type )
+{
+
+	for ( uint32_t i = 0; i < Events.Length (); i ++ )
+		if ( strcmp ( Events [ i ] -> GetType (), Type ) == 0 )
+			return Events [ i ];
+
+	return NULL;
+
 };
 
 void EventController :: ScheduleEvent ( const char * Type, uint64_t Time )

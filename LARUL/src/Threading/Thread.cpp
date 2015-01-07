@@ -143,7 +143,7 @@ Thread :: Thread ():
 	
 	#ifdef SCHED_BATCH
 		
-	case SCHED_BATCH
+	case SCHED_BATCH:
 		this -> Policy = kSchedulingPolicy_Batch;
 		break;
 		
@@ -406,7 +406,6 @@ void Wait ( double Seconds )
 {
 	
 	struct timespec WaitTime;
-	struct timespec TimeLeft;
 	
 	WaitTime.tv_sec = static_cast <time_t> ( trunc ( Seconds ) );
 	WaitTime.tv_nsec = static_cast <long> ( fmod ( Seconds, 1.0 ) * 1000000000.0 );
@@ -419,7 +418,6 @@ void WaitMS ( uint64_t MS )
 {
 	
 	struct timespec WaitTime;
-	struct timespec TimeLeft;
 	
 	WaitTime.tv_sec = MS / 1000;
 	WaitTime.tv_nsec = ( MS % 1000 ) * 1000000;

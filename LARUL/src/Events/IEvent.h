@@ -5,8 +5,8 @@ class IEvent
 {
 public:
 	
-	 virtual ~IEvent () = 0;
-	
+	virtual ~IEvent () {};
+
 	virtual void Trigger () = 0;
 	virtual const char * GetType () = 0;
 	

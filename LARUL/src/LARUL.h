@@ -27,7 +27,7 @@
 #include "Logging/Logger.h"
 
 #include "Config/ConfigFile.h"
-#include "COnfig/ConfigSection.h"
+#include "Config/ConfigSection.h"
 
 #include "Networking/TCP.h"
 #include "Networking/UDP.h"

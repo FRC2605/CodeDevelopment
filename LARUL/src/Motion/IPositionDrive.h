@@ -1,14 +1,14 @@
 #ifndef LARUL_IPOSITIONDRIVE_H
 #define LARUL_IPOSITIONDRIVE_H
 
-#include "../CPP/Virtual.h"
-
-class IPositionDrive
+class IPositionDrive : public IActuatorDrive
 {
 public:
 	
-	VIRTUAL_CLASS ( IPositionDrive );
+	virtual void DrivePosition ( double Position ) = 0;
 	
+	virtual void SetPositionScale ( double PositionScale ) = 0;
+	virtual double GetPositionScale () = 0;
 	
 };
 

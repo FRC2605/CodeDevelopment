@@ -131,9 +131,9 @@ private:
 		
 		size_t GrownSize = Allocated * 2;
 		
-		void * Elements = realloc ( Elements, GrownSize * sizeof ( T ) );
+		void * TempElements = realloc ( Elements, GrownSize * sizeof ( T ) );
 		
-		if ( Elements == NULL )
+		if ( TempElements == NULL )
 		{
 			
 			if ( GrownSize * sizeof ( T ) > OVERSIZED_DATA_ALLOCATION )
@@ -141,9 +141,9 @@ private:
 				
 				GrownSize = Allocated + Minimum + VECTOR_MINIMUM_GROWTHPAD;
 				
-				Elements = realloc ( Elements, GrownSize * sizeof ( T ) );
+				TempElements = realloc ( Elements, GrownSize * sizeof ( T ) );
 				
-				if ( Elements == NULL )
+				if ( TempElements == NULL )
 				{
 					
 					THROW_ERROR ( "ALLOCATION ERROR (FAILED)" );
@@ -152,7 +152,7 @@ private:
 					
 				}
 				
-				this -> Elements = reinterpret_cast <T *> ( Elements );
+				this -> Elements = reinterpret_cast <T *> ( TempElements );
 				this -> Allocated = GrownSize;
 				
 			}
@@ -161,7 +161,7 @@ private:
 			
 		}
 		
-		this -> Elements = reinterpret_cast <T *> ( Elements );
+		this -> Elements = reinterpret_cast <T *> ( TempElements );
 		this -> Allocated = GrownSize;
 		
 	};

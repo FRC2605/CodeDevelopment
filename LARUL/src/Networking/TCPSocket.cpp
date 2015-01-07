@@ -213,7 +213,7 @@ bool TCPSocket :: IsConnected ()
 	
 	SocketSync.Unlock ();
 	
-	return Connected;
+	return Con;
 	
 };
 

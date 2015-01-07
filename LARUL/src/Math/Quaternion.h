@@ -1,5 +1,5 @@
 #ifndef LARUL_QUATERNION_H
-#define LARUL_QUATERNION_H;
+#define LARUL_QUATERNION_H
 
 class Vector3;
 
@@ -39,7 +39,7 @@ public:
 	
 	static void GetAxis ( Quaternion & A, Vector3 & Result );
 	static double GetAngle ( Quaternion & A );
-	
+
 	double X;
 	double Y;
 	double Z;

@@ -168,14 +168,15 @@ void Vector3 :: Rotate ( Vector3 & A, Quaternion & Rotation )
 	Vector3 Dir ( Rotation.X, Rotation.Y, Rotation.Z );
 	Vector3 ACross;
 	Vector3 BCross;
+	Vector3 Temp;
 	
 	CrossProduct ( Temp, A, ACross );
 	Multiply ( ACross, 2.0 );
 	CrossProduct ( ACross, Dir, BCross );
 	
-	A.X += T.X * Rotation.W + BCross.X;
-	A.Y += T.Y * Rotation.W + BCross.Y;
-	A.Z += T.Z * Rotation.W + BCross.Z;
+	A.X = Temp.X * Rotation.W + BCross.X;
+	A.Y = Temp.Y * Rotation.W + BCross.Y;
+	A.Z = Temp.Z * Rotation.W + BCross.Z;
 	
 };
 
@@ -185,14 +186,15 @@ void Vector3 :: Rotate ( Vector3 & A, Quaternion & Rotation, Vector3 & Result )
 	Vector3 Dir ( Rotation.X, Rotation.Y, Rotation.Z );
 	Vector3 ACross;
 	Vector3 BCross;
+	Vector3 Temp;
 	
 	CrossProduct ( Temp, A, ACross );
 	Multiply ( ACross, 2.0 );
 	CrossProduct ( ACross, Dir, BCross );
 	
-	Result.X = A.X + T.X * Rotation.W + BCross.X;
-	Result.Y = A.Y + T.Y * Rotation.W + BCross.Y;
-	Result.Z = A.Z + T.Z * Rotation.W + BCross.Z;
+	Result.X = Temp.X * Rotation.W + BCross.X;
+	Result.Y = Temp.Y * Rotation.W + BCross.Y;
+	Result.Z = Temp.Z * Rotation.W + BCross.Z;
 	
 };
 

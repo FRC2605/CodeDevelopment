@@ -1,8 +1,6 @@
 #ifndef LARUL_ISCALARINPUT_H
 #define LARUL_ISCALARINPUT_H
 
-#include "../CPP/Virtual.h"
-
 class IScalarInput
 {
 public:
@@ -26,11 +24,9 @@ public:
 		
 		kScalarLimitParam_LowLimit,
 		kScalarLimitParam_HighLimit,
-		kScalarLimitParam_Increment
+		kScalarLimitParam_Increments
 		
 	} ScalarLimitParam;
-	
-	VIRTUAL_CLASS ( IScalarInput );
 	
 	virtual double GetScalar () = 0;
 	

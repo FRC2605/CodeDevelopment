@@ -5,7 +5,14 @@
 
 #include <math.h>
 
-const Matrix33 Matrix33 :: IDENTITY ();
+const Matrix33 Matrix33 :: IDENTITY = Matrix33 ();
+
+Matrix33 :: Matrix33 ()
+{
+
+	Identity ( * this );
+
+};
 
 Matrix33 :: Matrix33 ( double A, double B, double C, double D, double E, double F, double G, double H, double I )
 {
@@ -22,127 +29,145 @@ Matrix33 :: Matrix33 ( double A, double B, double C, double D, double E, double 
 	
 };
 
-Matrix33 :: Matrix33 () {};
+Matrix33 :: ~Matrix33 ()
+{
 
-Matrix33 :: ~Matrix33 ();
+
+
+};
+
+void Matrix33 :: Identity ( Matrix33 & Result )
+{
+
+	Result.Elements [ 0 ][ 0 ] = 1;
+	Result.Elements [ 0 ][ 1 ] = 0;
+	Result.Elements [ 0 ][ 2 ] = 0;
+	Result.Elements [ 1 ][ 0 ] = 0;
+	Result.Elements [ 1 ][ 1 ] = 1;
+	Result.Elements [ 1 ][ 2 ] = 0;
+	Result.Elements [ 2 ][ 0 ] = 0;
+	Result.Elements [ 2 ][ 1 ] = 0;
+	Result.Elements [ 2 ][ 2 ] = 1;
+
+};
 
 void Matrix33 :: Add ( Matrix33 & A, Matrix33 & B )
 {
 	
-	A.Elements [ 0 ] += B.Elements [ 0 ];
-	A.Elements [ 1 ] += B.Elements [ 1 ];
-	A.Elements [ 2 ] += B.Elements [ 2 ];
-	A.Elements [ 3 ] += B.Elements [ 3 ];
-	A.Elements [ 4 ] += B.Elements [ 4 ];
-	A.Elements [ 5 ] += B.Elements [ 5 ];
-	A.Elements [ 6 ] += B.Elements [ 6 ];
-	A.Elements [ 7 ] += B.Elements [ 7 ];
-	A.Elements [ 8 ] += B.Elements [ 8 ];
+	A.Elements [ 0 ][ 0 ] += B.Elements [ 0 ][ 0 ];
+	A.Elements [ 1 ][ 0 ] += B.Elements [ 1 ][ 0 ];
+	A.Elements [ 2 ][ 0 ] += B.Elements [ 2 ][ 0 ];
+	A.Elements [ 0 ][ 1 ] += B.Elements [ 0 ][ 1 ];
+	A.Elements [ 1 ][ 1 ] += B.Elements [ 1 ][ 1 ];
+	A.Elements [ 2 ][ 1 ] += B.Elements [ 2 ][ 1 ];
+	A.Elements [ 0 ][ 2 ] += B.Elements [ 0 ][ 2 ];
+	A.Elements [ 1 ][ 2 ] += B.Elements [ 1 ][ 2 ];
+	A.Elements [ 2 ][ 2 ] += B.Elements [ 2 ][ 2 ];
 	
 };
 
 void Matrix33 :: Add ( Matrix33 & A, Matrix33 & B, Matrix33 & Result )
 {
 	
-	Result.Elements [ 0 ] = A.Elements [ 0 ] + B.Elements [ 0 ];
-	Result.Elements [ 1 ] = A.Elements [ 1 ] + B.Elements [ 1 ];
-	Result.Elements [ 2 ] = A.Elements [ 2 ] + B.Elements [ 2 ];
-	Result.Elements [ 3 ] = A.Elements [ 3 ] + B.Elements [ 3 ];
-	Result.Elements [ 4 ] = A.Elements [ 4 ] + B.Elements [ 4 ];
-	Result.Elements [ 5 ] = A.Elements [ 5 ] + B.Elements [ 5 ];
-	Result.Elements [ 6 ] = A.Elements [ 6 ] + B.Elements [ 6 ];
-	Result.Elements [ 7 ] = A.Elements [ 7 ] + B.Elements [ 7 ];
-	Result.Elements [ 8 ] = A.Elements [ 8 ] + B.Elements [ 8 ];
+	Result.Elements [ 0 ][ 0 ] = A.Elements [ 0 ][ 0 ] + B.Elements [ 0 ][ 0 ];
+	Result.Elements [ 1 ][ 0 ] = A.Elements [ 1 ][ 0 ] + B.Elements [ 1 ][ 0 ];
+	Result.Elements [ 2 ][ 0 ] = A.Elements [ 2 ][ 0 ] + B.Elements [ 2 ][ 0 ];
+	Result.Elements [ 0 ][ 1 ] = A.Elements [ 0 ][ 1 ] + B.Elements [ 0 ][ 1 ];
+	Result.Elements [ 1 ][ 1 ] = A.Elements [ 1 ][ 1 ] + B.Elements [ 1 ][ 1 ];
+	Result.Elements [ 2 ][ 1 ] = A.Elements [ 2 ][ 1 ] + B.Elements [ 2 ][ 1 ];
+	Result.Elements [ 0 ][ 2 ] = A.Elements [ 0 ][ 2 ] + B.Elements [ 0 ][ 2 ];
+	Result.Elements [ 1 ][ 2 ] = A.Elements [ 1 ][ 2 ] + B.Elements [ 1 ][ 2 ];
+	Result.Elements [ 2 ][ 2 ] = A.Elements [ 2 ][ 2 ] + B.Elements [ 2 ][ 2 ];
 	
 };
 
 void Matrix33 :: Add ( Matrix33 & A, double B )
 {
 	
-	A.Elements [ 0 ] += B;
-	A.Elements [ 1 ] += B;
-	A.Elements [ 2 ] += B;
-	A.Elements [ 3 ] += B;
-	A.Elements [ 4 ] += B;
-	A.Elements [ 5 ] += B;
-	A.Elements [ 6 ] += B;
-	A.Elements [ 7 ] += B;
-	A.Elements [ 8 ] += B;
+	A.Elements [ 0 ][ 0 ] += B;
+	A.Elements [ 1 ][ 0 ] += B;
+	A.Elements [ 2 ][ 0 ] += B;
+	A.Elements [ 0 ][ 1 ] += B;
+	A.Elements [ 1 ][ 1 ] += B;
+	A.Elements [ 2 ][ 1 ] += B;
+	A.Elements [ 0 ][ 2 ] += B;
+	A.Elements [ 1 ][ 2 ] += B;
+	A.Elements [ 2 ][ 2 ] += B;
 	
 };
 
 void Matrix33 :: Add ( Matrix33 & A, double B, Matrix33 & Result )
 {
 	
-	Result.Elements [ 0 ] = A.Elements [ 0 ] + B;
-	Result.Elements [ 1 ] = A.Elements [ 1 ] + B;
-	Result.Elements [ 2 ] = A.Elements [ 2 ] + B;
-	Result.Elements [ 3 ] = A.Elements [ 3 ] + B;
-	Result.Elements [ 4 ] = A.Elements [ 4 ] + B;
-	Result.Elements [ 5 ] = A.Elements [ 5 ] + B;
-	Result.Elements [ 6 ] = A.Elements [ 6 ] + B;
-	Result.Elements [ 7 ] = A.Elements [ 7 ] + B;
-	Result.Elements [ 8 ] = A.Elements [ 8 ] + B;
+	Result.Elements [ 0 ][ 0 ] = A.Elements [ 0 ][ 0 ] + B;
+	Result.Elements [ 1 ][ 0 ] = A.Elements [ 1 ][ 0 ] + B;
+	Result.Elements [ 2 ][ 0 ] = A.Elements [ 2 ][ 0 ] + B;
+	Result.Elements [ 0 ][ 1 ] = A.Elements [ 0 ][ 1 ] + B;
+	Result.Elements [ 1 ][ 1 ] = A.Elements [ 1 ][ 1 ] + B;
+	Result.Elements [ 2 ][ 1 ] = A.Elements [ 2 ][ 1 ] + B;
+	Result.Elements [ 0 ][ 2 ] = A.Elements [ 0 ][ 2 ] + B;
+	Result.Elements [ 1 ][ 2 ] = A.Elements [ 1 ][ 2 ] + B;
+	Result.Elements [ 2 ][ 2 ] = A.Elements [ 2 ][ 2 ] + B;
 	
 };
 
 void Matrix33 :: Subtract ( Matrix33 & A, Matrix33 & B )
 {
 	
-	A.Elements [ 0 ] -= B.Elements [ 0 ];
-	A.Elements [ 1 ] -= B.Elements [ 1 ];
-	A.Elements [ 2 ] -= B.Elements [ 2 ];
-	A.Elements [ 3 ] -= B.Elements [ 3 ];
-	A.Elements [ 4 ] -= B.Elements [ 4 ];
-	A.Elements [ 5 ] -= B.Elements [ 5 ];
-	A.Elements [ 6 ] -= B.Elements [ 6 ];
-	A.Elements [ 7 ] -= B.Elements [ 7 ];
-	A.Elements [ 8 ] -= B.Elements [ 8 ];
+	A.Elements [ 0 ][ 0 ] -= B.Elements [ 0 ][ 0 ];
+	A.Elements [ 1 ][ 0 ] -= B.Elements [ 1 ][ 0 ];
+	A.Elements [ 2 ][ 0 ] -= B.Elements [ 2 ][ 0 ];
+	A.Elements [ 0 ][ 1 ] -= B.Elements [ 0 ][ 1 ];
+	A.Elements [ 1 ][ 1 ] -= B.Elements [ 1 ][ 1 ];
+	A.Elements [ 2 ][ 1 ] -= B.Elements [ 2 ][ 1 ];
+	A.Elements [ 0 ][ 2 ] -= B.Elements [ 0 ][ 2 ];
+	A.Elements [ 1 ][ 2 ] -= B.Elements [ 1 ][ 2 ];
+	A.Elements [ 2 ][ 2 ] -= B.Elements [ 2 ][ 2 ];
 	
 };
 
 void Matrix33 :: Subtract ( Matrix33 & A, Matrix33 & B, Matrix33 & Result )
 {
 	
-	Result.Elements [ 0 ] = A.Elements [ 0 ] - B.Elements [ 0 ];
-	Result.Elements [ 1 ] = A.Elements [ 1 ] - B.Elements [ 1 ];
-	Result.Elements [ 2 ] = A.Elements [ 2 ] - B.Elements [ 2 ];
-	Result.Elements [ 3 ] = A.Elements [ 3 ] - B.Elements [ 3 ];
-	Result.Elements [ 4 ] = A.Elements [ 4 ] - B.Elements [ 4 ];
-	Result.Elements [ 5 ] = A.Elements [ 5 ] - B.Elements [ 5 ];
-	Result.Elements [ 6 ] = A.Elements [ 6 ] - B.Elements [ 6 ];
-	Result.Elements [ 7 ] = A.Elements [ 7 ] - B.Elements [ 7 ];
-	Result.Elements [ 8 ] = A.Elements [ 8 ] - B.Elements [ 8 ];
+	Result.Elements [ 0 ][ 0 ] = A.Elements [ 0 ][ 0 ] - B.Elements [ 0 ][ 0 ];
+	Result.Elements [ 1 ][ 0 ] = A.Elements [ 1 ][ 0 ] - B.Elements [ 1 ][ 0 ];
+	Result.Elements [ 2 ][ 0 ] = A.Elements [ 2 ][ 0 ] - B.Elements [ 2 ][ 0 ];
+	Result.Elements [ 0 ][ 1 ] = A.Elements [ 0 ][ 1 ] - B.Elements [ 0 ][ 1 ];
+	Result.Elements [ 1 ][ 1 ] = A.Elements [ 1 ][ 1 ] - B.Elements [ 1 ][ 1 ];
+	Result.Elements [ 2 ][ 1 ] = A.Elements [ 2 ][ 1 ] - B.Elements [ 2 ][ 1 ];
+	Result.Elements [ 0 ][ 2 ] = A.Elements [ 0 ][ 2 ] - B.Elements [ 0 ][ 2 ];
+	Result.Elements [ 1 ][ 2 ] = A.Elements [ 1 ][ 2 ] - B.Elements [ 1 ][ 2 ];
+	Result.Elements [ 1 ][ 2 ] = A.Elements [ 2 ][ 2 ] - B.Elements [ 2 ][ 2 ];
 	
 };
 
 void Matrix33 :: Subtract ( Matrix33 & A, double B )
 {
 	
-	A.Elements [ 0 ] -= B;
-	A.Elements [ 1 ] -= B;
-	A.Elements [ 2 ] -= B;
-	A.Elements [ 3 ] -= B;
-	A.Elements [ 4 ] -= B;
-	A.Elements [ 5 ] -= B;
-	A.Elements [ 6 ] -= B;
-	A.Elements [ 7 ] -= B;
-	A.Elements [ 8 ] -= B;
+	A.Elements [ 0 ][ 0 ] -= B;
+	A.Elements [ 1 ][ 0 ] -= B;
+	A.Elements [ 2 ][ 0 ] -= B;
+	A.Elements [ 0 ][ 1 ] -= B;
+	A.Elements [ 1 ][ 1 ] -= B;
+	A.Elements [ 2 ][ 1 ] -= B;
+	A.Elements [ 0 ][ 2 ] -= B;
+	A.Elements [ 1 ][ 2 ] -= B;
+	A.Elements [ 2 ][ 2 ] -= B;
 	
 };
 
 void Matrix33 :: Subtract ( Matrix33 & A, double B, Matrix33 & Result )
 {
 	
-	Result.Elements [ 0 ] = A.Elements [ 0 ] - B;
-	Result.Elements [ 1 ] = A.Elements [ 1 ] - B;
-	Result.Elements [ 2 ] = A.Elements [ 2 ] - B;
-	Result.Elements [ 3 ] = A.Elements [ 3 ] - B;
-	Result.Elements [ 4 ] = A.Elements [ 4 ] - B;
-	Result.Elements [ 5 ] = A.Elements [ 5 ] - B;
-	Result.Elements [ 6 ] = A.Elements [ 6 ] - B;
-	Result.Elements [ 7 ] = A.Elements [ 7 ] - B;
-	Result.Elements [ 8 ] = A.Elements [ 8 ] - B;
+	Result.Elements [ 0 ][ 0 ] = A.Elements [ 0 ][ 0 ] - B;
+	Result.Elements [ 1 ][ 0 ] = A.Elements [ 1 ][ 0 ] - B;
+	Result.Elements [ 2 ][ 0 ] = A.Elements [ 2 ][ 0 ] - B;
+	Result.Elements [ 0 ][ 1 ] = A.Elements [ 0 ][ 1 ] - B;
+	Result.Elements [ 1 ][ 1 ] = A.Elements [ 1 ][ 1 ] - B;
+	Result.Elements [ 2 ][ 1 ] = A.Elements [ 2 ][ 1 ] - B;
+	Result.Elements [ 0 ][ 2 ] = A.Elements [ 0 ][ 2 ] - B;
+	Result.Elements [ 1 ][ 2 ] = A.Elements [ 1 ][ 2 ] - B;
+	Result.Elements [ 2 ][ 2 ] = A.Elements [ 2 ][ 2 ] - B;
 	
 };
 
@@ -190,30 +215,30 @@ void Matrix33 :: Multiply ( Matrix33 & A, Matrix33 & B, Matrix33 & Result )
 void Matrix33 :: Multiply ( Matrix33 & A, double B )
 {
 	
-	A.Elements [ 0 ] *= B;
-	A.Elements [ 1 ] *= B;
-	A.Elements [ 2 ] *= B;
-	A.Elements [ 3 ] *= B;
-	A.Elements [ 4 ] *= B;
-	A.Elements [ 5 ] *= B;
-	A.Elements [ 6 ] *= B;
-	A.Elements [ 7 ] *= B;
-	A.Elements [ 8 ] *= B;
+	A.Elements [ 0 ][ 0 ] *= B;
+	A.Elements [ 1 ][ 0 ] *= B;
+	A.Elements [ 2 ][ 0 ] *= B;
+	A.Elements [ 0 ][ 1 ] *= B;
+	A.Elements [ 1 ][ 1 ] *= B;
+	A.Elements [ 2 ][ 1 ] *= B;
+	A.Elements [ 0 ][ 2 ] *= B;
+	A.Elements [ 1 ][ 2 ] *= B;
+	A.Elements [ 2 ][ 2 ] *= B;
 	
 };
 
 void Matrix33 :: Multiply ( Matrix33 & A, double B, Matrix33 & Result )
 {
 	
-	Result.Elements [ 0 ] = A.Elements [ 0 ] * B;
-	Result.Elements [ 1 ] = A.Elements [ 1 ] * B;
-	Result.Elements [ 2 ] = A.Elements [ 2 ] * B;
-	Result.Elements [ 3 ] = A.Elements [ 3 ] * B;
-	Result.Elements [ 4 ] = A.Elements [ 4 ] * B;
-	Result.Elements [ 5 ] = A.Elements [ 5 ] * B;
-	Result.Elements [ 6 ] = A.Elements [ 6 ] * B;
-	Result.Elements [ 7 ] = A.Elements [ 7 ] * B;
-	Result.Elements [ 8 ] = A.Elements [ 8 ] * B;
+	Result.Elements [ 0 ][ 0 ] = A.Elements [ 0 ][ 0 ] * B;
+	Result.Elements [ 1 ][ 0 ] = A.Elements [ 1 ][ 1 ] * B;
+	Result.Elements [ 2 ][ 0 ] = A.Elements [ 2 ][ 2 ] * B;
+	Result.Elements [ 0 ][ 1 ] = A.Elements [ 0 ][ 0 ] * B;
+	Result.Elements [ 1 ][ 1 ] = A.Elements [ 1 ][ 1 ] * B;
+	Result.Elements [ 2 ][ 1 ] = A.Elements [ 2 ][ 2 ] * B;
+	Result.Elements [ 0 ][ 2 ] = A.Elements [ 0 ][ 0 ] * B;
+	Result.Elements [ 1 ][ 2 ] = A.Elements [ 1 ][ 1 ] * B;
+	Result.Elements [ 2 ][ 2 ] = A.Elements [ 2 ][ 2 ] * B;
 	
 };
 
@@ -266,15 +291,15 @@ void Matrix33 :: Transpose ( Matrix33 & A )
 	
 	Temp = A.Elements [ 0 ][ 1 ];
 	A.Elements [ 0 ][ 1 ] = A.Elements [ 1 ][ 0 ];
-	E.Elements [ 1 ][ 0 ] = A.Elements [ 0 ][ 1 ];
+	A.Elements [ 1 ][ 0 ] = Temp;
 	
 	Temp = A.Elements [ 0 ][ 2 ];
 	A.Elements [ 0 ][ 2 ] = A.Elements [ 2 ][ 0 ];
-	E.Elements [ 2 ][ 0 ] = A.Elements [ 0 ][ 2 ];
+	A.Elements [ 2 ][ 0 ] = Temp;
 	
 	Temp = A.Elements [ 1 ][ 2 ];
 	A.Elements [ 1 ][ 2 ] = A.Elements [ 2 ][ 1 ];
-	E.Elements [ 2 ][ 1 ] = A.Elements [ 1 ][ 2 ];
+	A.Elements [ 2 ][ 1 ] = Temp;
 	
 };
 
@@ -296,6 +321,8 @@ void Matrix33 :: Transpose ( Matrix33 & A, Matrix33 & Result )
 void Matrix33 :: Adjoint ( Matrix33 & A )
 {
 	
+	double ETemp [ 3 ][ 3 ];
+
 	ETemp [ 0 ][ 0 ] = A.Elements [ 1 ][ 1 ] * A.Elements [ 2 ][ 2 ] - A.Elements [ 1 ][ 2 ] * A.Elements [ 2 ][ 1 ];
 	ETemp [ 0 ][ 1 ] = - A.Elements [ 1 ][ 0 ] * A.Elements [ 2 ][ 2 ] + A.Elements [ 1 ][ 2 ] * A.Elements [ 2 ][ 0 ];
 	ETemp [ 0 ][ 2 ] = A.Elements [ 1 ][ 0 ] * A.Elements [ 2 ][ 1 ] - A.Elements [ 1 ][ 1 ] * A.Elements [ 2 ][ 0 ];
@@ -370,7 +397,7 @@ double Matrix33 :: GetDeterminate ( Matrix33 & A )
 	
 };
 
-void SetRotationFromQuaternion ( Matrix33 & A, Quaternion & Rotation )
+void Matrix33 :: SetRotationFromQuaternion ( Matrix33 & A, Quaternion & Rotation )
 {
 	
 	double WX, WY, WZ, XX, XY, XZ, YY, YZ, ZZ;
@@ -404,7 +431,7 @@ void SetRotationFromQuaternion ( Matrix33 & A, Quaternion & Rotation )
 	
 };
 
-void AppendRotationFromQuaternion ( Matrix33 & A, Quaternion & Rotation )
+void Matrix33 :: AppendRotationFromQuaternion ( Matrix33 & A, Quaternion & Rotation )
 {
 	
 	Matrix33 Temp;
@@ -414,7 +441,7 @@ void AppendRotationFromQuaternion ( Matrix33 & A, Quaternion & Rotation )
 	
 };
 
-void AppendRotationFromQuaternion ( Matrix33 & A, Quaternion & Rotation, Matrix33 & Result )
+void Matrix33 :: AppendRotationFromQuaternion ( Matrix33 & A, Quaternion & Rotation, Matrix33 & Result )
 {
 	
 	Matrix33 Temp;
@@ -424,7 +451,7 @@ void AppendRotationFromQuaternion ( Matrix33 & A, Quaternion & Rotation, Matrix3
 	
 };
 
-void PrependRotationFromQuaternion ( Matrix33 & A, Quaternion & Rotation )
+void Matrix33 :: PrependRotationFromQuaternion ( Matrix33 & A, Quaternion & Rotation )
 {
 	
 	Matrix33 Temp = A;
@@ -434,7 +461,7 @@ void PrependRotationFromQuaternion ( Matrix33 & A, Quaternion & Rotation )
 	
 };
 
-void PrependRotationFromQuaternion ( Matrix33 & A, Quaternion & Rotation, Matrix33 & Result )
+void Matrix33 :: PrependRotationFromQuaternion ( Matrix33 & A, Quaternion & Rotation, Matrix33 & Result )
 {
 	
 	SetRotationFromQuaternion ( Result, Rotation );
@@ -442,7 +469,7 @@ void PrependRotationFromQuaternion ( Matrix33 & A, Quaternion & Rotation, Matrix
 	
 };
 
-void SetSkew ( Matrix33 & A, Vector3 & Skew )
+void Matrix33 :: SetSkew ( Matrix33 & A, Vector3 & Skew )
 {
 	
 	A.Elements [ 0 ][ 0 ] = Skew.X;
@@ -457,7 +484,7 @@ void SetSkew ( Matrix33 & A, Vector3 & Skew )
 	
 };
 
-void AppendSkew ( Matrix33 & A, Vector3 & Skew )
+void Matrix33 :: AppendSkew ( Matrix33 & A, Vector3 & Skew )
 {
 	
 	Matrix33 Temp;
@@ -467,7 +494,7 @@ void AppendSkew ( Matrix33 & A, Vector3 & Skew )
 	
 };
 
-void AppendSkew ( Matrix33 & A, Vector3 & Skew, Matrix33 & Result )
+void Matrix33 :: AppendSkew ( Matrix33 & A, Vector3 & Skew, Matrix33 & Result )
 {
 	
 	Matrix33 Temp;
@@ -477,7 +504,7 @@ void AppendSkew ( Matrix33 & A, Vector3 & Skew, Matrix33 & Result )
 	
 };
 
-void PrependSkew ( Matrix33 & A, Vector3 & Skew )
+void Matrix33 :: PrependSkew ( Matrix33 & A, Vector3 & Skew )
 {
 	
 	Matrix33 Temp = A;
@@ -487,7 +514,7 @@ void PrependSkew ( Matrix33 & A, Vector3 & Skew )
 	
 };
 
-void PrependSkew ( Matrix33 & A, Vector3 & Skew, Matrix33 & Result )
+void Matrix33 :: PrependSkew ( Matrix33 & A, Vector3 & Skew, Matrix33 & Result )
 {
 	
 	SetSkew ( Result, Skew );

@@ -5,9 +5,6 @@
 
 #include <stdint.h>
 
-#define INT32_MAX 0x7fffffffL
-#define INT32_MIN ( - INT32_MAX - 1L )
-
 /*
 * (WPILib specific.)
 * NumericStepper is literally just that. You feed it an HID device and two button indexes and it will keep track of a counted value based on button presses.

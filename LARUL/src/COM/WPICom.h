@@ -3,7 +3,9 @@
 
 #include "ISerialInterface.h"
 
-class WPICom
+#include <WPILib.h>
+
+class WPICom : public ISerialInterface
 {
 public:
 	
@@ -15,15 +17,20 @@ public:
 	void Open ();
 	void Close ();
 	
-	void Write ( uint8_t * Buffer, uint32_t Length );
-	int32_t Read ( uint8_t * Buffer, uint32_t Max, int32_t Length = - 1 );
+	int32_t Write ( uint8_t * Buffer, uint32_t Length, bool Timeout = false );
+	int32_t Read ( uint8_t * Buffer, uint32_t Max, int32_t Length = - 1, bool Timeout = true );
 	void Flush ();
+	
+	virtual void SetTimeoutMS ( uint64_t TimeoutMS );
+	virtual bool TimeoutAvailible ();
 	
 	uint32_t AvailableByteCount ();
 	
 private:
 	
 	SerialPort * Port;
+	
+	bool PortOpen;
 	
 };
 

@@ -12,6 +12,8 @@ public:
 	Matrix33 ();
 	~Matrix33 ();
 	
+	static void Identity ( Matrix33 & Result );
+
 	static void Add ( Matrix33 & A, Matrix33 & B );
 	static void Add ( Matrix33 & A, Matrix33 & B, Matrix33 & Result );
 	static void Add ( Matrix33 & A, double B );

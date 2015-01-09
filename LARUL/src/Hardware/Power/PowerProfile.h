@@ -1,0 +1,6 @@
+#ifndef LARUL_POWERPROFILE_H
+#define LARUL_POWERPROFILE_H
+
+
+
+#endif

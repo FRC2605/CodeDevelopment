@@ -24,7 +24,7 @@ MecanumDrive :: MecanumDrive ( SpeedController * WheelFL, SpeedController * Whee
 	PrescaleR ( 1 ),
 	PrescaleT ( 1 ),
 	Enabled ( false ),
-	SineInverted ( false ).
+	SineInverted ( false ),
 	XYFilters (),
 	MDFilters (),
 	RFilters ()
@@ -65,11 +65,16 @@ bool MecanumDrive :: Enable ()
 	if ( MotorFL.Motor == NULL || MotorFR.Motor == NULL || MotorRL.Motor == NULL || MotorRR.Motor == NULL )
 		return false;
 	
-	for ( int32_t i = 0; i < XYFilters.Length (); i ++ )
+	uint32_t i;
+	
+	for ( i = 0; i < XYFilters.Length (); i ++ )
+		RFilters [ i ] -> Reset ();
+	
+	for ( i = 0; i < RFilters.Length (); i ++ )
 		XYFilters [ i ] -> Reset ();
 	
-	for ( int32_t i = 0; i < XYFilters.Length (); i ++ )
-		
+	for ( i = 0; i < MDFilters.Length (); i ++ )
+		MDFilters [ i ] -> Reset ();
 
 	Enabled = true;
 	return true;
@@ -106,7 +111,7 @@ void MecanumDrive :: PushTransform ()
 	double LX;
 	double LY;
 	double LR;
-	int32_t i;
+	uint32_t i;
 	
 	if ( ! Enabled )
 	{
@@ -150,10 +155,10 @@ void MecanumDrive :: PushTransform ()
 	ForceAngle = atan2 ( LX, LY );
 	ForceAngle += PI_Div_4;
 	
-	for ( i = 0; i < MagDirFilters.Length (); i ++ )
+	for ( i = 0; i < MDFilters.Length (); i ++ )
 	{
 		
-		DSPFilter_2_2 * MagDirFilter = MagDirFilters [ i ];
+		DSPFilter_2_2 * MagDirFilter = MDFilters [ i ];
 		
 		MagDirFilter -> Compute ( ForceMagnitude, ForceAngle );
 		ForceMagnitude = MagDirFilter -> ReadA ();
@@ -178,12 +183,13 @@ void MecanumDrive :: DebugValues ()
 	double ForceMagnitude;
 	double SinCalc;
 	double CosCalc;
+	uint32_t i;
 	
 	double FL, FR, RL, RR;
 	
-	LX = TX;
-	LY = TY;
-	LR = TR;
+	double LX = TX;
+	double LY = TY;
+	double LR = TR;
 	
 	for ( i = 0; i < XYFilters.Length (); i ++ )
 	{
@@ -211,10 +217,10 @@ void MecanumDrive :: DebugValues ()
 	ForceAngle = atan2 ( LX, LY );
 	ForceAngle += PI_Div_4;
 	
-	for ( i = 0; i < MagDirFilters.Length (); i ++ )
+	for ( i = 0; i < MDFilters.Length (); i ++ )
 	{
 		
-		DSPFilter_2_2 * MagDirFilter = MagDirFilters [ i ];
+		DSPFilter_2_2 * MagDirFilter = MDFilters [ i ];
 		
 		MagDirFilter -> Compute ( ForceMagnitude, ForceAngle );
 		ForceMagnitude = MagDirFilter -> ReadA ();
@@ -316,19 +322,19 @@ void MecanumDrive :: AddMagDirFilter ( DSPFilter_2_2 * MagDirFilter )
 {
 	
 	if ( MagDirFilter != NULL )
-		MagDirFilters.Push ( MagDirFilter );
+		MDFilters.Push ( MagDirFilter );
 	
 };
 
 void MecanumDrive :: RemoveMagDirFilter ( DSPFilter_2_2 * MagDirFilter )
 {
 	
-	int32_t Index = MagDirFilters.IndexOf ( MagDirFilter );
+	int32_t Index = MDFilters.IndexOf ( MagDirFilter );
 	
 	if ( Index == - 1 )
 		return;
 	
-	MagDirFilters.Remove ( Index, 1 );
+	MDFilters.Remove ( Index, 1 );
 	
 };
 
@@ -340,10 +346,10 @@ void MecanumDrive :: AddRotationFilter ( DSPFilter_1_1 * RotationFilter )
 	
 };
 
-void MecanumDrive :: RFilters ( DSPFilter_1_1 * RotationFilter )
+void MecanumDrive :: RemoveRotationFilter ( DSPFilter_1_1 * RotationFilter )
 {
 	
-	int32_t Index = MagDirFilters.IndexOf ( RotationFilter );
+	int32_t Index = RFilters.IndexOf ( RotationFilter );
 	
 	if ( Index == - 1 )
 		return;

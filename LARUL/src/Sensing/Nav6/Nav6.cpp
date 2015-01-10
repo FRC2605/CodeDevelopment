@@ -1,5 +1,6 @@
 #include "Nav6.h"
 #include "Nav6Protocol.h"
+#include "../../Timing/IntervalTimer.h"
 
 #include <stdlib.h>
 #include <math.h>
@@ -81,6 +82,7 @@ void Nav6 :: SendStreamCommand ( uint8_t UpdateRate )
 	SetStreamTermination ( Buff, 5 );
 	
 	Serial -> Write ( Buff, 8 );
+	Serial -> Flush ();
 	
 };
 
@@ -217,6 +219,8 @@ void Nav6 :: SetStreamTermination ( uint8_t * Buffer, uint32_t MessageLength )
 
 void Nav6 :: SerialUpdate ( Thread * UpdateThread )
 {
+	
+	IntervalTimer Timeout;
 	
 	SendStreamCommand ( UpdateRate );
 	

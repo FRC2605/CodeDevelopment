@@ -64,15 +64,17 @@ void Thread :: TestCancelation ()
 void * ThreadStub ( void * Instance );
 void CleanupStub ( void * Instance );
 
-Thread :: Thread ( IDelegate1 <void, Thread *> * Function, bool Joinable, int ThreadPriority ):
+Thread :: Thread ( IDelegate1 <void, Thread *> * Function, bool Joinable, int ThreadPriority, SchedulingPolicy Policy ):
 	Function ( Function ),
+	ThreadHandle (),
 	State ( kThreadState_Stopped ),
 	Joinable ( Joinable ),
 	Priority ( ThreadPriority ),
 	Destruction ( kDestructorBehavior_LeaveRunning ),
 	Status ( NULL ),
 	ThreadMutex (),
-	Name ( "Anonymous" )
+	Name ( "Anonymous" ),
+	Policy ( Policy )
 {
 	
 	int ErrorCode = pthread_attr_init ( & ThreadAttributes );
@@ -402,7 +404,7 @@ void Thread :: SetName ( const char * Name )
 	
 };
 
-void Wait ( double Seconds )
+void WaitS ( double Seconds )
 {
 	
 	struct timespec WaitTime;

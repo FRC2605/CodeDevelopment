@@ -64,7 +64,7 @@ public:
 	static const int kThreadPriority_Background = 7;
 	static const int kThreadPriority_Least = 0;
 	
-	Thread ( IDelegate1 <void, Thread *> * Function, bool Joinable = true, int ThreadPriority = kThreadPriority_General );
+	Thread ( IDelegate1 <void, Thread *> * Function, bool Joinable = true, int ThreadPriority = kThreadPriority_General, SchedulingPolicy Policy = kSchedulingPolicy_Other );
 	~Thread ();
 	
 	void ClearError ();
@@ -84,7 +84,7 @@ public:
 	static void SetCancelable ( bool Cancelable );
 	static void TestCancelation ();
 	
-	static void Wait ( double Seconds );
+	static void WaitS ( double Seconds );
 	static void WaitMS ( uint64_t MS );
 	
 	static Thread * __ConstructMainThread ();

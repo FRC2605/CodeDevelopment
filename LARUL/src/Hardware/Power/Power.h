@@ -7,13 +7,14 @@ class Power
 {
 public:
 	
+	~Power ();
+	
 	static void Init ( PowerDistributionPanel * PDP );
 	static PowerDistributionPanel * GetPDP ();
 	
 private:
 	
 	Power ();
-	~Power ();
 	
 	static PowerDistributionPanel * PDP;
 	

@@ -1,23 +1,26 @@
 #include "Power.h"
 
-Power :: Power () 
+PowerDistributionPanel * Power :: PDP = NULL;
+
+Power :: Power ()
 {
 };
 
-Power :: ~Power () 
+Power :: ~Power ()
 {
 };
 
-void Power :: Init ( PowerDistributionPanel * Panel )
+void Power :: Init ( PowerDistributionPanel * PDP )
 {
 	
-	Power :: PDP = Panel;
+	Power :: PDP = PDP;
 	
 };
 
 PowerDistributionPanel * Power :: GetPDP ()
 {
 	
-	return Power :: PDP;
+	return PDP;
 	
 };
+

@@ -70,11 +70,11 @@ Thread :: Thread ( IDelegate1 <void, Thread *> * Function, bool Joinable, int Th
 	State ( kThreadState_Stopped ),
 	Joinable ( Joinable ),
 	Priority ( ThreadPriority ),
+	Policy ( Policy ),
 	Destruction ( kDestructorBehavior_LeaveRunning ),
 	Status ( NULL ),
 	ThreadMutex (),
-	Name ( "Anonymous" ),
-	Policy ( Policy )
+	Name ( "Anonymous" )
 {
 	
 	int ErrorCode = pthread_attr_init ( & ThreadAttributes );
@@ -94,7 +94,7 @@ Thread :: Thread ( IDelegate1 <void, Thread *> * Function, bool Joinable, int Th
 	}
 	
 	if ( pthread_attr_setdetachstate ( & ThreadAttributes, Joinable ? PTHREAD_CREATE_JOINABLE : 0 ) != 0 )
-		THROW_ERROR ( "Unspecified error setting detatch state of thread attribute object!" );
+		THROW_ERROR ( "Unspecified error setting detach state of thread attribute object!" );
 	
 };
 
@@ -352,7 +352,7 @@ void * Thread :: Entry ()
 		Function -> Call ( this );
 		
 	}
-	catch ( LError E )
+	catch ( LError & E )
 	{
 		
 		State = kThreadState_Error;

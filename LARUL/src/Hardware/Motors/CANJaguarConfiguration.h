@@ -5,52 +5,59 @@
 
 class CANJaguarConfiguration
 {
-	
-
-
-
-	
 public:
-	enum FeedbackType
+	
+	typedef enum
 	{
 		kFeedbackType_None,
 		kFeedbackType_QuadEncoder,
 		kFeedbackType_Encoder,
 		kFeedbackType_Potentiometer,
 		
-	};
-
-
-
-	CANJaguarConfiguration ( CANSpeedController :: ControlMode CtlMode );
-	~CANJaguarConfiguration ( );
+	} FeedbackType;
 	
-	void DissableFeedback ( );
-	void SetConfPID ( double & pConf, double & iConf, double & dConf );
-	void SetEncoderFeedback ( double pConf, double iConf, double dConf, uint16_t codesPerRev);
-	void SetPotFeedBack ( double pConf, double iConf, double dConf, uint16_t turns);
-	void SetQuadEncoderFeedback ( double pConf, double iConf, double dConf, uint16_t codesPerRev);
+	CANJaguarConfiguration ( CANSpeedController :: ControlMode Mode );
+	~CANJaguarConfiguration ();
+	
+	void SetMode ( CANSpeedController :: ControlMode Mode );
+	
+	void SetPID ( double P, double I, double D );
+	
+	void SetEncoderFeedback ( uint16_t CodesPerRevolution );
+	void SetQuadEncoderFeedback ( uint16_t CodesPerRevolution );
+	void SetPotFeedBack ();
+	void SetNoFeedback ();
 
-	void SetLimits ( CANSpeedController :: LimitMode LimitType, double ConfigForwardLimit, double ConfigReverseLimit );
-	void SetFaultTime ( double ConfigFaultTime );
-	void SetMaxOutputVoltage ( double ConfigVoltage );
-	void SetVoltageRampRate ( double Rate );
+	void SetLimits ( CANSpeedController :: LimitMode LimitType, double ForwardPositionLimit, double ReversePositionLimit );
+	
+	void SetFaultTime ( double FaultTime );
+	void SetMaxOutputVoltage ( double Voltage );
+	void SetVoltageRampRate ( double RampRate );
 
 	void ConfigJag (  CANJaguar & Jag );
 
 private:
+	
+	CANSpeedController :: ControlMode Mode;
+	
+	FeedbackType Feedback;
+	uint16_t EncoderCounts;
+	
+	double P;
+	double I;
+	double D;
+		
 	CANSpeedController :: NeutralMode NeutralMode;
+	
 	CANSpeedController :: LimitMode LimitMode;
-	double ForwardLimitPosition;
-	double ReverseLimitPosition;
+	double ForwardPositionLimit;
+	double ReversePositionLimit;
+	
 	double MaxOutputVoltage;
-	double FaultTime;
 	double VoltageRampRate;
 	
-	CANSpeedController :: ControlMode ControlMode;
-	FeedbackType Feedback;
-	double P, I, D;
-	uint16_t Counts;
+	double FaultTime;
+	
 };
 
 

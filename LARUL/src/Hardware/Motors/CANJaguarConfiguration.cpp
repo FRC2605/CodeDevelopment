@@ -1,183 +1,265 @@
 #include "CANJaguarConfiguration.h"
-#include <limits>
 
-CANJaguarConfiguration :: CANJaguarConfiguration ( CANSpeedController :: ControlMode CtlMode):
-NeutralMode ( CANSpeedController :: kNeutralMode_Jumper),
-LimitMode  ( CANSpeedController :: kLimitMode_SwitchInputsOnly),
-ForwardLimitPosition ( std::numeric_limits<int>::max() ),
-ReverseLimitPosition (  std::numeric_limits<int>::max() ),
-MaxOutputVoltage ( 15.0 ),
-FaultTime ( 0.51f ),
-VoltageRampRate ( 1000 ),
-ControlMode ( CtlMode ),
-Feedback ( kFeedbackType_None ),
-Counts ( ),
-P ( ),
-I ( ),
-D ( )
-
+CANJaguarConfiguration :: CANJaguarConfiguration ( CANSpeedController :: ControlMode Mode ):
+	Mode ( Mode ),
+	Feedback ( kFeedbackType_None ),
+	EncoderCounts ( 1 ),
+	P ( 0.0 ),
+	I ( 0.0 ),
+	D ( 0.0 ),
+	NeutralMode ( CANSpeedController :: kNeutralMode_Jumper ),
+	LimitMode  ( CANSpeedController :: kLimitMode_SwitchInputsOnly ),
+	ForwardPositionLimit ( 0.0 ),
+	ReversePositionLimit ( 0.0 ),
+	MaxOutputVoltage ( 15.0 ),
+	VoltageRampRate ( 1000.0 ),
+	FaultTime ( 0.51 )
 {
+};
 
-}
-
-CANJaguarConfiguration :: ~CANJaguarConfiguration ( ) 
+CANJaguarConfiguration :: ~CANJaguarConfiguration () 
 {
+};
 
-}
-
-void CANJaguarConfiguration :: DissableFeedback ( ) 
+void CANJaguarConfiguration :: SetMode ( CANSpeedController :: ControlMode Mode )
 {
+	
+	this -> Mode = Mode;
+	
+};
+
+void CANJaguarConfiguration :: SetNoFeedback () 
+{
+	
 	Feedback = kFeedbackType_None;
-}
+	
+};
 
-void CANJaguarConfiguration :: SetConfPID ( double & pConf, double & iConf, double & dConf )
+void CANJaguarConfiguration :: SetPID ( double P, double I, double D )
 {
-	P = pConf;
-	I = iConf;
-	D = dConf;
-}
+	
+	this -> P = P;
+	this -> I = I;
+	this -> D = D;
+};
 
-void CANJaguarConfiguration :: SetEncoderFeedback ( double pConf, double iConf, double dConf, uint16_t codesPerRev)
+void CANJaguarConfiguration :: SetEncoderFeedback ( uint16_t CodesPerRevolution )
 {
-	SetConfPID ( pConf, iConf, dConf);
+	
 	Feedback = kFeedbackType_Encoder;
-	Counts = codesPerRev;
-}
+	
+	EncoderCounts = CodesPerRevolution;
+	
+};
 
-void CANJaguarConfiguration :: SetPotFeedBack ( double pConf, double iConf, double dConf, uint16_t turns)
+void CANJaguarConfiguration :: SetPotFeedBack ()
 {
-	SetConfPID ( pConf, iConf, dConf);
+	
 	Feedback = kFeedbackType_Potentiometer;
-	Counts = turns;
-}
+	
+};
 
-void CANJaguarConfiguration :: SetQuadEncoderFeedback ( double pConf, double iConf, double dConf, uint16_t codesPerRev)
+void CANJaguarConfiguration :: SetQuadEncoderFeedback ( uint16_t EncoderCounts )
 {
-	SetConfPID ( pConf, iConf, dConf);
+	
 	Feedback = kFeedbackType_QuadEncoder;
-	Counts = codesPerRev;
+	
+	this -> EncoderCounts = EncoderCounts;
+	
+};
+
+void CANJaguarConfiguration :: SetLimits ( CANSpeedController :: LimitMode LimitMode, double ForwardPositionLimit, double ReversePositionLimit )
+{
+	
+	this -> LimitMode = LimitMode;
+	
+	this -> ForwardPositionLimit = ForwardPositionLimit;
+	this -> ReversePositionLimit = ReversePositionLimit;
+	
 }
 
-void CANJaguarConfiguration :: SetLimits ( CANSpeedController :: LimitMode LimitType, double ConfigForwardLimit, double ConfigReverseLimit )
+void CANJaguarConfiguration :: SetFaultTime ( double FaultTime )
 {
-	LimitMode = LimitType;
-	ForwardLimitPosition = ConfigForwardLimit;
-	ReverseLimitPosition = ConfigReverseLimit;
-}
+	
+	this -> FaultTime = FaultTime;
+	
+};
 
-void CANJaguarConfiguration :: SetFaultTime ( double ConfigFaultTime )
+void CANJaguarConfiguration :: SetMaxOutputVoltage ( double Voltage )
 {
-	FaultTime = ConfigFaultTime;
-}
-
-void CANJaguarConfiguration :: SetMaxOutputVoltage ( double ConfigVoltage )
-{
-	MaxOutputVoltage = ConfigVoltage;
-}
+	
+	MaxOutputVoltage = Voltage;
+	
+};
 
 
-void CANJaguarConfiguration :: ConfigJag (  CANJaguar & Jag )
+void CANJaguarConfiguration :: ConfigJag ( CANJaguar & Jag )
 {
-	Jag.SetVoltageRampRate ( VoltageRampRate );
-	Jag.ConfigFaultTime ( FaultTime );
-	Jag.ConfigNeutralMode ( NeutralMode );
-	Jag.ConfigLimitMode ( LimitMode );
-	Jag.ConfigForwardLimit ( ForwardLimitPosition );
-	Jag.ConfigReverseLimit ( ReverseLimitPosition );
+	
+	Jag.DisableControl ();
+	
 	Jag.ConfigMaxOutputVoltage ( MaxOutputVoltage );
+	Jag.SetVoltageRampRate ( VoltageRampRate );
+	
+	Jag.ConfigFaultTime ( FaultTime );
+	
+	Jag.ConfigNeutralMode ( NeutralMode );
+	
+	Jag.ConfigLimitMode ( LimitMode );
+	Jag.ConfigForwardLimit ( ForwardPositionLimit );
+	Jag.ConfigForwardLimit ( ReversePositionLimit );
 	
 	switch ( Feedback )
 	{
 
 	case kFeedbackType_None:
 
-		switch ( ControlMode )
+		switch ( Mode )
 		{
 
 		case CANSpeedController :: kPercentVbus:
-			Jag.SetPercentMode ( );
+			Jag.SetPercentMode ();
 			break;
 
 		case CANSpeedController :: kCurrent:
-			Jag.SetCurrentMode ( P ,I ,D );
+			
+			Jag.SetCurrentMode ( P, I, D );
+			
+			Jag.Set ( 0 );
+			Jag.EnableControl ();
+			
 			break;
 
 		case CANSpeedController :: kVoltage:
-			Jag.SetVoltageMode ( );
-			break;
-
-		default:
-
+			Jag.SetVoltageMode ();
 			break;
 
 		}
+		
 		break;
-
+		
 	case kFeedbackType_Encoder:
-
-		switch ( ControlMode )
+		
+		switch ( Mode )
 		{
-			case CANSpeedController :: kPercentVbus:
-				Jag.SetPercentMode ( CANJaguar :: Encoder, Counts );
-				break;
-
-			case CANSpeedController :: kCurrent:
-				Jag.SetCurrentMode ( CANJaguar :: Encoder, Counts, P, I, D );
-				break;
-
-			case CANSpeedController :: kSpeed:
-				Jag.SetSpeedMode ( CANJaguar :: Encoder, Counts, P, I, D );
-				break;
-
-			case CANSpeedController :: kVoltage:
-				Jag.SetSpeedMode ( CANJaguar :: Encoder, Counts, P, I, D );
-				break;
-			default:
-				break;
+			
+		case CANSpeedController :: kPercentVbus:
+			Jag.SetPercentMode ( CANJaguar :: Encoder, EncoderCounts );
+			break;
+	
+		case CANSpeedController :: kCurrent:
+			
+			Jag.SetCurrentMode ( CANJaguar :: Encoder, EncoderCounts, P, I, D );
+			
+			Jag.Set ( 0 );
+			Jag.EnableControl ();
+			
+			break;
+		
+		case CANSpeedController :: kSpeed:
+			
+			Jag.SetSpeedMode ( CANJaguar :: Encoder, EncoderCounts, P, I, D );
+			
+			Jag.Set ( 0 );
+			Jag.EnableControl ();
+			
+			break;
+			
+		case CANSpeedController :: kVoltage:
+			
+			Jag.SetSpeedMode ( CANJaguar :: Encoder, EncoderCounts, P, I, D );
+			break;
+			
 		}
+		
 		break;
+		
 	case kFeedbackType_QuadEncoder:
-
-		switch ( ControlMode )
+		
+		switch ( Mode )
 		{
-			case CANSpeedController :: kPercentVbus:
-				Jag.SetPercentMode ( CANJaguar :: QuadEncoder, Counts );
-				break;
-			case CANSpeedController :: kCurrent:
-				Jag.SetCurrentMode ( CANJaguar :: QuadEncoder, Counts, P, I, D );
-				break;
-			case CANSpeedController :: kSpeed:
-				Jag.SetSpeedMode ( CANJaguar :: QuadEncoder, Counts, P, I, D );
-				break;
-			case CANSpeedController :: kPosition:
-				Jag.SetPositionMode ( CANJaguar :: QuadEncoder, Counts, P, I, D );
-				break;
-			case CANSpeedController :: kVoltage:
-				Jag.SetVoltageMode ( CANJaguar :: QuadEncoder, Counts);
-				break;
-			default:
-				break;
+			
+		case CANSpeedController :: kPercentVbus:
+			Jag.SetPercentMode ( CANJaguar :: QuadEncoder, EncoderCounts );
+			break;
+		
+		case CANSpeedController :: kCurrent:
+			
+			Jag.SetCurrentMode ( CANJaguar :: QuadEncoder, EncoderCounts, P, I, D );
+			
+			Jag.Set ( 0 );
+			Jag.EnableControl ();
+			
+			break;
+		
+		case CANSpeedController :: kSpeed:
+			
+			Jag.SetSpeedMode ( CANJaguar :: QuadEncoder, EncoderCounts, P, I, D );
+			
+			Jag.Set ( 0 );
+			Jag.EnableControl ();
+			
+			break;
+		
+		case CANSpeedController :: kPosition:
+			
+			Jag.SetPositionMode ( CANJaguar :: QuadEncoder, EncoderCounts, P, I, D );
+			
+			Jag.Set ( 0 );
+			Jag.EnableControl ();
+			
+			break;
+		
+		case CANSpeedController :: kVoltage:
+			
+			Jag.SetVoltageMode ( CANJaguar :: QuadEncoder, EncoderCounts );
+			
+			Jag.Set ( 0 );
+			Jag.EnableControl ();
+			
+			break;
+		
 		}
+		
 		break;
+		
 	case kFeedbackType_Potentiometer:
-		switch ( ControlMode )
+		
+		switch ( Mode )
 		{
-			case CANSpeedController :: kPercentVbus:
-				Jag.SetPercentMode ( CANJaguar :: Potentiometer);
-				break;
-			case CANSpeedController :: kCurrent:
-				Jag.SetCurrentMode ( CANJaguar :: Potentiometer, P, I, D );
-				break;
-			case CANSpeedController :: kPosition:
-				Jag.SetPositionMode ( CANJaguar :: Potentiometer, P, I, D );
-				break;
-			case CANSpeedController :: kVoltage:
-				Jag.SetVoltageMode ( CANJaguar :: Potentiometer);
-				break;
-			default:
-				break;
+		
+		
+		case CANSpeedController :: kPercentVbus:
+			Jag.SetPercentMode ( CANJaguar :: Potentiometer );
+			break;
+		
+		case CANSpeedController :: kCurrent:
+			
+			Jag.SetCurrentMode ( CANJaguar :: Potentiometer, P, I, D );
+			
+			Jag.Set ( 0 );
+			Jag.EnableControl ();
+			
+			break;
+		
+		case CANSpeedController :: kPosition:
+			
+			Jag.SetPositionMode ( CANJaguar :: Potentiometer, P, I, D );
+			
+			Jag.Set ( 0 );
+			Jag.EnableControl ();
+			
+			break;
+		
+		case CANSpeedController :: kVoltage:
+			Jag.SetVoltageMode ( CANJaguar :: Potentiometer);
+			break;
+			
 		}
+		
 		break;
+		
 	}
-}
+	
+};
 

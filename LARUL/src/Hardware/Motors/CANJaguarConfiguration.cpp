@@ -93,7 +93,7 @@ void CANJaguarConfiguration :: SetMaxOutputVoltage ( double Voltage )
 };
 
 
-void CANJaguarConfiguration :: ConfigJag ( CANJaguar & Jag )
+void CANJaguarConfiguration :: Configure ( CANJaguar & Jag )
 {
 	
 	Jag.DisableControl ();

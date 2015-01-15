@@ -34,7 +34,7 @@ public:
 	void SetMaxOutputVoltage ( double Voltage );
 	void SetVoltageRampRate ( double RampRate );
 
-	void ConfigJag (  CANJaguar & Jag );
+	void Configure (  CANJaguar & Jag );
 
 private:
 	

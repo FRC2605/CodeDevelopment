@@ -133,6 +133,13 @@ void CANJaguarConfiguration :: ConfigJag ( CANJaguar & Jag )
 		case CANSpeedController :: kVoltage:
 			Jag.SetVoltageMode ();
 			break;
+			
+		default:
+			
+			Jag.SetVoltageMode ( CANJaguar :: Encoder, EncoderCounts );
+			Jag.ConfigMaxOutputVoltage ( 0.0 );
+			
+			break;
 
 		}
 		
@@ -166,8 +173,14 @@ void CANJaguarConfiguration :: ConfigJag ( CANJaguar & Jag )
 			break;
 			
 		case CANSpeedController :: kVoltage:
+			Jag.SetVoltageMode ( CANJaguar :: Encoder, EncoderCounts );
+			break;
 			
-			Jag.SetSpeedMode ( CANJaguar :: Encoder, EncoderCounts, P, I, D );
+		default:
+			
+			Jag.SetVoltageMode ( CANJaguar :: Encoder, EncoderCounts );
+			Jag.ConfigMaxOutputVoltage ( 0.0 );
+			
 			break;
 			
 		}
@@ -218,6 +231,13 @@ void CANJaguarConfiguration :: ConfigJag ( CANJaguar & Jag )
 			Jag.EnableControl ();
 			
 			break;
+			
+		default:
+			
+			Jag.SetVoltageMode ( CANJaguar :: Encoder, EncoderCounts );
+			Jag.ConfigMaxOutputVoltage ( 0.0 );
+			
+			break;
 		
 		}
 		
@@ -252,7 +272,14 @@ void CANJaguarConfiguration :: ConfigJag ( CANJaguar & Jag )
 			break;
 		
 		case CANSpeedController :: kVoltage:
-			Jag.SetVoltageMode ( CANJaguar :: Potentiometer);
+			Jag.SetVoltageMode ( CANJaguar :: Potentiometer );
+			break;
+			
+		default:
+			
+			Jag.SetVoltageMode ( CANJaguar :: Encoder, EncoderCounts );
+			Jag.ConfigMaxOutputVoltage ( 0.0 );
+			
 			break;
 			
 		}

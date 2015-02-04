@@ -115,14 +115,14 @@ void MecanumDrive :: PushTransform ()
 	
 	if ( ! Enabled )
 	{
-
-		MotorFL.Motor -> Disable ();
-		MotorFR.Motor -> Disable ();
-		MotorRL.Motor -> Disable ();
-		MotorRR.Motor -> Disable ();
+		
+		MotorFL.Motor -> Set ( 0 );
+		MotorFR.Motor -> Set ( 0 );
+		MotorRL.Motor -> Set ( 0 );
+		MotorRR.Motor -> Set ( 0 );
 		
 		return;
-	
+		
 	}
 	
 	LX = TX;
@@ -149,11 +149,10 @@ void MecanumDrive :: PushTransform ()
 		LR = RFilter -> Read ();
 		
 	}
-		
+	
 	ForceMagnitude = sqrt ( LX * LX + LY * LY );
 	
 	ForceAngle = atan2 ( LX, LY );
-	ForceAngle += PI_Div_4;
 	
 	for ( i = 0; i < MDFilters.Length (); i ++ )
 	{
@@ -165,6 +164,8 @@ void MecanumDrive :: PushTransform ()
 		ForceAngle = MagDirFilter -> ReadB ();
 		
 	}
+	
+	ForceAngle += PI_Div_4;
 	
 	SinCalc = sin ( ForceAngle ) * ForceMagnitude;
 	CosCalc = cos ( ForceAngle ) * ForceMagnitude;

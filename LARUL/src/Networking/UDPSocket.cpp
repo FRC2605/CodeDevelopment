@@ -88,42 +88,42 @@ UDPSocket :: ~UDPSocket ()
 	
 };
 
-void Target ( const char * Address, uint16_t Port )
+void UDPSocket :: Target ( const char * Address, uint16_t Port )
 {
 	
 	
 	
 };
 
-uint32_t GetWriteCount ()
+uint32_t UDPSocket :: GetWriteCount ()
+{
+	
+	return 0;
+	
+};
+
+uint32_t UDPSocket :: GetReadCount ()
+{
+	
+	return 0;
+	
+};
+
+void UDPSocket :: Write ( const void * Buffer, size_t Length, bool DontBlock )
 {
 	
 	
 	
 };
 
-uint32_t GetReadCount ()
+void UDPSocket :: Read ( void * Buffer, size_t Length, bool Fill, size_t * Received )
 {
 	
 	
 	
 };
 
-void Write ( const void * Buffer, size_t Length, bool DontBlock = false )
-{
-	
-	
-	
-};
-
-void Read ( void * Buffer, size_t Length, bool Fill = true, size_t * Received = NULL )
-{
-	
-	
-	
-};
-
-void SetUserData ( void * UserData )
+void UDPSocket :: SetUserData ( void * UserData )
 {
 	
 	UserDataSync.Lock ();
@@ -134,7 +134,7 @@ void SetUserData ( void * UserData )
 	
 };
 
-void * GetUserData ()
+void * UDPSocket :: GetUserData ()
 {
 	
 	UserDataSync.Lock ();

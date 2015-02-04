@@ -11,36 +11,36 @@ SmartJoystick :: SmartJoystick ( int JoystickID, double Deadzone):
 {
 };
 
-double SmartJoystick :: GetXAxis ( bool WithDeadzone, double Deadzone)
+double SmartJoystick :: GetXAxis ( bool DeadzoneEnabled, double Deadzone)
 {
 	float X;
 	X = this -> GetX ();
 
-	if ( WithDeadzone )
+	if ( DeadzoneEnabled )
 	{
 		CalcDeadzone ( X , Deadzone);
 	}
 	return X;
 };
 
-double SmartJoystick :: GetYAxis ( bool WithDeadzone, double Deadzone)
+double SmartJoystick :: GetYAxis ( bool DeadzoneEnabled, double Deadzone)
 {
 	float Y;
 	Y = this -> GetY ();
 
-	if ( WithDeadzone )
+	if ( DeadzoneEnabled )
 	{
 		CalcDeadzone ( Y , Deadzone);
 	}
 	return Y;
 };
 
-double SmartJoystick :: GetZAxis ( bool WithDeadzone, double Deadzone)
+double SmartJoystick :: GetZAxis ( bool DeadzoneEnabled, double Deadzone)
 {
 	float Z;
 	Z = this -> GetZ ();
 
-	if ( WithDeadzone )
+	if ( DeadzoneEnabled )
 	{
 		CalcDeadzone ( Z , Deadzone);
 	}

@@ -11,9 +11,9 @@ public:
 
 	SmartJoystick ( int JoystickID,  double Deadzone = 0.0 );
 
-	double GetXAxis ( bool WithDeadzone = true, double Deadzone = 0.0 );
-	double GetYAxis ( bool WithDeadzone = true, double Deadzone = 0.0 );
-	double GetZAxis ( bool WithDeadzone = true, double Deadzone = 0.0 );
+	double GetXAxis ( bool DeadzoneEnabled = true, double Deadzone = 0.0 );
+	double GetYAxis ( bool DeadzoneEnabled = true, double Deadzone = 0.0 );
+	double GetZAxis ( bool DeadzoneEnabled = true, double Deadzone = 0.0 );
 
 	bool GetButtonState ( uint32_t ButtonID );
 

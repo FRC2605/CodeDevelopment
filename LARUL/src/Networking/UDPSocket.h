@@ -1,7 +1,7 @@
 #ifndef LARUL_UDPSOCKET_H
 #define LARUL_UDPSOCKET_H
 
-#include "../Util/Error.h"
+#include "../Util/LError.h"
 #include "../Util/Delegate.h"
 
 #include <cstring>
@@ -12,7 +12,6 @@
 #include <unistd.h>
 
 #include "../Threading/Mutex.h"
-#include "../Threading/Synchronized.h"
 
 #include "UDP.h"
 

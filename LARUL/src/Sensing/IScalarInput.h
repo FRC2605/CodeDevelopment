@@ -5,6 +5,8 @@ class IScalarInput
 {
 public:
 	
+	virtual ~IScalarInput () {};
+	
 	typedef enum
 	{
 		
@@ -31,7 +33,7 @@ public:
 	virtual double GetScalar () = 0;
 	
 	virtual ScalarLimit GetScalarLimitType () = 0;
-	virtual double GetLimitParam ( ScalarLimitParam Param );
+	virtual double GetLimitParam ( ScalarLimitParam Param ) = 0;
 	
 };
 

@@ -43,7 +43,7 @@ TCPSocket :: TCPSocket ( TCP :: AddressType Type, DisconnectBehavior Disconnecti
 		break;
 		
 	default:
-		THROW_ERROR ( "AddressType must be a valid enum in TCPSocket :: AddressType!" );
+		THROW_ERROR ( "AddressType must be a valid enum in TCP :: AddressType!" );
 		
 	}
 	

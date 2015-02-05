@@ -1,5 +1,5 @@
-#ifndef IUL_SMARTJOYSTICK_H_
-#define IUL_SMARTJOYSTICK_H_
+#ifndef IUL_SMARTJOYSTICK_H
+#define IUL_SMARTJOYSTICK_H
 
 #include <WPILib.h>
 #include <cmath>

@@ -5,21 +5,25 @@
 
 #include "../Motors/CANJaguarConfiguration.h"
 
-class CANJaguarMecanumDriveBase
+class CANJaguarQuadDriveBase
 {
 	
 	typedef enum
 	{
 		
-		kMecanumMotor_FL = 0,
-		kMecanumMotor_FR = 1,
-		kMecanumMotor_RL = 2,
-		kMecanumMotor_RR = 3
+		kMotorPosition_FL = 0,
+		kMotorPosition_FR = 1,
+		kMotorPosition_RL = 2,
+		kMotorPosition_RR = 3
 		
-	} MecanumMotor;
+	} MotorPosition;
 	
-	CANJaguarMecanumDriveBase ( uint8_t CAN_ID_FL, uint8_t CAN_ID_FR, uint8_t CAN_ID_RL, uint8_t CAN_ID_RR, CANJaguarConfiguration Config );
-	~CANJaguarMecanumDriveBase ();
+	CANJaguarQuadDriveBase ( uint8_t CAN_ID_FL, uint8_t CAN_ID_FR, uint8_t CAN_ID_RL, uint8_t CAN_ID_RR, CANJaguarConfiguration Config );
+	~CANJaguarQuadDriveBase ();
+	
+	void SetInversion ( bool Fl, bool FR, bool RL, bool RR );
+	
+	void SetMotor ( MotorPosition Motor, double Value );
 	
 	// HWSystem interface
 	void Enable ();
@@ -29,8 +33,14 @@ class CANJaguarMecanumDriveBase
 	
 	// IPowerScalable interface
 	
+	PowerProfile * GetProfile ();
+	PowerUsageSpec * GetSpec ();
+		
+	void SetPowerScale ( double Scale );
 	
-	void SetMotor ( MecanumMotor Motor, double Value );
+private:
+	
+	
 	
 };
 

@@ -7,15 +7,6 @@ class CANJaguarConfiguration
 {
 public:
 	
-	typedef enum
-	{
-		kFeedbackType_None,
-		kFeedbackType_QuadEncoder,
-		kFeedbackType_Encoder,
-		kFeedbackType_Potentiometer,
-		
-	} FeedbackType;
-	
 	CANJaguarConfiguration ( CANSpeedController :: ControlMode Mode );
 	~CANJaguarConfiguration ();
 	
@@ -37,6 +28,15 @@ public:
 	void Configure (  CANJaguar & Jag );
 
 private:
+	
+	typedef enum
+	{
+		kFeedbackType_None,
+		kFeedbackType_QuadEncoder,
+		kFeedbackType_Encoder,
+		kFeedbackType_Potentiometer,
+		
+	} FeedbackType;
 	
 	CANSpeedController :: ControlMode Mode;
 	

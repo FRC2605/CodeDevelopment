@@ -7,10 +7,10 @@ public:
 	
 	virtual ~HWSystem () {};
 	
-	virtual void Disable ();
-	virtual void Enable ();
+	virtual void Disable () = 0;
+	virtual void Enable () = 0;
 	
-	virtual void GetEnabled ();
+	virtual bool GetEnabled () = 0;
 	
 };
 

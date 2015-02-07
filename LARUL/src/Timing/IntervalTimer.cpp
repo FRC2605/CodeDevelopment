@@ -95,13 +95,29 @@ void IntervalTimer :: Reset ()
 void IntervalTimer :: Restart ()
 {
 	
-	Reset ();
-	Start ();
+	SyncMutex.Lock ();
 	
+	switch ( Mode )
+	{
+		
+	case kTimeMode_Monotonic:
 	
+		Current = Clock :: GetTimeMonotonicMS ();
+		
+		break;
+	
+	case kTimeMode_System:
+	
+		Current = Clock :: GetTimeSystemMS ();
+		
+		break;
+		
+	}
+	
+	Time = 0.0;
+	Running = true;
 	
 };
-
 
 double IntervalTimer :: GetTimeMS ()
 {

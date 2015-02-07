@@ -12,12 +12,15 @@
 
 class CANTalonQuadDriveBase : public IQuadRectangularDriveBase
 {
+public:
 	
 	CANTalonQuadDriveBase ( uint8_t CAN_ID_FL, uint8_t PDPChannelFL, uint8_t CAN_ID_FR, uint8_t PDPChannelFR, uint8_t CAN_ID_RL, uint8_t PDPChannelRL, uint8_t CAN_ID_RR, uint8_t PDPChannelRR, CANTalonConfiguration Config, double MotorDrawAverage, double MotorDrawMax );
 	~CANTalonQuadDriveBase ();
 	
 	void SetInversion ( bool Fl, bool FR, bool RL, bool RR );
 	void SetSensorInversion ( bool Fl, bool FR, bool RL, bool RR );
+	
+	void SetWheelConfig ( CANTalonConfiguration Config );
 	
 	// HWSystem interface
 	void Enable ();

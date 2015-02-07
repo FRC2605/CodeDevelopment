@@ -31,7 +31,7 @@ public:
 	void SetPIDF ( double P = 0.0, double I = 0.0, double D = 0.0, double F = 0.0 );
 	void SetIZone ( double IZone = 0.0 );
 	
-	void SetControlFrame ( double Time );
+	void SetNeutralMode ( CANTalon :: NeutralMode Neutral );
 	
 	void Configure ( CANTalon * ToConfig );
 	
@@ -52,6 +52,8 @@ private:
 	
 	double ClosedLoopRamp;
 	double MotorRamp;
+	
+	CANTalon :: NeutralMode Neutral;
 	
 };
 

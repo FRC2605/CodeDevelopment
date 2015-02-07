@@ -11,7 +11,8 @@ CANTalonConfiguration :: CANTalonConfiguration ( CANSpeedController ::ControlMod
 	IZone ( 0 ),
 	SensorInverted ( false ),
 	ClosedLoopRamp ( 0 ),
-	MotorRamp ( 0 )
+	MotorRamp ( 0 ),
+	Neutral ( CANTalon :: kNeutralMode_Coast )
 {
 };
 
@@ -33,6 +34,13 @@ void CANTalonConfiguration :: SetPIDF ( double P, double I, double D, double F )
 	this -> I = I;
 	this -> D = D;
 	this -> F = F;
+	
+};
+
+void CANTalonConfiguration :: SetNeutralMode ( CANTalon :: NeutralMode Neutral )
+{
+	
+	this -> Neutral = Neutral;
 	
 };
 
@@ -117,6 +125,8 @@ void CANTalonConfiguration :: Configure ( CANTalon * ToConfig )
 	}
 	
 	ToConfig -> SetSensorDirection ( SensorInverted );
+	
+	ToConfig -> ConfigNeutralMode ( Neutral );
 	
 	ToConfig -> Set ( 0 );
 	ToConfig -> EnableControl ();

@@ -45,6 +45,22 @@ CANTalonQuadDriveBase :: ~CANTalonQuadDriveBase ()
 {
 };
 
+void CANTalonQuadDriveBase :: SetWheelConfig ( CANTalonConfiguration Config )
+{
+	
+	UnInvertedConfig = Config;
+	InvertedConfig = Config;
+	
+	UnInvertedConfig.SetInversion ( false );
+	InvertedConfig.SetInversion ( true );
+	
+	UnInvertedConfig.Configure ( & WheelFL );
+	UnInvertedConfig.Configure ( & WheelFR );
+	UnInvertedConfig.Configure ( & WheelRL );
+	UnInvertedConfig.Configure ( & WheelRR );
+	
+};
+
 void CANTalonQuadDriveBase :: SetInversion ( bool FL, bool FR, bool RL, bool RR )
 {
 	

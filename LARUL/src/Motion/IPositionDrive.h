@@ -5,10 +5,13 @@ class IPositionDrive : public IActuatorDrive
 {
 public:
 	
-	virtual void DrivePosition ( double Position ) = 0;
+	virtual ~IPositionDrive () {};
 	
-	virtual void SetPositionScale ( double PositionScale ) = 0;
-	virtual double GetPositionScale () = 0;
+	virtual void SetPosition ( double Position ) = 0;
+	virtual double GetPosition () = 0;
+	
+	virtual void SetTarget ( double Position ) = 0;
+	virtual double GetTarget () = 0;
 	
 };
 

@@ -247,3 +247,63 @@ void MecanumDriveTrain :: SetSineInversion ( bool SineInverted = false )
 	this -> SineInverted = SineInverted;
 	
 };
+
+void MecanumDriveTrain :: AddXYFilter ( DSPFilter_2_2 * XYFilter )
+{
+	
+	if ( XYFilter != NULL )
+		XYFilters.Push ( XYFilter );
+	
+};
+
+void MecanumDriveTrain :: RemoveXYFilter ( DSPFilter_2_2 * XYFilter )
+{
+	
+	int32_t Index = XYFilters.IndexOf ( XYFilter );
+	
+	if ( Index == - 1 )
+		return;
+	
+	XYFilters.Remove ( Index, 1 );
+	
+};
+
+void MecanumDriveTrain :: AddMagDirFilter ( DSPFilter_2_2 * MagDirFilter )
+{
+	
+	if ( MagDirFilter != NULL )
+		MDFilters.Push ( MagDirFilter );
+	
+};
+
+void MecanumDriveTrain :: RemoveMagDirFilter ( DSPFilter_2_2 * MagDirFilter )
+{
+	
+	int32_t Index = MDFilters.IndexOf ( MagDirFilter );
+	
+	if ( Index == - 1 )
+		return;
+	
+	MDFilters.Remove ( Index, 1 );
+	
+};
+
+void MecanumDriveTrain :: AddRotationFilter ( DSPFilter_1_1 * RotationFilter )
+{
+	
+	if ( RotationFilter != NULL )
+		RFilters.Push ( RotationFilter );
+	
+};
+
+void MecanumDriveTrain :: RemoveRotationFilter ( DSPFilter_1_1 * RotationFilter )
+{
+	
+	int32_t Index = RFilters.IndexOf ( RotationFilter );
+	
+	if ( Index == - 1 )
+		return;
+	
+	RFilters.Remove ( Index, 1 );
+	
+};

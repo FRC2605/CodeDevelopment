@@ -114,13 +114,13 @@ void MecanumDriveTrain :: PushTransform ()
 	SinCalc = sin ( ForceAngle ) * ForceMagnitude;
 	CosCalc = cos ( ForceAngle ) * ForceMagnitude;
 	
-	if ( DriveBase != NULL && Enabled )
+	if ( ( DriveBase != NULL ) && Enabled )
 	{
 		
 		DriveBase -> SetMotor ( IQuadRectangularDriveBase :: kMotorPosition_FL, ( ( SineInverted ? CosCalc : SinCalc ) + LR ) * Scale );
 		DriveBase -> SetMotor ( IQuadRectangularDriveBase :: kMotorPosition_FR, ( ( SineInverted ? SinCalc : CosCalc ) - LR ) * Scale );
-		DriveBase -> SetMotor ( IQuadRectangularDriveBase :: kMotorPosition_FR, ( ( SineInverted ? SinCalc : CosCalc ) + LR ) * Scale );
-		DriveBase -> SetMotor ( IQuadRectangularDriveBase :: kMotorPosition_FR, ( ( SineInverted ? CosCalc : SinCalc ) - LR ) * Scale );
+		DriveBase -> SetMotor ( IQuadRectangularDriveBase :: kMotorPosition_RL, ( ( SineInverted ? SinCalc : CosCalc ) + LR ) * Scale );
+		DriveBase -> SetMotor ( IQuadRectangularDriveBase :: kMotorPosition_RR, ( ( SineInverted ? CosCalc : SinCalc ) - LR ) * Scale );
 		
 	}
 	

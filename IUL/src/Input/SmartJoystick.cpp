@@ -5,66 +5,81 @@
 * WheelFRC Team Sehome Semonsters 2605
 */
 
-SmartJoystick :: SmartJoystick ( int JoystickID, double Deadzone):
-	Joystick ( JoystickID ),
-	AxisDeadzone ( Deadzone )
+SmartJoystick :: SmartJoystick ( int ID, double DefaultDeadzone ):
+	Joystick ( ID ),
+	DefaultDeadzone ( DefaultDeadzone )
 {
 };
 
-double SmartJoystick :: GetXAxis ( bool DeadzoneEnabled, double Deadzone)
+double SmartJoystick :: GetXAxis ()
 {
-	float X;
-	X = this -> GetX ();
-
-	if ( DeadzoneEnabled )
-	{
-		CalcDeadzone ( X , Deadzone);
-	}
-	return X;
+	
+	return CalcDeadzone ( GetX (), DefaultDeadzone );
+	
 };
 
-double SmartJoystick :: GetYAxis ( bool DeadzoneEnabled, double Deadzone)
+double SmartJoystick :: GetXAxis ( double Deadzone )
 {
-	float Y;
-	Y = this -> GetY ();
-
-	if ( DeadzoneEnabled )
-	{
-		CalcDeadzone ( Y , Deadzone);
-	}
-	return Y;
+	
+	return CalcDeadzone ( GetX (),  Deadzone );
+	
 };
 
-double SmartJoystick :: GetZAxis ( bool DeadzoneEnabled, double Deadzone)
+double SmartJoystick :: GetYAxis ()
 {
-	float Z;
-	Z = this -> GetZ ();
+	
+	return CalcDeadzone ( GetY (), DefaultDeadzone );
+	
+}
 
-	if ( DeadzoneEnabled )
-	{
-		CalcDeadzone ( Z , Deadzone);
-	}
-	return Z;
+double SmartJoystick :: GetYAxis ( double Deadzone )
+{
+	
+	return CalcDeadzone ( GetY (), Deadzone );
+	
+};
+
+double SmartJoystick :: GetZAxis ()
+{
+	
+	return CalcDeadzone ( GetZ (), DefaultDeadzone );
+	
+}
+
+double SmartJoystick :: GetZAxis ( double Deadzone )
+{
+	
+	return CalcDeadzone ( GetZ (), Deadzone );
+	
+};
+
+double SmartJoystick :: GetSpecificAxis ( uint32_t Axis, double Deadzone )
+{
+	
+	return CalcDeadzone ( GetRawAxis ( Axis ), Deadzone );
+	
+};
+
+double SmartJoystick :: GetSpecificAxis ( uint32_t Axis )
+{
+	
+	return CalcDeadzone ( GetRawAxis ( Axis ), DefaultDeadzone );
+	
 };
 
 bool SmartJoystick :: GetButtonState ( uint32_t ButtonID )
 {
-	double State;
-	State = this -> GetRawButton ( ButtonID );
-
-	if ( State == 0 )
-
-		return true;
-
-	else
-
-		return false;
+	
+	return static_cast <bool> ( GetRawButton ( ButtonID ) );
+	
 };
 
-void SmartJoystick :: CalcDeadzone ( float & Value, double & Deadzone )
+double SmartJoystick :: CalcDeadzone ( double Value, double Deadzone )
 {
-	if ( Deadzone == 0.0 )
-		Deadzone = AxisDeadzone;
-	if ( abs ( Value ) <= ( Deadzone / 100 ) )
-		Value = 0;
+	
+	if ( abs ( Value ) <= Deadzone )
+		return 0;
+	
+	return Value;
+	
 };

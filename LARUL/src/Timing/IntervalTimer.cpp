@@ -4,8 +4,7 @@ IntervalTimer :: IntervalTimer ( TimeMode Mode ):
 	Time ( 0 ),
 	Offset ( 0 ),
 	Running ( false ),
-	Mode ( Mode ),
-	SyncMutex ( true )
+	Mode ( Mode )
 {
 };
 
@@ -15,8 +14,6 @@ IntervalTimer :: ~IntervalTimer ()
 
 void IntervalTimer :: Start ()
 {
-	
-	SyncMutex.Lock ();
 	
 	if ( Running )
 		return;
@@ -40,14 +37,10 @@ void IntervalTimer :: Start ()
 	
 	Running = true;
 	
-	SyncMutex.Unlock ();
-	
 };
 
 void IntervalTimer :: Stop ()
 {
-	
-	SyncMutex.Lock ();
 	
 	uint64_t Current;
 	
@@ -76,26 +69,18 @@ void IntervalTimer :: Stop ()
 	
 	Running = false;
 	
-	SyncMutex.Unlock ();
-	
 };
 
 void IntervalTimer :: Reset ()
 {
 	
-	SyncMutex.Lock ();
-	
 	Running = false;
 	Time = 0;
-	
-	SyncMutex.Unlock ();
 	
 };
 
 void IntervalTimer :: Restart ()
 {
-	
-	SyncMutex.Lock ();
 	
 	switch ( Mode )
 	{
@@ -122,8 +107,6 @@ void IntervalTimer :: Restart ()
 double IntervalTimer :: GetTimeMS ()
 {
 	
-	SyncMutex.Lock ();
-	
 	uint64_t Current;
 	
 	switch ( Mode )
@@ -145,8 +128,6 @@ double IntervalTimer :: GetTimeMS ()
 	
 	Current = Current - Offset;
 	Current += Time;
-	
-	SyncMutex.Unlock ();
 	
 	return (double) Current;
 	
@@ -155,8 +136,6 @@ double IntervalTimer :: GetTimeMS ()
 double IntervalTimer :: GetTimeS ()
 {
 	
-	SyncMutex.Lock ();
-	
 	uint64_t Current;
 	
 	switch ( Mode )
@@ -179,16 +158,12 @@ double IntervalTimer :: GetTimeS ()
 	Current = Current - Offset;
 	Current += Time;
 	
-	SyncMutex.Unlock ();
-	
 	return ( (double) Current ) / 1000.0;
 	
 };
 
 void IntervalTimer :: SetTimeMode ( TimeMode Mode )
 {
-	
-	SyncMutex.Lock ();
 	
 	bool Resume = Running;
 	
@@ -244,7 +219,5 @@ void IntervalTimer :: SetTimeMode ( TimeMode Mode )
 		Running = true;
 	
 	}
-	
-	SyncMutex.Unlock ();
 	
 };

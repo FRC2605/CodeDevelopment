@@ -5,18 +5,10 @@
 
 #include "../Motors/CANJaguarConfiguration.h"
 
-class CANJaguarQuadDriveBase
+#include "IQuadRectangularDriveBase.h"
+
+class CANJaguarQuadDriveBase : public IQuadRectangularDriveBase
 {
-	
-	typedef enum
-	{
-		
-		kMotorPosition_FL = 0,
-		kMotorPosition_FR = 1,
-		kMotorPosition_RL = 2,
-		kMotorPosition_RR = 3
-		
-	} MotorPosition;
 	
 	CANJaguarQuadDriveBase ( uint8_t CAN_ID_FL, uint8_t CAN_ID_FR, uint8_t CAN_ID_RL, uint8_t CAN_ID_RR, CANJaguarConfiguration Config );
 	~CANJaguarQuadDriveBase ();

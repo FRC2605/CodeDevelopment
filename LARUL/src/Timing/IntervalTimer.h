@@ -43,8 +43,6 @@ private:
 	
 	TimeMode Mode;
 	
-	Mutex SyncMutex;
-	
 };
 
 #endif

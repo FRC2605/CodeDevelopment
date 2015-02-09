@@ -21,6 +21,7 @@ public:
 	double GetZAxis ( double Deadzone );
 	
 	double GetSpecificAxis ( uint32_t Axis, double Deadzone );
+	double GetSpecificAxis ( uint32_t Axis );
 
 	bool GetButtonState ( uint32_t ButtonID );
 

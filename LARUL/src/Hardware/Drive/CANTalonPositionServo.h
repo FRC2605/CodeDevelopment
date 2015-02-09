@@ -3,7 +3,7 @@
 
 #include <WPILib.h>
 
-#include "../Motion/IPositionDrive.h"
+#include "../../Motion/IPositionDrive.h"
 
 class CANTalonPositionServo : public IPositionDrive
 {

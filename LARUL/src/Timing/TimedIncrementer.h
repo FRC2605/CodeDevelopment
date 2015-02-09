@@ -13,7 +13,7 @@ public:
 	void Start ();
 	void Stop ();
 	
-	bool Running ();
+	bool IsRunning ();
 	
 	void SetSpeed ( double Speed = 0.0 );
 	double GetSpeed ();

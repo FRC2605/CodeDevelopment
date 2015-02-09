@@ -1,15 +1,15 @@
 #include "TimedIncrementer.h"
 
-TimedIncrementer ( double Speed, double Offset ):
+TimedIncrementer :: TimedIncrementer ( double Speed, double Offset ):
 	Running ( false ),
 	Value ( Offset ),
 	Speed ( Speed ),
 	LastKey ( 0.0 ),
-	DeltaTimer (),
+	DeltaTimer ()
 {
 };
 
-~TimedIncrementer ()
+TimedIncrementer :: ~TimedIncrementer ()
 {
 };
 
@@ -41,14 +41,14 @@ void TimedIncrementer :: Stop ()
 	
 };
 
-bool TimedIncrementer :: Running ()
+bool TimedIncrementer :: IsRunning ()
 {
 	
 	return Running;
 	
 };
 
-void TimedIncrementer :: SetSpeed ( double Speed = 0.0 )
+void TimedIncrementer :: SetSpeed ( double Speed )
 {
 	
 	if ( Running )

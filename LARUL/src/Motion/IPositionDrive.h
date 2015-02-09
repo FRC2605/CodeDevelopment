@@ -1,6 +1,8 @@
 #ifndef LARUL_IPOSITIONDRIVE_H
 #define LARUL_IPOSITIONDRIVE_H
 
+#include "IActuatorDrive.h"
+
 class IPositionDrive : public IActuatorDrive
 {
 public:

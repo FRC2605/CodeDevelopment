@@ -138,10 +138,10 @@ void CANTalonQuadDriveBase :: SetPowerScale ( double Scale )
 	if ( Enabled )
 	{
 		
-		WheelFL.Set ( MInfoFL.SetPoint * MInfoFL.MotorInverted ? - PowerScale : PowerScale );
-		WheelFR.Set ( MInfoFR.SetPoint * MInfoFR.MotorInverted ? - PowerScale : PowerScale );
-		WheelRL.Set ( MInfoRL.SetPoint * MInfoRL.MotorInverted ? - PowerScale : PowerScale );
-		WheelRR.Set ( MInfoRR.SetPoint * MInfoRR.MotorInverted ? - PowerScale : PowerScale );
+		WheelFL.Set ( MInfoFL.SetPoint * ( MInfoFL.MotorInverted ? - PowerScale : PowerScale ) );
+		WheelFR.Set ( MInfoFR.SetPoint * ( MInfoFR.MotorInverted ? - PowerScale : PowerScale ) );
+		WheelRL.Set ( MInfoRL.SetPoint * ( MInfoRL.MotorInverted ? - PowerScale : PowerScale ) );
+		WheelRR.Set ( MInfoRR.SetPoint * ( MInfoRR.MotorInverted ? - PowerScale : PowerScale ) );
 		
 	}
 	
@@ -159,28 +159,28 @@ void CANTalonQuadDriveBase :: SetMotor ( MotorPosition Motor, double Value )
 	case kMotorPosition_FL:
 		
 		MInfoFL.SetPoint = Value;
-		WheelFL.Set ( MInfoFL.SetPoint * MInfoFL.MotorInverted ? - PowerScale : PowerScale );
+		WheelFL.Set ( MInfoFL.SetPoint * ( MInfoFL.MotorInverted ? - PowerScale : PowerScale ) );
 		
 		break;
 		
 	case kMotorPosition_FR:
 		
 		MInfoFR.SetPoint = Value;
-		WheelFR.Set ( MInfoFR.SetPoint * MInfoFR.MotorInverted ? - PowerScale : PowerScale );
+		WheelFR.Set ( MInfoFR.SetPoint * ( MInfoFR.MotorInverted ? - PowerScale : PowerScale ) );
 		
 		break;
 		
 	case kMotorPosition_RL:
 		
 		MInfoRL.SetPoint = Value;
-		WheelRL.Set ( MInfoRL.SetPoint * MInfoRL.MotorInverted ? - PowerScale : PowerScale );
+		WheelRL.Set ( MInfoRL.SetPoint * ( MInfoRL.MotorInverted ? - PowerScale : PowerScale ) );
 		
 		break;
 		
 	case kMotorPosition_RR:
 		
 		MInfoRR.SetPoint = Value;
-		WheelRR.Set ( MInfoRR.SetPoint * MInfoRR.MotorInverted ? - PowerScale : PowerScale );
+		WheelRR.Set ( MInfoRR.SetPoint * ( MInfoRR.MotorInverted ? - PowerScale : PowerScale ) );
 		
 		break;
 	

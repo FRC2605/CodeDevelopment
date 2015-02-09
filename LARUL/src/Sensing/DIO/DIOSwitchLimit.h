@@ -3,7 +3,7 @@
 
 #include <WPILib.h>
 
-#include "IMotionLimit.h"
+#include "../IMotionLimit.h"
 
 class DIOSwitchLimit : public IMotionLimit
 {

@@ -87,13 +87,13 @@ void IntervalTimer :: Restart ()
 		
 	case kTimeMode_Monotonic:
 	
-		Current = Clock :: GetTimeMonotonicMS ();
+		Offset = Clock :: GetTimeMonotonicMS ();
 		
 		break;
 	
 	case kTimeMode_System:
 	
-		Current = Clock :: GetTimeSystemMS ();
+		Offset = Clock :: GetTimeSystemMS ();
 		
 		break;
 		

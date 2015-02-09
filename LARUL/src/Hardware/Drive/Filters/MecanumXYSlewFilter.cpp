@@ -14,7 +14,7 @@ MecanumXYSlewFilter :: MecanumXYSlewFilter ( double MaxSlew, double MaxDelta ):
 	
 };
 
-MecanumXYSlewFilter :; ~MecanumXYSlewFilter ()
+MecanumXYSlewFilter :: ~MecanumXYSlewFilter ()
 {
 };
 
@@ -27,7 +27,7 @@ void MecanumXYSlewFilter :: Compute ( double FeedA, double FeedB )
 	if ( MaxSlew != 0.0 )
 	{
 		
-		double PortionalSlew = MaxSlew / min ( DeltaTimer.GetTimeS (), MaxDelta );
+		double PortionalSlew = MaxSlew / fmin ( DeltaTimer.GetTimeS (), MaxDelta );
 		DeltaTimer.Restart ();
 		
 		if ( abs ( DeltaX ) > PortionalSlew )
@@ -50,7 +50,7 @@ double MecanumXYSlewFilter :: ReadA ()
 	
 };
 
-double MecanumXYSlewFilter :; ReadB ()
+double MecanumXYSlewFilter :: ReadB ()
 {
 	
 	return LY;

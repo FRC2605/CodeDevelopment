@@ -1,7 +1,7 @@
 #ifndef LARUL_MECANUMDRIVETRAIN_H
 #define LARUL_MECANUMDRIVETRAIN_H
 
-#include <Hardware/Drive/IDriveTrain.h>
+#include "IDriveTrain.h"
 #include "IQuadRectangularDriveBase.h"
 
 #include "../../DSP/DSPFilter.h"

@@ -1,4 +1,4 @@
-#include "Hardware/Drive/Filters/MecanumMagDirOrientationOffset.h"
+#include "MecanumMagDirOrientationOffset.h"
 
 MecanumMagDirOrientationOffset :: MecanumMagDirOrientationOffset ( IAngularInput * Angle ):
 	Angle ( Angle ),

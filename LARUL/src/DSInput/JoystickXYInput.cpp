@@ -42,7 +42,7 @@ double JoystickXYInput :: GetX ()
 	
 	double RawX = Stick -> GetRawAxis ( XAxis );
 	
-	if ( abs ( RawX ) - Deadband < 0 )
+	if ( fabs ( RawX ) - Deadband < 0 )
 		RawX = 0.0;
 	
 	if ( InvertX )
@@ -57,7 +57,7 @@ double JoystickXYInput :: GetY ()
 	
 	double RawY = Stick -> GetRawAxis ( YAxis );
 	
-	if ( abs ( RawY ) - Deadband < 0 )
+	if ( fabs ( RawY ) - Deadband < 0 )
 		RawY = 0.0;
 	
 	if ( InvertY )

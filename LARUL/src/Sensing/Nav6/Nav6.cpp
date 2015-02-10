@@ -330,6 +330,10 @@ int32_t Nav6 :: DecodeRegularResponse ( uint8_t * Buffer, int32_t Length )
 	
 	AFS = static_cast <double> ( GetStreamInt16 ( Buffer, STREAM_RESPONSE_ACCEL_FULL_SCALE_G_RANGE ) ) / 16384.0;
 	
+	// TODO: FINISH
+	
+	return STREAM_RESPONSE_MESSAGE_LENGTH;
+	
 };
 
 int32_t Nav6 :: DecodeQuaternionResponse ( uint8_t * Buffer, int32_t Length )

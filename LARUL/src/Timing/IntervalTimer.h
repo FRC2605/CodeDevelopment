@@ -9,7 +9,9 @@
 
 #include "Clock.h"
 
-class IntervalTimer
+#include "../Sensing/IScalarInput.h"
+
+class IntervalTimer : public IScalarInput
 {
 public:
 	
@@ -20,6 +22,14 @@ public:
 		kTimeMode_System
 		
 	} TimeMode;
+	
+	typedef enum
+	{
+		
+		kScalarInputUnit_Seconds,
+		kScalarInputUnit_Milliseconds
+		
+	} ScalarInputUnit;
 	
 	IntervalTimer ( TimeMode Mode = kTimeMode_Monotonic );
 	~IntervalTimer ();
@@ -33,6 +43,13 @@ public:
 	double GetTimeS ();
 	
 	void SetTimeMode ( TimeMode Mode );
+	
+	void SetScalarInputUnits ( ScalarInputUnit Unit );
+	
+	double GetScalar ();
+	
+	ScalarLimit GetScalarLimitType ();
+	double GetLimitParam ( ScalarLimitParam Param );
 
 private:
 	
@@ -42,6 +59,8 @@ private:
 	bool Running;
 	
 	TimeMode Mode;
+	
+	ScalarInputUnit SIUnit;
 	
 };
 

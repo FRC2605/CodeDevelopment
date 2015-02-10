@@ -5,7 +5,7 @@ class IBehavior
 {
 public:
 	
-	virtual ~IBehavior () = 0;
+	virtual ~IBehavior () {};
 	
 	virtual void Init () = 0;
 	virtual void Destroy () = 0;

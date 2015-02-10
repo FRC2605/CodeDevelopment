@@ -1,5 +1,7 @@
 #include "TimedIncrementer.h"
 
+#include <math.h>
+
 TimedIncrementer :: TimedIncrementer ( double Speed, double Offset ):
 	Running ( false ),
 	Value ( Offset ),
@@ -102,5 +104,26 @@ void TimedIncrementer :: ApplyOffset ( double Offset )
 {
 	
 	Value += Offset;
+	
+};
+
+double TimedIncrementer :: GetScalar ()
+{
+	
+	return Get ();
+	
+};
+
+IScalarInput :: ScalarLimit TimedIncrementer :: GetScalarLimitType ()
+{
+	
+	return kScalarLimit_None;
+	
+};
+
+double TimedIncrementer :: GetLimitParam ( ScalarLimitParam Param )
+{
+	
+	return NAN;
 	
 };

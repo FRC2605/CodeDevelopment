@@ -1,10 +1,13 @@
 #include "IntervalTimer.h"
 
+#include <math.h>
+
 IntervalTimer :: IntervalTimer ( TimeMode Mode ):
 	Time ( 0 ),
 	Offset ( 0 ),
 	Running ( false ),
-	Mode ( Mode )
+	Mode ( Mode ),
+	SIUnit ( kScalarInputUnit_Seconds )
 {
 };
 
@@ -219,5 +222,49 @@ void IntervalTimer :: SetTimeMode ( TimeMode Mode )
 		Running = true;
 	
 	}
+	
+};
+
+void IntervalTimer :: SetScalarInputUnits ( ScalarInputUnit Unit )
+{
+	
+	SIUnit = Unit;
+	
+};
+
+double IntervalTimer :: GetScalar ()
+{
+	
+	switch ( SIUnit )
+	{
+	
+	case kScalarInputUnit_Seconds:
+		
+		return GetTimeS ();
+		
+	case kScalarInputUnit_Milliseconds:
+		
+		return GetTimeMS ();
+	
+	}
+	
+	return 0.0;
+	
+};
+
+IScalarInput :: ScalarLimit IntervalTimer :: GetScalarLimitType ()
+{
+	
+	return kScalarLimit_Low;
+	
+};
+
+double IntervalTimer :: GetLimitParam ( ScalarLimitParam Param )
+{
+	
+	if ( Param == kScalarLimitParam_LowLimit )
+		return 0.0;
+	
+	return NAN;
 	
 };

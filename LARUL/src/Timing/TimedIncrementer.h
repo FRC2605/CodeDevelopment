@@ -3,7 +3,9 @@
 
 #include "IntervalTimer.h"
 
-class TimedIncrementer
+#include "../Sensing/IScalarInput.h"
+
+class TimedIncrementer : public IScalarInput
 {
 public:
 	
@@ -21,6 +23,11 @@ public:
 	double Get ();
 	void Set ( double Value = 0.0 );
 	void ApplyOffset ( double Offset = 0.0 );
+	
+	double GetScalar ();
+	
+	ScalarLimit GetScalarLimitType ();
+	double GetLimitParam ( ScalarLimitParam Param );
 	
 private:
 	

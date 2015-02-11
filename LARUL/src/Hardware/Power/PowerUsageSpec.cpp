@@ -11,6 +11,10 @@ PowerUsageSpec :: PowerUsageSpec ( double MaxDraw, double MinDraw, double Expect
 {	
 };
 
+PowerUsageSpec :: ~PowerUsageSpec ()
+{
+};
+
 double PowerUsageSpec :: GetMaxDraw ()
 {
 	

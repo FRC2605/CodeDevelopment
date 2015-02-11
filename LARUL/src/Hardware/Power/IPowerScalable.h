@@ -6,13 +6,14 @@
 
 class IPowerScalable
 {
+public:
 	
 	virtual ~IPowerScalable () {};
 	
-	virtual PowerProfile * GetProfile ();
-	virtual PowerUsageSpec * GetSpec ();
+	virtual PowerProfile * GetProfile () = 0;
+	virtual PowerUsageSpec * GetSpec () = 0;
 	
-	virtual void SetPowerScale ( double Scale );
+	virtual void SetPowerScale ( double Scale ) = 0;
 	
 };
 

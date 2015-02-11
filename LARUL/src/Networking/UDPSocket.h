@@ -1,7 +1,7 @@
 #ifndef LARUL_UDPSOCKET_H
 #define LARUL_UDPSOCKET_H
 
-#include "../Util/Error.h"
+#include "../Util/LError.h"
 #include "../Util/Delegate.h"
 
 #include <cstring>
@@ -12,7 +12,6 @@
 #include <unistd.h>
 
 #include "../Threading/Mutex.h"
-#include "../Threading/Synchronized.h"
 
 #include "UDP.h"
 
@@ -31,6 +30,7 @@ public:
 	
 	void Write ( const void * Buffer, size_t Length, bool DontBlock = false );
 	void Read ( void * Buffer, size_t Length, bool Fill = true, size_t * Received = NULL );
+	void ReadFrom ( char * InAddress, size_t MaxAddressLength, void * Buffer, size_t Length, bool Fill = true, size_t * Received = NULL );
 	
 	void SetUserData ( void * UserData );
 	void * GetUserData ();
@@ -44,6 +44,9 @@ private:
 	
 	struct sockaddr_in IPV4Address;
 	struct sockaddr_in6 IPV6Address;
+	
+	struct sockaddr * SocketAddress;
+	socklen_t AddressSize;
 	
 	const char * Address;
 	uint16_t Port;

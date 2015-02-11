@@ -1,22 +1,12 @@
-#include "MecanumDrive.h"
+#include "MecanumDriveTrain.h"
+
 #include <math.h>
 
-/*
-* Copyright (C) 2015 Liam Taylor
-* WheelFRC Team Sehome Semonsters 2605
-*/
+#define PI_Div_4 0.78539816339
+#define SQRT_2 1.41421356237
 
-MecanumDrive :: MecMotorStruct :: MecMotorStruct ( SpeedController * Motor ):
-	Motor ( Motor ),
-	Inverted ( false )
-{
-};
-
-MecanumDrive :: MecanumDrive ( SpeedController * WheelFL, SpeedController * WheelFR, SpeedController * WheelRL, SpeedController * WheelRR ):
-	MotorFL ( WheelFL ),
-	MotorFR ( WheelFR ),
-	MotorRL ( WheelRL ),
-	MotorRR ( WheelRR ),
+MecanumDriveTrain :: MecanumDriveTrain ( IQuadRectangularDriveBase * DriveBase ):
+	DriveBase ( DriveBase ),
 	TX ( 0 ),
 	TY ( 0 ),
 	TR ( 0 ),
@@ -31,77 +21,44 @@ MecanumDrive :: MecanumDrive ( SpeedController * WheelFL, SpeedController * Whee
 {
 };
 
-MecanumDrive :: ~MecanumDrive () {};
-
-void MecanumDrive :: SetMotors ( SpeedController * WheelFL, SpeedController * WheelFR, SpeedController * WheelRL, SpeedController * WheelRR )
+void MecanumDriveTrain :: SetDriveBase ( IQuadRectangularDriveBase * DriveBase )
 {
 	
 	if ( Enabled )
 		return;
-
-	MotorFL.Motor = WheelFL;
-	MotorFR.Motor = WheelFR;
-	MotorRL.Motor = WheelRL;
-	MotorRR.Motor = WheelRR;
+	
+	this -> DriveBase = DriveBase;
 	
 };
 
-void MecanumDrive :: SetInverted ( bool WheelFL, bool WheelFR, bool WheelRL, bool WheelRR )
+void MecanumDriveTrain :: Enable ()
 {
 	
-	if ( Enabled )
-		return;
-
-	MotorFL.Inverted = WheelFL;
-	MotorFR.Inverted = WheelFR;
-	MotorRL.Inverted = WheelRL;
-	MotorRR.Inverted = WheelRR;
-	
-};
-
-bool MecanumDrive :: Enable ()
-{
-	
-	if ( MotorFL.Motor == NULL || MotorFR.Motor == NULL || MotorRL.Motor == NULL || MotorRR.Motor == NULL )
-		return false;
-	
-	uint32_t i;
-	
-	for ( i = 0; i < XYFilters.Length (); i ++ )
-		RFilters [ i ] -> Reset ();
-	
-	for ( i = 0; i < RFilters.Length (); i ++ )
-		XYFilters [ i ] -> Reset ();
-	
-	for ( i = 0; i < MDFilters.Length (); i ++ )
-		MDFilters [ i ] -> Reset ();
-
 	Enabled = true;
-	return true;
+	
+	if ( DriveBase != NULL )
+		DriveBase -> Enable ();
 	
 };
 
-void MecanumDrive :: Disable ()
+void MecanumDriveTrain :: Disable ()
 {
+	
+	if ( DriveBase != NULL )
+		DriveBase -> Disable ();
 	
 	Enabled = false;
 	
-	TX = 0;
-	TY = 0;
-	TR = 0;
-	
-	PushTransform ();
-	
 };
 
-bool MecanumDrive :: GetEnabled ()
+bool MecanumDriveTrain :: GetEnabled ()
 {
 	
 	return Enabled;
 	
 };
 
-void MecanumDrive :: PushTransform ()
+void MecanumDriveTrain :: PushTransform ()
 {
 	
 	double ForceAngle;
@@ -112,18 +69,6 @@ void MecanumDrive :: PushTransform ()
 	double LY;
 	double LR;
 	uint32_t i;
-	
-	if ( ! Enabled )
-	{
-
-		MotorFL.Motor -> Set ( 0 );
-		MotorFR.Motor -> Set ( 0 );
-		MotorRL.Motor -> Set ( 0 );
-		MotorRR.Motor -> Set ( 0 );
-		
-		return;
-	
-	}
 	
 	LX = TX;
 	LY = TY;
@@ -168,15 +113,20 @@ void MecanumDrive :: PushTransform ()
 	
 	SinCalc = sin ( ForceAngle ) * ForceMagnitude;
 	CosCalc = cos ( ForceAngle ) * ForceMagnitude;
-
-	MotorFL.Motor -> Set ( ( ( SineInverted ? CosCalc : SinCalc ) + LR ) * ( MotorFL.Inverted ? - Scale : Scale ) );
-	MotorFR.Motor -> Set ( ( ( SineInverted ? SinCalc : CosCalc ) - LR ) * ( MotorFR.Inverted ? - Scale : Scale ) );
-	MotorRL.Motor -> Set ( ( ( SineInverted ? SinCalc : CosCalc ) + LR ) * ( MotorRL.Inverted ? - Scale : Scale ) );
-	MotorRR.Motor -> Set ( ( ( SineInverted ? CosCalc : SinCalc ) - LR ) * ( MotorRR.Inverted ? - Scale : Scale ) );
+	
+	if ( ( DriveBase != NULL ) && Enabled )
+	{
+		
+		DriveBase -> SetMotor ( IQuadRectangularDriveBase :: kMotorPosition_FL, ( ( SineInverted ? CosCalc : SinCalc ) + LR ) * Scale );
+		DriveBase -> SetMotor ( IQuadRectangularDriveBase :: kMotorPosition_FR, ( ( SineInverted ? SinCalc : CosCalc ) - LR ) * Scale );
+		DriveBase -> SetMotor ( IQuadRectangularDriveBase :: kMotorPosition_RL, ( ( SineInverted ? SinCalc : CosCalc ) + LR ) * Scale );
+		DriveBase -> SetMotor ( IQuadRectangularDriveBase :: kMotorPosition_RR, ( ( SineInverted ? CosCalc : SinCalc ) - LR ) * Scale );
+		
+	}
 	
 };
 
-void MecanumDrive :: DebugValues ()
+void MecanumDriveTrain :: DebugValues ()
 {
 	
 	double ForceAngle;
@@ -231,30 +181,30 @@ void MecanumDrive :: DebugValues ()
 	SinCalc = sin ( ForceAngle ) * ForceMagnitude;
 	CosCalc = cos ( ForceAngle ) * ForceMagnitude;
 	
-	FL = ( ( SineInverted ? CosCalc : SinCalc ) + LR ) * ( MotorFL.Inverted ? - Scale : Scale );
-	FR = ( ( SineInverted ? SinCalc : CosCalc ) - LR ) * ( MotorFR.Inverted ? - Scale : Scale );
-	RL = ( ( SineInverted ? SinCalc : CosCalc ) + LR ) * ( MotorRL.Inverted ? - Scale : Scale );
-	RR = ( ( SineInverted ? CosCalc : SinCalc ) - LR ) * ( MotorRR.Inverted ? - Scale : Scale );
+	FL = ( ( SineInverted ? CosCalc : SinCalc ) + LR ) * Scale;
+	FR = ( ( SineInverted ? SinCalc : CosCalc ) - LR ) * Scale;
+	RL = ( ( SineInverted ? SinCalc : CosCalc ) + LR ) * Scale;
+	RR = ( ( SineInverted ? CosCalc : SinCalc ) - LR ) * Scale;
 	
 	printf ( "[ Mecanum Drive Debug ]\n%s\nInput X: %4.4f\nInput Y: %4.4f\nInput R: %4.4f\n[%+4.4f]---[%+4.4f]\n   |         |   \n   |         |   \n   |         |   \n   |         |   \n   |         |   \n   |         |   \n[%+4.4f]---[%+4.4f]\n", ( Enabled ? "Enabled." : "Disabled." ), TX, TY, TR, FL, FR, RL, RR );
 	
 };
 
-void MecanumDrive :: SetMotorScale ( double s )
+void MecanumDriveTrain :: SetMotorScale ( double S )
 {
 	
-	Scale = s;
+	Scale = S;
 	
 };
 
-double MecanumDrive :: GetMotorScale ()
+double MecanumDriveTrain :: GetMotorScale ()
 {
 	
 	return Scale;
 	
 };
 
-void MecanumDrive :: SetPreScale ( double Translation, double Rotation )
+void MecanumDriveTrain :: SetPreScale ( double Translation, double Rotation )
 {
 
 	PrescaleT = Translation;
@@ -262,21 +212,21 @@ void MecanumDrive :: SetPreScale ( double Translation, double Rotation )
 	
 };
 
-double MecanumDrive :: GetPreScaleRotation ()
+double MecanumDriveTrain :: GetPreScaleRotation ()
 {
 	
 	return PrescaleR;
 	
 };
 
-double MecanumDrive :: GetPreScaleTranslation ()
+double MecanumDriveTrain :: GetPreScaleTranslation ()
 {
 	
 	return PrescaleT;
 	
 };
 
-void MecanumDrive :: SetTranslation ( double X, double Y )
+void MecanumDriveTrain :: SetTranslation ( double X, double Y )
 {
 	
 	TX = X * SQRT_2 * PrescaleT;
@@ -284,21 +234,21 @@ void MecanumDrive :: SetTranslation ( double X, double Y )
 	
 };
 
-void MecanumDrive :: SetRotation ( double R )
+void MecanumDriveTrain :: SetRotation ( double R )
 {
 	
 	TR = R * PrescaleR;
 	
 };
 
-void MecanumDrive :: SetSineInversion ( bool SineInverted = false )
+void MecanumDriveTrain :: SetSineInversion ( bool SineInverted = false )
 {
 	
 	this -> SineInverted = SineInverted;
 	
 };
 
-void MecanumDrive :: AddXYFilter ( DSPFilter_2_2 * XYFilter )
+void MecanumDriveTrain :: AddXYFilter ( DSPFilter_2_2 * XYFilter )
 {
 	
 	if ( XYFilter != NULL )
@@ -306,7 +256,7 @@ void MecanumDrive :: AddXYFilter ( DSPFilter_2_2 * XYFilter )
 	
 };
 
-void MecanumDrive :: RemoveXYFilter ( DSPFilter_2_2 * XYFilter )
+void MecanumDriveTrain :: RemoveXYFilter ( DSPFilter_2_2 * XYFilter )
 {
 	
 	int32_t Index = XYFilters.IndexOf ( XYFilter );
@@ -318,7 +268,7 @@ void MecanumDrive :: RemoveXYFilter ( DSPFilter_2_2 * XYFilter )
 	
 };
 
-void MecanumDrive :: AddMagDirFilter ( DSPFilter_2_2 * MagDirFilter )
+void MecanumDriveTrain :: AddMagDirFilter ( DSPFilter_2_2 * MagDirFilter )
 {
 	
 	if ( MagDirFilter != NULL )
@@ -326,7 +276,7 @@ void MecanumDrive :: AddMagDirFilter ( DSPFilter_2_2 * MagDirFilter )
 	
 };
 
-void MecanumDrive :: RemoveMagDirFilter ( DSPFilter_2_2 * MagDirFilter )
+void MecanumDriveTrain :: RemoveMagDirFilter ( DSPFilter_2_2 * MagDirFilter )
 {
 	
 	int32_t Index = MDFilters.IndexOf ( MagDirFilter );
@@ -338,7 +288,7 @@ void MecanumDrive :: RemoveMagDirFilter ( DSPFilter_2_2 * MagDirFilter )
 	
 };
 
-void MecanumDrive :: AddRotationFilter ( DSPFilter_1_1 * RotationFilter )
+void MecanumDriveTrain :: AddRotationFilter ( DSPFilter_1_1 * RotationFilter )
 {
 	
 	if ( RotationFilter != NULL )
@@ -346,7 +296,7 @@ void MecanumDrive :: AddRotationFilter ( DSPFilter_1_1 * RotationFilter )
 	
 };
 
-void MecanumDrive :: RemoveRotationFilter ( DSPFilter_1_1 * RotationFilter )
+void MecanumDriveTrain :: RemoveRotationFilter ( DSPFilter_1_1 * RotationFilter )
 {
 	
 	int32_t Index = RFilters.IndexOf ( RotationFilter );
@@ -357,4 +307,3 @@ void MecanumDrive :: RemoveRotationFilter ( DSPFilter_1_1 * RotationFilter )
 	RFilters.Remove ( Index, 1 );
 	
 };
-

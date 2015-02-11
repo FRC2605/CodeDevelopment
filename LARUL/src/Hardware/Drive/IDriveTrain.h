@@ -3,13 +3,11 @@
 
 #include "../HWSystem.h"
 
-class DriveTrain : public HWSystem
+class IDriveTrain : public HWSystem
 {
 public:
 	
-	virtual ~DriveTrain () {};
-	
-	
+	virtual ~IDriveTrain () {};
 	
 };
 

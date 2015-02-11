@@ -1,12 +1,13 @@
 #ifndef LARUL_IACTUATORDRIVE_H
 #define LARUL_IACTUATORDRIVE_H
 
-class IActuatorDrive
+#include "../Hardware/HWSystem.h"
+
+class IActuatorDrive : public HWSystem
 {
 public:
 	
-	virtual void Enable ();
-	virtual void Disable ();
+	virtual ~IActuatorDrive () {};
 	
 };
 

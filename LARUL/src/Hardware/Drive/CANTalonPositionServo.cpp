@@ -10,6 +10,7 @@ CANTalonPositionServo :: CANTalonPositionServo ( uint8_t CAN_ID, CANTalon :: Fee
 	Motor.SetPID ( 0.0, 0.0, 0.0, 0.0 );
 	Motor.SetFeedbackDevice ( Feedback );
 	Motor.Set ( 0 );
+	Motor.SetPosition ( 0.0 );
 	Motor.EnableControl ();
 	
 };
@@ -115,8 +116,8 @@ void CANTalonPositionServo :: Disable ()
 		return;
 	
 	Motor.SetControlMode ( CANTalon :: kPercentVbus );
-	Motor.Set ( 0.0 );
-	
+	Motor.Set ( Motor.GetPosition () );
+	Motor.Disable ();
 	Enabled = false;
 	
 };

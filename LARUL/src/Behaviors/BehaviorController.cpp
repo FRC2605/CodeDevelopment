@@ -1,4 +1,4 @@
-#include "BehaviorController.h"
+#include "../Behaviors/BehaviorController.h"
 
 BehaviorController :: BehaviorController ():
 	Behaviors (),
@@ -42,7 +42,7 @@ void BehaviorController :: AddBehavior ( IBehavior * NewBehavior, const char * N
 	CurrentRecord -> State = kBehaviorState_Stopped;
 	CurrentRecord -> Name = Name;
 	
-	NewBehavior -> Init ();
+	NewBehavior -> Init ( this, Name );
 	
 	ListSync.Unlock ();
 	

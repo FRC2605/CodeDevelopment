@@ -3,8 +3,7 @@
 
 #include <string.h>
 
-#include "IBehavior.h"
-
+#include "../Behaviors/IBehavior.h"
 #include "../Threading/Mutex.h"
 
 #include "../Util/Vector.h"

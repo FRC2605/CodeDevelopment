@@ -63,11 +63,16 @@ void LinearSlide :: HomeLow ()
 	if ( LinearSlide :: Limit != NULL )
 	{
 		
+		double MPosition = Motor -> GetPosition ();
+		
 		switch ( Limit -> GetBounding () )
 		{
 		
 		case IMotionLimit :: kLimitBounding_Low:
 		case IMotionLimit :: kLimitBounding_HighLow:
+			
+			Motor -> SetPosition ( MPosition );
+			Targeter.Set ( MPosition );
 			
 			Targeter.SetSpeed ( - HomingSpeed );
 			
@@ -91,12 +96,16 @@ void LinearSlide :: HomeHigh ()
 	if ( LinearSlide :: Limit != NULL )
 	{
 		
+		double MPosition = Motor -> GetPosition ();
 		
 		switch ( Limit -> GetBounding () )
 		{
 		
 		case IMotionLimit :: kLimitBounding_High:
 		case IMotionLimit :: kLimitBounding_HighLow:
+			
+			Motor -> SetPosition ( MPosition );
+			Targeter.Set ( MPosition );
 			
 			Targeter.SetSpeed ( HomingSpeed );
 			
@@ -120,10 +129,15 @@ void LinearSlide :: Home ()
 	if ( LinearSlide :: Limit != NULL )
 	{
 		
+		double MPosition = Motor -> GetPosition ();
+		
 		switch ( Limit -> GetBounding () )
 		{
 		
 		case IMotionLimit :: kLimitBounding_HighLow:
+			
+			Motor -> SetPosition ( MPosition );
+			Targeter.Set ( MPosition );
 			
 			Targeter.SetSpeed ( - HomingSpeed );
 			
@@ -309,7 +323,7 @@ void LinearSlide :: Update ()
 				
 			case IMotionLimit :: kLimitBounding_HighLow:
 				
-				if ( ( Limit -> GetLowLimit () ) && ( Targeter.GetSpeed () < 0 ) )
+				if ( Limit -> GetLowLimit () && ( Targeter.GetSpeed () < 0 ) )
 				{
 					
 					double MPosition = Motor -> GetPosition ();
@@ -319,7 +333,7 @@ void LinearSlide :: Update ()
 					
 				}
 				
-				if ( ( Limit -> GetHighLimit () ) && ( Targeter.GetSpeed () > 0 ) )
+				if ( Limit -> GetHighLimit () && ( Targeter.GetSpeed () > 0 ) )
 				{
 					
 					double MPosition = Motor -> GetPosition ();
@@ -494,8 +508,8 @@ void LinearSlide :: SetHighLimit ( double HighLimit )
 	
 	double Delta = HighLimit - this -> HighLimit;
 	
-	Motor -> SetPosition ( Motor -> GetPosition () + Delta );
 	Targeter.Set ( Targeter.Get () + Delta );
+	Motor -> SetPosition ( Motor -> GetPosition () + Delta );
 	
 	this -> LowLimit += Delta;
 	this -> HighLimit += Delta;

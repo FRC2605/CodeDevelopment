@@ -263,14 +263,14 @@ double LinearSlide :: GetPosition ()
 double LinearSlide :: GetHighLimit ()
 {
 	
-	return LowLimit;
+	return HighLimit;
 	
 };
 
 double LinearSlide :: GetLowLimit ()
 {
 	
-	return HighLimit;
+	return LowLimit;
 	
 };
 
@@ -403,6 +403,17 @@ void LinearSlide :: Update ()
 					LowLimit = MPosition;
 					
 				}
+				else if ( Targeter.GetSpeed () != - HomingSpeed )
+				{
+					
+					double MPosition = Motor -> GetPosition ();
+					
+					Motor -> SetTarget ( MPosition );
+					
+					Targeter.Set ( MPosition );
+					Targeter.SetSpeed ( - HomingSpeed );
+					
+				}
 				
 				break;
 				
@@ -441,6 +452,17 @@ void LinearSlide :: Update ()
 					HighLimit = MPosition;
 					
 				}
+				else if ( Targeter.GetSpeed () != HomingSpeed )
+				{
+					
+					double MPosition = Motor -> GetPosition ();
+					
+					Motor -> SetTarget ( MPosition );
+					
+					Targeter.Set ( MPosition );
+					Targeter.SetSpeed ( HomingSpeed );
+					
+				}
 				
 				break;
 				
@@ -475,6 +497,17 @@ void LinearSlide :: Update ()
 				Targeter.SetSpeed ( HomingSpeed );
 				
 				State = kMode_HomeHigh;
+				
+			}
+			else if ( Targeter.GetSpeed () != - HomingSpeed )
+			{
+				
+				double MPosition = Motor -> GetPosition ();
+				
+				Motor -> SetTarget ( MPosition );
+					
+				Targeter.Set ( MPosition );
+				Targeter.SetSpeed ( - HomingSpeed );
 				
 			}
 			

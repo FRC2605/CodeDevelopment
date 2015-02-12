@@ -43,19 +43,19 @@ IMotionLimit :: LimitBounding DIOSwitchLimit :: GetBounding ()
 bool DIOSwitchLimit :: GetHighLimit ()
 {
 	
-	if ( LowLimit == NULL )
-		return false;
+	if ( HighLimit == NULL )
+		return InvertedH;
 	
-	return LowLimit -> Get () ^ InvertedL;
+	return HighLimit -> Get () ^ InvertedH;
 	
 };
 
 bool DIOSwitchLimit :: GetLowLimit ()
 {
 	
-	if ( HighLimit == NULL )
-		return false;
+	if ( LowLimit == NULL )
+		return InvertedL;
 	
-	return HighLimit -> Get () ^ InvertedH;
+	return LowLimit -> Get () ^ InvertedL;
 	
 };

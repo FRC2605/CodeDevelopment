@@ -82,8 +82,7 @@ double TimedIncrementer :: Get ()
 		
 		double End = DeltaTimer.GetTimeS ();
 		
-		Value += ( End - LastKey ) * Speed;
-		LastKey = End;
+		return Value + ( End - LastKey ) * Speed;
 		
 	}
 	

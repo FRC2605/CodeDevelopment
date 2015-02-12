@@ -1,6 +1,7 @@
 #include "LinearSlide.h"
 
 #include <math.h>
+#include <iostream>
 
 LinearSlide :: LinearSlide ( IPositionDrive * Motor, IMotionLimit * Limit, double HomingSpeed, double Initial, double LowLimit, double HighLimit ):
 	Motor ( Motor ),
@@ -60,7 +61,7 @@ void LinearSlide :: RunVelocity ( double Velocity )
 void LinearSlide :: HomeLow ()
 {
 	
-	if ( LinearSlide :: Limit != NULL )
+	if ( Limit != NULL )
 	{
 		
 		double MPosition = Motor -> GetPosition ();
@@ -75,6 +76,8 @@ void LinearSlide :: HomeLow ()
 			Targeter.Set ( MPosition );
 			
 			Targeter.SetSpeed ( - HomingSpeed );
+			
+			std :: cout << "LinearSlide: Homing low\n";
 			
 			break;
 			
@@ -93,7 +96,7 @@ void LinearSlide :: HomeLow ()
 void LinearSlide :: HomeHigh ()
 {
 	
-	if ( LinearSlide :: Limit != NULL )
+	if ( Limit != NULL )
 	{
 		
 		double MPosition = Motor -> GetPosition ();
@@ -126,7 +129,7 @@ void LinearSlide :: HomeHigh ()
 void LinearSlide :: Home ()
 {
 	
-	if ( LinearSlide :: Limit != NULL )
+	if ( Limit != NULL )
 	{
 		
 		double MPosition = Motor -> GetPosition ();
@@ -278,13 +281,12 @@ void LinearSlide :: Update ()
 {
 	
 	double Target = Targeter.Get ();
+	Motor -> SetTarget ( Target );
 	
 	switch ( State )
 	{
 		
 	case kMode_Velocity:
-		
-		Motor -> SetTarget ( Targeter.Get () ); 
 		
 		if ( Limit != NULL )
 		{
@@ -325,6 +327,8 @@ void LinearSlide :: Update ()
 				if ( Limit -> GetLowLimit () && ( Targeter.GetSpeed () < 0 ) )
 				{
 					
+					std :: cout << "LLimit: Hard\n";
+					
 					double MPosition = Motor -> GetPosition ();
 					
 					Motor -> SetTarget ( MPosition );
@@ -334,6 +338,8 @@ void LinearSlide :: Update ()
 				
 				if ( Limit -> GetHighLimit () && ( Targeter.GetSpeed () > 0 ) )
 				{
+					
+					std :: cout << "HLimit: Hard\n";
 					
 					double MPosition = Motor -> GetPosition ();
 						
@@ -355,6 +361,8 @@ void LinearSlide :: Update ()
 		if ( Target > HighLimit )
 		{
 			
+			std :: cout << "HLimit: Soft\n";
+			
 			Targeter.SetSpeed ( 0.0 );
 			Targeter.Set ( HighLimit );
 			
@@ -365,6 +373,8 @@ void LinearSlide :: Update ()
 		}
 		else if ( Target < LowLimit )
 		{
+			
+			std :: cout << "LLimit: Soft\n";
 			
 			Targeter.SetSpeed ( 0.0 );
 			Targeter.Set ( LowLimit );
@@ -378,8 +388,6 @@ void LinearSlide :: Update ()
 		break;
 		
 	case kMode_HomeLow:
-		
-		Motor -> SetTarget ( Targeter.Get () ); 
 		
 		if ( Limit != NULL )
 		{
@@ -406,11 +414,6 @@ void LinearSlide :: Update ()
 				else if ( Targeter.GetSpeed () != - HomingSpeed )
 				{
 					
-					double MPosition = Motor -> GetPosition ();
-					
-					Motor -> SetTarget ( MPosition );
-					
-					Targeter.Set ( MPosition );
 					Targeter.SetSpeed ( - HomingSpeed );
 					
 				}
@@ -427,8 +430,6 @@ void LinearSlide :: Update ()
 		break;
 		
 	case kMode_HomeHigh:
-		
-		Motor -> SetTarget ( Targeter.Get () ); 
 		
 		if ( Limit != NULL )
 		{
@@ -476,8 +477,6 @@ void LinearSlide :: Update ()
 		break;
 		
 	case kMode_HomeLowHigh:
-		
-		Motor -> SetTarget ( Targeter.Get () ); 
 		
 		if ( Limit != NULL )
 		{

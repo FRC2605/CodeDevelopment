@@ -1,5 +1,7 @@
 #include "CANTalonPositionServo.h"
 
+#include <iostream>
+
 CANTalonPositionServo :: CANTalonPositionServo ( uint8_t CAN_ID, CANTalon :: FeedbackDevice Feedback, uint8_t PDPChannel ):
 	Motor ( CAN_ID ),
 	Target ( 0.0 ),
@@ -106,6 +108,8 @@ void CANTalonPositionServo :: Enable ()
 	
 	Motor.EnableControl ();
 	
+	std :: cout << "CANTalonPositionServo :: Enable ();\n";
+	
 };
 
 void CANTalonPositionServo :: Disable ()
@@ -118,6 +122,8 @@ void CANTalonPositionServo :: Disable ()
 	Motor.Set ( 0.0 );
 	
 	Enabled = false;
+	
+	std :: cout << "CANTalonPositionServo :: Disable ();\n";
 	
 };
 

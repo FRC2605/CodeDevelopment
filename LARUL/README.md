@@ -14,6 +14,7 @@ Current Features
 - Synchronously scheduled asynchronous event loop.
 - Custom optimized and caching allocation schemes.
 - Cleanly wrapped TCP networking.
+- Cleanly wrapped UDP networking.
 - Fully featured POSIX Thread library wrapper.
 - Asynchronous message queue with timing utilities
 - Arbitrary address locking mechanism.
@@ -30,13 +31,11 @@ Partial Features
 
 Planned Features
 ----------------
-- Cleanly wrapped UDP networking.
-- Further motion and sensor abstraction and management.
 - Whatever else I feel like at any point in time...
+- IMU/Inertial navigation utilities.
 
 Tentatively Planned Features
 ----------------------------
 - Possible python scripting utility wrapping CPython.
-- IMU/Inertial navigation utilities.
 - We just don't know
 

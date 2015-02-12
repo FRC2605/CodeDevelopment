@@ -171,7 +171,6 @@ bool LinearSlide :: IsHoming ()
 	
 	case kMode_Velocity:
 	case kMode_Position:
-	case kMode_HomeLowHigh:
 		
 		return false;
 		

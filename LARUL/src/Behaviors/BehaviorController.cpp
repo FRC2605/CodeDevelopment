@@ -1,8 +1,9 @@
 #include "../Behaviors/BehaviorController.h"
 
+#include <iostream>
+
 BehaviorController :: BehaviorController ():
-	Behaviors (),
-	ListSync ()
+	Behaviors ()
 {
 };
 
@@ -13,8 +14,6 @@ BehaviorController :: ~BehaviorController ()
 void BehaviorController :: AddBehavior ( IBehavior * NewBehavior, const char * Name )
 {
 	
-	ListSync.Lock ();
-	
 	BehaviorRecord * CurrentRecord = GetBehavior ( Name );
 	
 	if ( CurrentRecord != NULL )
@@ -23,7 +22,7 @@ void BehaviorController :: AddBehavior ( IBehavior * NewBehavior, const char * N
 		IBehavior * OldBehavior = CurrentRecord -> Behavior;
 		BehaviorState OldState = CurrentRecord -> State;
 		
-		if ( OldState == kBehaviorState_Stopped )
+		if ( OldState != kBehaviorState_Stopped )
 			OldBehavior -> Stop ();
 		
 		OldBehavior -> Destroy ();
@@ -44,19 +43,15 @@ void BehaviorController :: AddBehavior ( IBehavior * NewBehavior, const char * N
 	
 	NewBehavior -> Init ( this, Name );
 	
-	ListSync.Unlock ();
-	
 };
 
 void BehaviorController :: RemoveBehavior ( const char * Name )
 {
 	
-	ListSync.Lock ();
-	
 	for ( uint32_t i = 0; i < Behaviors.Length (); i ++ )
 	{
 		
-		if ( strcmp ( Behaviors [ i ].Name, Name ) == 0 )
+		if ( ( Name == Behaviors [ i ].Name ) || ( strcmp ( Behaviors [ i ].Name, Name ) == 0 ) )
 		{
 			
 			if ( Behaviors [ i ].State == kBehaviorState_Running )
@@ -72,23 +67,21 @@ void BehaviorController :: RemoveBehavior ( const char * Name )
 		
 	}
 	
-	ListSync.Unlock ();
-	
 };
 
 void BehaviorController :: StartBehavior ( const char * Name )
 {
 	
-	ListSync.Lock ();
-	
 	for ( uint32_t i = 0; i < Behaviors.Length (); i ++ )
 	{
 		
-		if ( strcmp ( Behaviors [ i ].Name, Name ) == 0 )
+		if ( ( Name == Behaviors [ i ].Name ) || ( strcmp ( Behaviors [ i ].Name, Name ) == 0 ) )
 		{
 			
-			if ( Behaviors [ i ].State != kBehaviorState_Stopped )
+			if ( Behaviors [ i ].State == kBehaviorState_Running )
 				break;
+			
+			std :: cout << "Starting behavior: " << Name << "\n";
 			
 			Behaviors [ i ].State = kBehaviorState_Running;
 			Behaviors [ i ].Behavior -> Start ();
@@ -99,23 +92,21 @@ void BehaviorController :: StartBehavior ( const char * Name )
 		
 	}
 	
-	ListSync.Unlock ();
-	
 };
 
 void BehaviorController :: StopBehavior ( const char * Name )
 {
 	
-	ListSync.Lock ();
-	
 	for ( uint32_t i = 0; i < Behaviors.Length (); i ++ )
 	{
 		
-		if ( strcmp ( Behaviors [ i ].Name, Name ) == 0 )
+		if ( ( Name == Behaviors [ i ].Name ) || ( strcmp ( Behaviors [ i ].Name, Name ) == 0 ) )
 		{
 			
-			if ( Behaviors [ i ].State != kBehaviorState_Running )
+			if ( Behaviors [ i ].State == kBehaviorState_Stopped )
 				break;
+			
+			std :: cout << "Stopping behavior: " << Name << "\n";
 			
 			Behaviors [ i ].State = kBehaviorState_Stopped;
 			Behaviors [ i ].Behavior -> Stop ();
@@ -126,19 +117,18 @@ void BehaviorController :: StopBehavior ( const char * Name )
 		
 	}
 	
-	ListSync.Unlock ();
-	
 };
 
 void BehaviorController :: Update ()
 {
 	
-	ListSync.Lock ();
-	
 	for ( uint32_t i = 0; i < Behaviors.Length (); i ++ )
-		Behaviors [ i ].Behavior -> Update ();
-	
-	ListSync.Unlock ();
+	{
+		
+		if ( Behaviors [ i ].State == kBehaviorState_Running )
+			Behaviors [ i ].Behavior -> Update ();
+		
+	}
 	
 };
 

@@ -157,6 +157,7 @@ bool LinearSlide :: IsHoming ()
 	
 	case kMode_Velocity:
 	case kMode_Position:
+	case kMode_HomeLowHigh:
 		
 		return false;
 		
@@ -198,7 +199,7 @@ bool LinearSlide :: TargetReached ( double Tolerance )
 		case IMotionLimit :: kLimitBounding_HighLow:
 		case IMotionLimit :: kLimitBounding_Low:
 			
-			return Limit -> GetLowLimit ();
+			return ( Limit -> GetLowLimit () ) || ( abs ( Motor -> GetPosition () - LowLimit ) < Tolerance );
 			
 		default:
 			
@@ -219,7 +220,7 @@ bool LinearSlide :: TargetReached ( double Tolerance )
 		case IMotionLimit :: kLimitBounding_High:
 		case IMotionLimit :: kLimitBounding_HighLow:
 			
-			return Limit -> GetHighLimit ();
+			return ( Limit -> GetHighLimit () ) || ( abs ( Motor -> GetPosition () - HighLimit ) < Tolerance );
 			
 		default:
 			
@@ -280,7 +281,7 @@ void LinearSlide :: Update ()
 			
 			case IMotionLimit :: kLimitBounding_Low:
 				
-				if ( Limit -> GetLowLimit () && Targeter.GetSpeed () < 0 )
+				if ( ( Limit -> GetLowLimit () ) && ( Targeter.GetSpeed () < 0 ) )
 				{
 					
 					double MPosition = Motor -> GetPosition ();
@@ -294,7 +295,7 @@ void LinearSlide :: Update ()
 				
 			case IMotionLimit :: kLimitBounding_High:
 				
-				if ( Limit -> GetHighLimit () && Targeter.GetSpeed () > 0 )
+				if ( ( Limit -> GetHighLimit () ) && ( Targeter.GetSpeed () > 0 ) )
 				{
 					
 					double MPosition = Motor -> GetPosition ();
@@ -308,7 +309,7 @@ void LinearSlide :: Update ()
 				
 			case IMotionLimit :: kLimitBounding_HighLow:
 				
-				if ( Limit -> GetLowLimit () && Targeter.GetSpeed () < 0 )
+				if ( ( Limit -> GetLowLimit () ) && ( Targeter.GetSpeed () < 0 ) )
 				{
 					
 					double MPosition = Motor -> GetPosition ();
@@ -318,7 +319,7 @@ void LinearSlide :: Update ()
 					
 				}
 				
-				if ( Limit -> GetHighLimit () && Targeter.GetSpeed () > 0 )
+				if ( ( Limit -> GetHighLimit () ) && ( Targeter.GetSpeed () > 0 ) )
 				{
 					
 					double MPosition = Motor -> GetPosition ();

@@ -13,7 +13,7 @@ JoystickButtonInput :: ~JoystickButtonInput ()
 bool JoystickButtonInput :: GetBoolean ()
 {
 	
-	return Stick -> GetRawButton ( Button ) != 0;
+	return Stick -> GetRawButton ( Button );
 	
 };
 

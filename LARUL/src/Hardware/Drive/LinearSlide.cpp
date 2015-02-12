@@ -477,6 +477,45 @@ void LinearSlide :: Update ()
 	
 };
 
+void LinearSlide :: SetLowLimit ( double LowLimit )
+{
+	
+	double Delta = LowLimit - this -> LowLimit;
+	
+	Motor -> SetPosition ( Motor -> GetPosition () + Delta );
+	Targeter.Set ( Targeter.Get () + Delta );
+	
+	this -> LowLimit += Delta;
+	this -> HighLimit += Delta;
+};
+
+void LinearSlide :: SetHighLimit ( double HighLimit )
+{
+	
+	double Delta = HighLimit - this -> HighLimit;
+	
+	Motor -> SetPosition ( Motor -> GetPosition () + Delta );
+	Targeter.Set ( Targeter.Get () + Delta );
+	
+	this -> LowLimit += Delta;
+	this -> HighLimit += Delta;
+	
+};
+
+void LinearSlide :: OverrideLowLimit ( double LowLimit )
+{
+	
+	this -> LowLimit = LowLimit;
+	
+};
+
+void LinearSlide :: OverrideHighLimit ( double HighLimit )
+{
+	
+	this -> HighLimit = HighLimit;
+	
+};
+
 void LinearSlide :: Disable ()
 {
 	

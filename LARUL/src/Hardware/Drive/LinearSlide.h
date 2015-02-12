@@ -30,6 +30,12 @@ public:
 	double GetHighLimit ();
 	double GetLowLimit ();
 	
+	void SetLowLimit ( double LowLimit );
+	void SetHighLimit ( double HighLimit );
+	
+	void OverrideLowLimit ( double LowLimit );
+	void OverrideHighLimit ( double LowLimit );
+	
 	void Update ();
 	
 	void Disable ();

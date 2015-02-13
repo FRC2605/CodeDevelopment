@@ -4,8 +4,11 @@
 
 #include <stdlib.h>
 #include <math.h>
+#include <iostream>
+#include <string.h>
 
 Nav6 :: Nav6 ( ISerialInterface * Serial, uint8_t UpdateRate ):
+	StopRequested ( false ),
 	Serial ( Serial ),
 	UpdateRate ( UpdateRate ),
 	Yaw ( 0 ),
@@ -17,10 +20,12 @@ Nav6 :: Nav6 ( ISerialInterface * Serial, uint8_t UpdateRate ):
 	CompassHeading ( 0 ),
 	Orientation (),
 	SerialUpdateClosure ( & Nav6 :: SerialUpdate, this ),
-	SerialThread ( & SerialUpdateClosure ),
-	StoppedCondition ( true ),
-	StopRequested ( false )
+	SerialThread ( & SerialUpdateClosure, false, 20, Thread :: kSchedulingPolicy_RoundRobin ),
+	StoppedCondition ( true )
 {
+	
+	SerialThread.SetName ( "FRC_NAV6" );
+	
 };
 
 Nav6 :: ~Nav6 ()
@@ -65,35 +70,37 @@ void Nav6 :: Stop ( bool Wait )
 double Nav6 :: GetYaw ()
 {
 	
-	return 0.0;
+	return Yaw;
 	
 };
 
 double Nav6 :: GetPitch ()
 {
 	
-	return 0.0;
+	return Pitch;
 	
 };
 
 double Nav6 :: GetRoll ()
 {
 	
-	return 0.0;
+	return Roll;
 	
 };
 
 double Nav6 :: GetCompassHeading ()
 {
 	
-	return 0.0;
+	return CompassHeading;
 	
 };
 
 void Nav6 :: SendStreamCommand ( uint8_t UpdateRate )
 {
 	
-	uint8_t Buff [ 8 ];
+	std :: cout << "STREAM COMMAND!\n";
+	
+	uint8_t Buff [ 9 ];
 	
 	Buff [ 0 ] = PACKET_START_CHAR;
 	Buff [ 1 ] = MSGID_STREAM_CMD;
@@ -102,8 +109,9 @@ void Nav6 :: SendStreamCommand ( uint8_t UpdateRate )
 	
 	SetStreamTermination ( Buff, 5 );
 	
-	Serial -> Write ( Buff, 8 );
+	Serial -> Write ( Buff, 9 );
 	Serial -> Flush ();
+	Serial -> Reset ();
 	
 };
 
@@ -231,37 +239,50 @@ double Nav6 :: GetStreamNumber ( uint8_t * Buffer, uint32_t Index )
 void Nav6 :: SetStreamTermination ( uint8_t * Buffer, uint32_t MessageLength )
 {
 	
-	Buffer [ MessageLength ] = CalculateChecksum ( Buffer, MessageLength );
-	Buffer [ MessageLength + 1 ] = '\r';
-	Buffer [ MessageLength + 2 ] = '\n';
-	Buffer [ MessageLength + 3 ] = '\0';
+	SetStreamUint8 ( Buffer, MessageLength, CalculateChecksum ( Buffer, MessageLength ) );
+	
+	Buffer [ MessageLength + 2 ] = '\r';
+	Buffer [ MessageLength + 3 ] = '\n';
+	Buffer [ MessageLength + 4 ] = '\0';
 	
 };
+
+#define SERIAL_BUFF 256
 
 void Nav6 :: SerialUpdate ( Thread * UpdateThread )
 {
 	
 	IntervalTimer Timeout;
 	
-	uint8_t Buffer [ 1024 ];
+	uint8_t Buffer [ SERIAL_BUFF ];
 	int32_t Offset = 0;
+		
+	Serial -> SetTimeoutMS ( 20000 );
+	
+	Serial -> Open ();
+	Serial -> Reset ();
 	
 	SendStreamCommand ( UpdateRate );
 	
 	Timeout.Start ();
 	
-	Serial -> SetTimeoutMS ( 2 );
-	
 	while ( ! StopRequested )
 	{
 		
 		if ( Timeout.GetTimeMS () > 3000 )
+		{
+			
 			SendStreamCommand ( UpdateRate );
+			
+			Timeout.Restart ();
+			
+			Offset = 0;
+			
+		}
 		
-		Offset += Serial -> Read ( & Buffer [ Offset ], 1024 - Offset, -1, true );
+		Offset += Serial -> Read ( & Buffer [ Offset ], SERIAL_BUFF - Offset, - 1, false );
 		
 		int32_t i = 0;
-		int32_t LastPacketEnd = INT32_MAX;
 		
 		while ( i < Offset )
 		{
@@ -273,10 +294,13 @@ void Nav6 :: SerialUpdate ( Thread * UpdateThread )
 			if ( DecodeOffset != - 1 )
 			{
 				
-				i += DecodeOffset;
-				LastPacketEnd = i;
+				for ( int32_t o = i; o < Offset - ( i + DecodeOffset ); o ++ )
+					Buffer [ o ] = Buffer [ o + DecodeOffset ];
+				
+				Offset -= DecodeOffset;
 				
 				Timeout.Restart ();
+				
 				continue;
 				
 			}
@@ -286,25 +310,21 @@ void Nav6 :: SerialUpdate ( Thread * UpdateThread )
 			if ( DecodeOffset != - 1 )
 			{
 				
-				i += DecodeOffset;
-				LastPacketEnd = i;
+				for ( int32_t o = i; o < Offset - ( i + DecodeOffset ); o ++ )
+					Buffer [ o ] = Buffer [ o + DecodeOffset ];
+				
+				Offset -= DecodeOffset;
 				
 				Timeout.Restart ();
+				
 				continue;
 			
 			}
 			
 			i ++;
 			
-		}
-		
-		if ( LastPacketEnd < Offset )
-		{
-			
-			for ( int32_t o = 0; o < ( Offset - LastPacketEnd ); o ++ )
-				Buffer [ o ] = Buffer [ o + LastPacketEnd ];
-			
-			Offset -= LastPacketEnd;
+			if ( i == SERIAL_BUFF - 1 )
+				Serial -> Reset ();
 			
 		}
 		

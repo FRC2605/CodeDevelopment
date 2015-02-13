@@ -1,8 +1,13 @@
 #include "WPICom.h"
 
 WPICom :: WPICom ( SerialPort * Port ):
-	Port ( Port )
+	Port ( Port ),
+	PortOpen ( false )
 {
+	
+	Port -> DisableTermination ();
+	Port -> SetWriteBufferMode ( SerialPort :: kFlushOnAccess );
+	
 };
 
 WPICom :: ~WPICom ()
@@ -25,6 +30,13 @@ void WPICom :: Open ()
 	Port -> Reset ();
 	
 	PortOpen = true;
+	
+};
+
+void WPICom :: Reset ()
+{
+	
+	Port -> Reset ();
 	
 };
 

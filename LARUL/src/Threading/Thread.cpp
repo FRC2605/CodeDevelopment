@@ -404,7 +404,7 @@ void Thread :: SetName ( const char * Name )
 	
 };
 
-void WaitS ( double Seconds )
+void Thread :: WaitS ( double Seconds )
 {
 	
 	struct timespec WaitTime;
@@ -416,7 +416,7 @@ void WaitS ( double Seconds )
 	
 };
 
-void WaitMS ( uint64_t MS )
+void Thread :: WaitMS ( uint64_t MS )
 {
 	
 	struct timespec WaitTime;

@@ -32,6 +32,8 @@ public:
 	
 private:
 	
+	bool StopRequested;
+	
 	ISerialInterface * Serial;
 	uint8_t UpdateRate;
 	
@@ -67,13 +69,12 @@ private:
 	int32_t DecodeQuaternionResponse ( uint8_t * Buffer, int32_t Length );
 	
 	void SerialUpdate ( Thread * UpdateThread );
-	
+
 	MethodClosure1 <Nav6, void, Thread *> SerialUpdateClosure;
 	
 	Thread SerialThread;
 	
 	Condition StoppedCondition;
-	bool StopRequested;
 	
 };
 

@@ -19,10 +19,12 @@ public:
 	
 	int32_t Write ( uint8_t * Buffer, uint32_t Length, bool Timeout = false );
 	int32_t Read ( uint8_t * Buffer, uint32_t Max, int32_t Length = - 1, bool Timeout = true );
-	void Flush ();
 	
-	virtual void SetTimeoutMS ( uint64_t TimeoutMS );
-	virtual bool TimeoutAvailible ();
+	void Flush ();
+	void Reset ();
+	
+	void SetTimeoutMS ( uint64_t TimeoutMS );
+	bool TimeoutAvailible ();
 	
 	uint32_t AvailableByteCount ();
 	

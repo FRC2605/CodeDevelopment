@@ -1,5 +1,7 @@
 #include "WPICom.h"
 
+#ifndef NO_WPILIB
+
 WPICom :: WPICom ( SerialPort * Port ):
 	Port ( Port ),
 	PortOpen ( false )
@@ -108,3 +110,5 @@ uint32_t WPICom :: AvailableByteCount ()
 	return Port -> GetBytesReceived ();
 	
 };
+
+#endif

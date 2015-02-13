@@ -1,6 +1,7 @@
 #ifndef LARUL_POWER_H
 #define LARUL_POWER_H
 
+#ifndef NO_WPILIB
 #include <WPILib.h>
 
 class Power
@@ -19,5 +20,7 @@ private:
 	static PowerDistributionPanel * PDP;
 	
 };
+
+#endif
 
 #endif

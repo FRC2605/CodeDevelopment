@@ -18,4 +18,7 @@
 // Default size for lookback buffers in filters
 #define FILTER_LOOKBACK_SIZE_DEFAULT 16
 
+// Whether or not we are building with WPILib
+//#define NO_WPILIB
+
 #endif

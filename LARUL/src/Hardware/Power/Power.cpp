@@ -1,5 +1,7 @@
 #include "Power.h"
 
+#ifndef NO_WPILIB
+
 PowerDistributionPanel * Power :: PDP = NULL;
 
 Power :: Power ()
@@ -24,3 +26,4 @@ PowerDistributionPanel * Power :: GetPDP ()
 	
 };
 
+#endif

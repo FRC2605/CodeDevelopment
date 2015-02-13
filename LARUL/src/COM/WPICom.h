@@ -3,6 +3,9 @@
 
 #include "ISerialInterface.h"
 
+#include "../LARULTuning.h"
+
+#ifndef NO_WPILIB
 #include <WPILib.h>
 
 class WPICom : public ISerialInterface
@@ -35,5 +38,7 @@ private:
 	bool PortOpen;
 	
 };
+
+#endif
 
 #endif

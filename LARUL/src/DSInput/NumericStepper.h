@@ -1,7 +1,5 @@
-#ifndef SHS_2605_NUMERIC_STEPPER_H
-#define SHS_2605_NUMERIC_STEPPER_H
-
-#include "WPILib.h"
+#ifndef LARUL_NUMERICSTEPPER_H
+#define LARUL_NUMERICSTEPPER_H
 
 #include <stdint.h>
 
@@ -10,6 +8,9 @@
 * NumericStepper is literally just that. You feed it an HID device and two button indexes and it will keep track of a counted value based on button presses.
 * Note that Update () should be called every time there is new DS data, which should be taken care of in your main robot loop.
 */
+
+#ifndef NO_WPILIB
+#include <WPILib.h>
 
 class NumericStepper
 {
@@ -49,5 +50,7 @@ private:
 	bool DownButtonState;
 
 };
+
+#endif
 
 #endif

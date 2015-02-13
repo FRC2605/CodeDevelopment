@@ -1,6 +1,7 @@
 #include "TimedIncrementer.h"
 
 #include <math.h>
+#include <iostream>
 
 TimedIncrementer :: TimedIncrementer ( double Speed, double Offset ):
 	Running ( false ),
@@ -41,6 +42,8 @@ void TimedIncrementer :: Stop ()
 	
 	Value += ( End - LastKey ) * Speed;
 	
+	Running = false;
+	
 };
 
 bool TimedIncrementer :: IsRunning ()
@@ -52,6 +55,8 @@ bool TimedIncrementer :: IsRunning ()
 
 void TimedIncrementer :: SetSpeed ( double Speed )
 {
+	
+	std :: cout << "Incrementer: SetSpeed ( " << Speed << " )\n";
 	
 	if ( Running )
 	{
@@ -86,6 +91,8 @@ double TimedIncrementer :: Get ()
 		
 	}
 	
+	std :: cout << "Incrementer: Get (): " << Value << "\n";
+	
 	return Value;
 	
 };
@@ -96,6 +103,8 @@ void TimedIncrementer :: Set ( double Value )
 	LastKey = DeltaTimer.GetTimeS ();
 	
 	this -> Value = Value;
+	
+	std :: cout << "Incrementer: Set ( " << Value << " )\n";
 	
 };
 

@@ -3,6 +3,7 @@
 
 #include "../Sensing/IXYInput.h"
 
+#ifndef NO_WPILIB
 #include <WPILib.h>
 
 class JoystickXYInput : public IXYInput
@@ -36,5 +37,7 @@ private:
 	bool InvertY;
 	
 };
+
+#endif
 
 #endif

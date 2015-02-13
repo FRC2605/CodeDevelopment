@@ -1,5 +1,7 @@
 #include "NumericStepper.h"
 
+#ifndef NO_WPILIB
+
 NumericStepper :: NumericStepper ( GenericHID * Device, uint32_t UpButton, uint32_t DownButton ):
 	Device ( Device ),
 	UpButton ( UpButton ),
@@ -74,3 +76,5 @@ void NumericStepper :: Update ()
 	DownButtonState = NewDownButtonState;
 
 };
+
+#endif

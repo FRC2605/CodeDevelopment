@@ -1,6 +1,8 @@
 #ifndef LARUL_POWERSCALABLE_H
 #define LARUL_POWERSCALABLE_H
 
+#ifndef NO_WPILIB
+
 #include "PowerProfile.h"
 #include "PowerUsageSpec.h"
 
@@ -16,5 +18,7 @@ public:
 	virtual void SetPowerScale ( double Scale ) = 0;
 	
 };
+
+#endif
 
 #endif

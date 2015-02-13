@@ -1,5 +1,7 @@
 #include "PowerProfile.h"
 
+#ifndef NO_WPILIB
+
 PowerProfile :: PowerProfile ( const char * Name ):
 	Channels (),	
 	Name ( Name )
@@ -89,3 +91,5 @@ uint8_t PowerProfile :: GetHighestDemandChannel ()
 	return HighestIndex;
 	
 };
+
+#endif

@@ -1,5 +1,7 @@
 #include "JoystickButtonInput.h"
 
+#ifndef NO_WPILIB
+
 JoystickButtonInput :: JoystickButtonInput ( Joystick * Stick, uint32_t Button ):
 	Stick ( Stick ),
 	Button ( Button )
@@ -17,3 +19,4 @@ bool JoystickButtonInput :: GetBoolean ()
 	
 };
 
+#endif

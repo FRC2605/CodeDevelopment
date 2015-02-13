@@ -1,7 +1,7 @@
 #ifndef LARUL_IPOSITIONSOURCE_H
 #define LARUL_IPOSITIONSOURCE_H
 
-#include "IMotoinSource.h"
+#include "IMotionSource.h"
 
 class IPositionSource : public IMotionSource
 {

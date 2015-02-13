@@ -5,11 +5,10 @@ class PowerManager
 {
 public:
 	
-	~PowerManager () {};
+	PowerManager ();
+	~PowerManager ();
 	
 private:	
-	
-	PowerManager ();
 		
 };
 

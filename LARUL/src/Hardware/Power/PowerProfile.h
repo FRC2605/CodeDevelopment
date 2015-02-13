@@ -1,12 +1,14 @@
 #ifndef LARUL_POWERPROFILE_H
 #define LARUL_POWERPROFILE_H
 
-#include <WPILib.h>
 #include <string>
 
-#include "Power.h"
-
 #include "../../Util/Vector.h"
+
+#ifndef NO_WPILIB
+#include <WPILib.h>
+
+#include "Power.h"
 
 class PowerProfile
 {
@@ -32,5 +34,7 @@ private:
 	std :: string Name;
 	
 };
+
+#endif
 
 #endif

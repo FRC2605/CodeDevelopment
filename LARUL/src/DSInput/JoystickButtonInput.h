@@ -1,9 +1,10 @@
 #ifndef LARUL_JOYSTICKBUTTONINPUT_H
 #define LARUL_JOYSTICKBUTTONINPUT_H
 
-#include <WPILib.h>
-
 #include "../Sensing/IBooleanInput.h"
+
+#ifndef NO_WPILIB
+#include <WPILib.h>
 
 class JoystickButtonInput : public IBooleanInput
 {
@@ -20,5 +21,7 @@ private:
 	uint32_t Button;
 	
 };
+
+#endif
 
 #endif

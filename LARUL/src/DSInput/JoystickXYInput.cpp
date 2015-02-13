@@ -1,5 +1,7 @@
 #include "JoystickXYInput.h"
 
+#ifndef NO_WPILIB
+
 JoystickXYInput :: JoystickXYInput ( Joystick * Stick ):
 	Stick ( Stick ),
 	Deadband ( 0.0 ),
@@ -73,3 +75,5 @@ double JoystickXYInput :: GetScale ()
 	return 1.0;
 	
 };
+
+#endif

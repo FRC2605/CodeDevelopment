@@ -423,3 +423,10 @@ int32_t Nav6 :: DecodeQuaternionResponse ( uint8_t * Buffer, int32_t Length )
 	return QUATERNION_UPDATE_MESSAGE_LENGTH;
 	
 };
+
+const uint32_t Nav6 :: GetDefaultBaudRate ()
+{
+	
+	return 57600;
+	
+};

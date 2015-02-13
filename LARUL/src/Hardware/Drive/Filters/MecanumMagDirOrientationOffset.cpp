@@ -24,8 +24,7 @@ void MecanumMagDirOrientationOffset :: Compute ( double Magnitude, double Direct
 	
 	this -> Magnitude = Magnitude;
 	
-	Direction -= Angle -> GetAngle ();
-	Direction -= Offset;
+	Direction -= ( Angle -> GetAngle () - Offset );
 	
 	this -> Direction = Direction;
 	

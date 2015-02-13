@@ -30,6 +30,8 @@ public:
 	
 	double GetCompassHeading ();
 	
+	static const uint32_t GetDefaultBaudRate ();
+	
 private:
 	
 	bool StopRequested;

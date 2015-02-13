@@ -108,8 +108,6 @@ void CANTalonPositionServo :: Enable ()
 	
 	Motor.EnableControl ();
 	
-	std :: cout << "CANTalonPositionServo :: Enable ();\n";
-	
 };
 
 void CANTalonPositionServo :: Disable ()
@@ -122,8 +120,6 @@ void CANTalonPositionServo :: Disable ()
 	Motor.Set ( 0.0 );
 	
 	Enabled = false;
-	
-	std :: cout << "CANTalonPositionServo :: Disable ();\n";
 	
 };
 

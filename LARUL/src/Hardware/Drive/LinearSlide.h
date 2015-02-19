@@ -26,6 +26,7 @@ public:
 	bool TargetReached ( double Tolerance );
 	
 	double GetPosition ();
+	void SetPosition ( double Position );
 	
 	double GetHighLimit ();
 	double GetLowLimit ();

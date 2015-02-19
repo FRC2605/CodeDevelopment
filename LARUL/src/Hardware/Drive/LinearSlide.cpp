@@ -175,7 +175,7 @@ void LinearSlide :: Home ()
 	else
 		TargetPosition ( MPosition );
 	
-	State = kMode_HomeLow;
+	State = kMode_HomeLowHigh;
 	
 };
 
@@ -273,6 +273,13 @@ double LinearSlide :: GetPosition ()
 {
 	
 	return Motor -> GetPosition ();
+	
+};
+
+void LinearSlide :: SetPosition ( double Position )
+{
+	
+	Motor -> SetPosition ( Position );
 	
 };
 

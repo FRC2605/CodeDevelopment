@@ -61,10 +61,10 @@ void LinearSlide :: RunVelocity ( double Velocity )
 void LinearSlide :: HomeLow ()
 {
 	
+	double MPosition = Motor -> GetPosition ();
+	
 	if ( Limit != NULL )
 	{
-		
-		double MPosition = Motor -> GetPosition ();
 		
 		switch ( Limit -> GetBounding () )
 		{
@@ -88,6 +88,8 @@ void LinearSlide :: HomeLow ()
 		}
 		
 	}
+	else
+		TargetPosition ( MPosition );
 	
 	State = kMode_HomeLow;
 	
@@ -96,10 +98,10 @@ void LinearSlide :: HomeLow ()
 void LinearSlide :: HomeHigh ()
 {
 	
+	double MPosition = Motor -> GetPosition ();
+	
 	if ( Limit != NULL )
 	{
-		
-		double MPosition = Motor -> GetPosition ();
 		
 		switch ( Limit -> GetBounding () )
 		{
@@ -121,6 +123,14 @@ void LinearSlide :: HomeHigh ()
 		}
 		
 	}
+	else
+	{
+		
+		TargetPosition ( MPosition );
+		
+		SetLowLimit ( MPosition );
+		
+	}
 	
 	State = kMode_HomeHigh;
 	
@@ -129,10 +139,10 @@ void LinearSlide :: HomeHigh ()
 void LinearSlide :: Home ()
 {
 	
+	double MPosition = Motor -> GetPosition ();
+	
 	if ( Limit != NULL )
 	{
-		
-		double MPosition = Motor -> GetPosition ();
 		
 		switch ( Limit -> GetBounding () )
 		{
@@ -152,6 +162,7 @@ void LinearSlide :: Home ()
 			
 		case IMotionLimit :: kLimitBounding_Low:
 					
+			
 			return HomeLow ();
 			
 		default:
@@ -161,8 +172,10 @@ void LinearSlide :: Home ()
 		}
 	
 	}
+	else
+		TargetPosition ( MPosition );
 	
-	State = kMode_HomeLowHigh;
+	State = kMode_HomeLow;
 	
 };
 

@@ -4,7 +4,8 @@ MecanumMagDirOrientationOffset :: MecanumMagDirOrientationOffset ( IAngularInput
 	Angle ( Angle ),
 	Offset ( 0.0 ),
 	Magnitude ( 0.0 ),
-	Direction ( 0.0 )
+	Direction ( 0.0 ),
+	Enabled ( true )
 {
 };
 
@@ -24,11 +25,19 @@ void MecanumMagDirOrientationOffset :: Compute ( double Magnitude, double Direct
 	
 	this -> Magnitude = Magnitude;
 	
-	Direction -= ( Angle -> GetAngle () - Offset );
+	if ( Enabled )
+		Direction -= ( Angle -> GetAngle () - Offset );
 	
 	this -> Direction = Direction;
 	
 };
+
+void MecanumMagDirOrientationOffset :: SetEnabled ( bool Enabled )
+{
+	
+	this -> Enabled = Enabled;
+	
+}
 
 double MecanumMagDirOrientationOffset :: ReadA ()
 {

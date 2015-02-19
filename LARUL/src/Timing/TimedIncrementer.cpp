@@ -56,8 +56,6 @@ bool TimedIncrementer :: IsRunning ()
 void TimedIncrementer :: SetSpeed ( double Speed )
 {
 	
-	std :: cout << "Incrementer: SetSpeed ( " << Speed << " )\n";
-	
 	if ( Running )
 	{
 		
@@ -91,8 +89,6 @@ double TimedIncrementer :: Get ()
 		
 	}
 	
-	std :: cout << "Incrementer: Get (): " << Value << "\n";
-	
 	return Value;
 	
 };
@@ -103,8 +99,6 @@ void TimedIncrementer :: Set ( double Value )
 	LastKey = DeltaTimer.GetTimeS ();
 	
 	this -> Value = Value;
-	
-	std :: cout << "Incrementer: Set ( " << Value << " )\n";
 	
 };
 

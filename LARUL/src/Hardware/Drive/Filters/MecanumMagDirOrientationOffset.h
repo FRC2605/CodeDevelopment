@@ -16,6 +16,8 @@ public:
 	
 	void Compute ( double FeedA, double FeedB );
 	
+	void SetEnabled ( bool Enabled );
+	
 	double ReadA ();
 	double ReadB ();
 	
@@ -28,6 +30,8 @@ private:
 	
 	double Magnitude;
 	double Direction;
+	
+	bool Enabled;
 	
 };
 

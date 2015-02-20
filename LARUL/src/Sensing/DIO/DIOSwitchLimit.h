@@ -1,6 +1,9 @@
 #ifndef LARUL_DIOSWITCHLIMIT_H
 #define LARUL_DIOSWITCHLIMIT_H
 
+#include "../../LARULTuning.h"
+
+#ifndef NO_WPILIB
 #include <WPILib.h>
 
 #include "../IMotionLimit.h"
@@ -31,4 +34,5 @@ private:
 		
 };
 
+#endif
 #endif

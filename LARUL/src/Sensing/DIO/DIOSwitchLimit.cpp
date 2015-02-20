@@ -1,5 +1,7 @@
 #include "DIOSwitchLimit.h"
 
+#ifndef NO_WPILIB
+
 DIOSwitchLimit :: DIOSwitchLimit ( DigitalInput * LowLimit, DigitalInput * HighLimit ):
 	LowLimit ( LowLimit ),
 	HighLimit ( HighLimit ),
@@ -59,3 +61,5 @@ bool DIOSwitchLimit :: GetLowLimit ()
 	return LowLimit -> Get () ^ InvertedL;
 	
 };
+
+#endif

@@ -1,6 +1,9 @@
 #ifndef LARUL_CANJAGUARCONFIGURATION_H
 #define LARUL_CANJAGUARCONFIGURATION_H
 
+#include "../../LARULTuning.h"
+
+#ifndef NO_WPILIB
 #include <WPILib.h>
 
 class CANJaguarConfiguration
@@ -60,5 +63,5 @@ private:
 	
 };
 
-
+#endif
 #endif

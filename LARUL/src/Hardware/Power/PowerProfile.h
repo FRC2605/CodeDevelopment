@@ -5,6 +5,8 @@
 
 #include "../../Util/Vector.h"
 
+#include "../../LARULTuning.h"
+
 #ifndef NO_WPILIB
 #include <WPILib.h>
 

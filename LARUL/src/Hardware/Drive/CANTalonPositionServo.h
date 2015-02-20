@@ -1,6 +1,9 @@
 #ifndef LARUL_TALONPOSITIONSERVO_H
 #define LARUL_TALONPOSITIONSERVO_H
 
+#include "../../LARULTuning.h"
+
+#ifndef NO_WPILIB
 #include <WPILib.h>
 
 #include "../../Motion/IPositionDrive.h"
@@ -41,5 +44,5 @@ private:
 	
 };
 
-
+#endif
 #endif

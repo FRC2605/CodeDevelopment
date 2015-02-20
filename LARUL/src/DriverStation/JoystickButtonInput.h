@@ -3,6 +3,8 @@
 
 #include "../Sensing/IBooleanInput.h"
 
+#include "../LARULTuning.h"
+
 #ifndef NO_WPILIB
 #include <WPILib.h>
 

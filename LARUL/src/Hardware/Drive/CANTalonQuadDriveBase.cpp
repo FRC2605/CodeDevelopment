@@ -1,5 +1,7 @@
 #include "CANTalonQuadDriveBase.h"
 
+#ifndef NO_WPILIB
+
 CANTalonQuadDriveBase :: CANTalonQuadDriveBase ( uint8_t CAN_ID_FL, uint8_t PDPChannelFL, uint8_t CAN_ID_FR, uint8_t PDPChannelFR, uint8_t CAN_ID_RL, uint8_t PDPChannelRL, uint8_t CAN_ID_RR, uint8_t PDPChannelRR, CANTalonConfiguration Config, double MotorDrawAverage, double MotorDrawMax ):
 	WheelFL ( CAN_ID_FL ),
 	WheelFR ( CAN_ID_FR ),
@@ -187,4 +189,6 @@ void CANTalonQuadDriveBase :: SetMotor ( MotorPosition Motor, double Value )
 	}
 	
 }
+
+#endif
 

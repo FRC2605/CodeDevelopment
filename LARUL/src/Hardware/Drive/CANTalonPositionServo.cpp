@@ -1,6 +1,6 @@
 #include "CANTalonPositionServo.h"
 
-#include <iostream>
+#ifndef NO_WPIPIB
 
 CANTalonPositionServo :: CANTalonPositionServo ( uint8_t CAN_ID, CANTalon :: FeedbackDevice Feedback, uint8_t PDPChannel ):
 	Motor ( CAN_ID ),
@@ -129,3 +129,5 @@ bool CANTalonPositionServo :: GetEnabled ()
 	return Enabled;
 	
 };
+
+#endif

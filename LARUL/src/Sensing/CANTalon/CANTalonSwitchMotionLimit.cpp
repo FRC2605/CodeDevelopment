@@ -1,5 +1,7 @@
 #include "CANTalonSwitchMotionLimit.h"
 
+#ifndef NO_WPILIB
+
 CANTalonSwitchMotionLimit :: CANTalonSwitchMotionLimit ( CANTalon * Controller, LimitBounding Bounding ):
 	Controller ( Controller ),
 	Bounding ( Bounding )
@@ -31,3 +33,4 @@ bool CANTalonSwitchMotionLimit :: GetLowLimit ()
 	
 };
 
+#endif

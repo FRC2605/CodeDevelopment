@@ -1,6 +1,9 @@
 #ifndef LARUL_CANTALONCONFIGURATION_H
 #define LARUL_CANTALONCONFIGURATION_H
 
+#include "../../LARULTuning.h"
+
+#ifndef NO_WPILIB
 #include <WPILib.h>
 
 class CANTalonConfiguration
@@ -57,4 +60,5 @@ private:
 	
 };
 
+#endif
 #endif

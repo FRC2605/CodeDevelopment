@@ -93,9 +93,9 @@
 #include "DSP/LookbackLowpassFilter.h"
 
 #ifndef NO_WPILIB
-	#include "DSInput/JoystickButtonInput.h"
-	#include "DSInput/JoystickXYinput.h"
-	#include "DSInput/NumericStepper.h"
+	#include <DriverStation/JoystickButtonInput.h>
+	#include <DriverStation/JoystickXYInput.h>
+	#include <DriverStation/NumericStepper.h>
 #endif
 
 //#include "Debug/LARULDebug.h"

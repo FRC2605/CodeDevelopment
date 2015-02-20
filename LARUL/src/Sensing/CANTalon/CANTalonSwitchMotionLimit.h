@@ -1,6 +1,9 @@
 #ifndef LARUL_CANTALONSWITCHMOTIONLIMIT_H
 #define LARUL_CANTALONSWITCHMOTIONLIMIT_H
 
+#include "../../LARULTuning.h"
+
+#ifndef NO_WPILIB
 #include <WPILib.h>
 
 #include "../IMotionLimit.h"
@@ -25,4 +28,5 @@ private:
 	
 };
 
+#endif
 #endif

@@ -1,4 +1,4 @@
-#include "NumericStepper.h"
+#include <DriverStation/NumericStepper.h>
 
 #ifndef NO_WPILIB
 

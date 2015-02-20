@@ -1,6 +1,8 @@
 #ifndef LARUL_POWER_H
 #define LARUL_POWER_H
 
+#include "../../LARULTuning.h"
+
 #ifndef NO_WPILIB
 #include <WPILib.h>
 

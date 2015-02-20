@@ -1,6 +1,9 @@
 #ifndef LARUL_CANTALONMECANUMDRIVEBASE_H
 #define LARUL_CANTALONMECANUMDRIVEBASE_H
 
+#include "../../LARULTuning.h"
+
+#ifndef NO_WPILIB
 #include <WPILib.h>
 
 #include "../Motors/CANTalonConfiguration.h"
@@ -71,4 +74,5 @@ private:
 	
 };
 
+#endif
 #endif

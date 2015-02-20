@@ -1,6 +1,9 @@
 #ifndef LARUL_CANJAGUARMECANUMDRIVEBASE_H
 #define LARUL_CANJAGUARMECANUMDRIVEBASE_H
 
+#include "../LARULTuning.h"
+
+#ifndef NO_WPILIB
 #include <WPILib.h>
 
 #include "../Motors/CANJaguarConfiguration.h"
@@ -36,4 +39,5 @@ private:
 	
 };
 
+#endif
 #endif

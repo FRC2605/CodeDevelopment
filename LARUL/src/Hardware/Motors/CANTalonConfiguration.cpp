@@ -1,5 +1,7 @@
 #include "CANTalonConfiguration.h"
 
+#ifndef NO_WPILIB
+
 CANTalonConfiguration :: CANTalonConfiguration ( CANSpeedController ::ControlMode Mode, FeedbackType Feedback ):
 	Mode ( Mode ),
 	Feedback ( Feedback ),
@@ -132,3 +134,6 @@ void CANTalonConfiguration :: Configure ( CANTalon * ToConfig )
 	ToConfig -> EnableControl ();
 	
 };
+
+#endif
+

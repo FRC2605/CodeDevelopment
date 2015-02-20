@@ -5,6 +5,8 @@ class IBooleanInput
 {
 public:
 	
+	virtual ~IBooleanInput () {};
+	
 	virtual bool GetBoolean () = 0;
 	
 };

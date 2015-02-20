@@ -3,11 +3,7 @@
 
 #include <stdint.h>
 
-/*
-* (WPILib specific.)
-* NumericStepper is literally just that. You feed it an HID device and two button indexes and it will keep track of a counted value based on button presses.
-* Note that Update () should be called every time there is new DS data, which should be taken care of in your main robot loop.
-*/
+#include "../LARULTuning.h"
 
 #ifndef NO_WPILIB
 #include <WPILib.h>

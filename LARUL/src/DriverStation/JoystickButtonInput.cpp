@@ -1,4 +1,4 @@
-#include <DriverStation/JoystickButtonInput.h>
+#include "JoystickButtonInput.h"
 
 #ifndef NO_WPILIB
 

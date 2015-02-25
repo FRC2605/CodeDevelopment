@@ -13,10 +13,10 @@ MecanumMagDirOrientationOffset :: ~MecanumMagDirOrientationOffset ()
 {
 };
 
-void MecanumMagDirOrientationOffset :: CalibrateZero ()
+void MecanumMagDirOrientationOffset :: CalibrateZero ( double AdditionalOffset )
 {
 	
-	Offset = Angle -> GetAngle ();
+	Offset = Angle -> GetAngle () + AdditionalOffset;
 	
 };
 

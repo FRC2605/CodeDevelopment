@@ -12,7 +12,7 @@ public:
 	MecanumMagDirOrientationOffset ( IAngularInput * Angle );
 	~MecanumMagDirOrientationOffset ();
 	
-	void CalibrateZero ();
+	void CalibrateZero ( double AdditionalOffset = 0.0 );
 	
 	void Compute ( double FeedA, double FeedB );
 	

@@ -5,6 +5,7 @@
 #include "../../Sensing/IMotionLimit.h"
 
 #include "../../Timing/TimedIncrementer.h"
+#include "../../Timing/IntervalTimer.h"
 
 #include "../HWSystem.h"
 
@@ -21,6 +22,8 @@ public:
 	void HomeLow ();
 	void HomeHigh ();
 	void Home ();
+	
+	void SetVRamp ( double RampRate );
 	
 	bool IsHoming ();
 	bool TargetReached ( double Tolerance );
@@ -71,6 +74,11 @@ private:
 	Mode State;
 	
 	double HomingSpeed;
+	
+	double TargetVelocity;
+	double RampRate;
+	
+	IntervalTimer Delta;
 	
 };
 

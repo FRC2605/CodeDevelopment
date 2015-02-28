@@ -11,7 +11,10 @@ LinearSlide :: LinearSlide ( IPositionDrive * Motor, IMotionLimit * Limit, doubl
 	Targeter ( 0.0, Initial ),
 	Enabled ( false ),
 	State ( kMode_Velocity ),
-	HomingSpeed ( HomingSpeed )
+	HomingSpeed ( HomingSpeed ),
+	TargetVelocity ( 0.0 ),
+	RampRate ( 0.0 ),
+	Delta ()
 {
 	
 	Motor -> SetPosition ( Initial );
@@ -26,7 +29,10 @@ LinearSlide :: LinearSlide ( IPositionDrive * Motor, double Initial, double LowL
 	Targeter ( 0.0, Initial ),
 	Enabled ( false ),
 	State ( kMode_Velocity ),
-	HomingSpeed ( 0.0 )
+	HomingSpeed ( 0.0 ),
+	TargetVelocity ( 0.0 ),
+	RampRate ( 0.0 ),
+	Delta ()
 {
 	
 	Motor -> SetPosition ( Initial );
@@ -49,10 +55,17 @@ void LinearSlide :: TargetPosition ( double Position )
 	
 };
 
+void LinearSlide :: SetVRamp ( double RampRate )
+{
+	
+	this -> RampRate = RampRate;
+	
+};
+
 void LinearSlide :: RunVelocity ( double Velocity )
 {
 	
-	Targeter.SetSpeed ( Velocity );
+	TargetVelocity = Velocity;
 	
 	State = kMode_Velocity;
 	
@@ -308,6 +321,28 @@ void LinearSlide :: Update ()
 		
 	case kMode_Velocity:
 		
+		// Anti cross-initialization scope
+		{
+			
+			double CVel = Targeter.GetSpeed ();
+			double VDiff = TargetVelocity - CVel;
+			
+			if ( ( fabs ( VDiff ) < RampRate ) || ( RampRate == 0.0 ) )
+				Targeter.SetSpeed ( TargetVelocity );
+			else
+			{
+				
+				double Inc = ( ( VDiff > 0.0 ) ? - RampRate : RampRate ) * Delta.GetTimeS ();
+				
+				if ( ( ( CVel + Inc > TargetVelocity ) && ( TargetVelocity > 0.0 ) ) || ( ( CVel + Inc < TargetVelocity ) && ( TargetVelocity <= 0.0 ) ) )
+					Targeter.Set ( TargetVelocity );
+				else
+				Targeter.SetSpeed ( CVel + Inc );
+				
+			}
+			
+		}
+		
 		if ( Limit != NULL )
 		{
 			
@@ -536,9 +571,13 @@ void LinearSlide :: Update ()
 		
 	default:
 		
+		Delta.Restart ();
+		
 		return;
 		
 	}
+	
+	Delta.Restart ();
 	
 };
 
@@ -600,6 +639,8 @@ void LinearSlide :: Enable ()
 	Targeter.Start ();
 	
 	Motor -> Enable ();
+	
+	Delta.Restart ();
 	
 };
 

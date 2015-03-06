@@ -32,12 +32,12 @@ public:
 	bool GetEnabled ();
 	
 	// IPowerScalable interface
-	
 	PowerProfile * GetProfile ();
 	PowerUsageSpec * GetSpec ();
 		
 	void SetPowerScale ( double Scale );
 	
+	// IQuadRectangularDriveBase interace
 	void SetMotor ( MotorPosition Motor, double Value );
 	
 private:

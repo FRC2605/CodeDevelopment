@@ -10,7 +10,7 @@ CANTalonQuadDriveBase :: CANTalonQuadDriveBase ( uint8_t CAN_ID_FL, uint8_t PDPC
 	UnInvertedConfig ( Config ),
 	InvertedConfig ( Config ),
 	Enabled ( false ),
-	MotorProfile ( "CANTalonDriveBase" ),
+	MotorProfile ( "CANTalonQuadDriveBase" ),
 	MotorSpec ( MotorDrawMax * 4.0, 0.0, MotorDrawAverage, 20 ),
 	PowerScale ( 1.0 )
 {
@@ -70,6 +70,16 @@ void CANTalonQuadDriveBase :: SetInversion ( bool FL, bool FR, bool RL, bool RR 
 	MInfoFR.MotorInverted = FR;
 	MInfoRL.MotorInverted = RL;
 	MInfoRR.MotorInverted = RR;
+	
+	if ( Enabled )
+	{
+		
+		WheelFL.Set ( MInfoFL.SetPoint * ( MInfoFL.MotorInverted ? - PowerScale : PowerScale ) );
+		WheelFR.Set ( MInfoFR.SetPoint * ( MInfoFR.MotorInverted ? - PowerScale : PowerScale ) );
+		WheelRL.Set ( MInfoRL.SetPoint * ( MInfoRL.MotorInverted ? - PowerScale : PowerScale ) );
+		WheelRR.Set ( MInfoRR.SetPoint * ( MInfoRR.MotorInverted ? - PowerScale : PowerScale ) );
+		
+	}
 	
 };
 

@@ -30,7 +30,7 @@ void LDP6803 :: SetLEDs ( uint32_t Start, color_t * Colors, uint32_t Length )
 	for ( uint32_t i = 0; i < Length; i ++ )
 	{
 		
-		color_t Color = Colors [ i ];
+		//color_t Color = Colors [ i ];
 		
 	}
 	

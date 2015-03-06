@@ -58,7 +58,6 @@
 
 #include "Math/Matrix33.h"
 #include "Math/Quaternion.h"
-#include "Math/Range.h"
 #include "Math/Vector3.h"
 
 #include "Logging/Logger.h"
@@ -84,6 +83,7 @@
 	//#include "Hardware/Drive/CANJaguarMecanumDriveBase.h"
 	#include "Hardware/Drive/CANTalonPositionServo.h"
 	#include "Hardware/Drive/CANTalonQuadDriveBase.h"
+	#include "hardware/Drive/TalonQuadDriveBase.h"
 #endif
 
 #include "Events/IEvent.h"

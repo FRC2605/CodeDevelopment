@@ -71,7 +71,7 @@ void Quaternion :: Multiply ( Quaternion & A, double Scalar, Quaternion & Result
 	Result.X = A.X * Scalar;
 	Result.Y = A.Y * Scalar;
 	Result.Z = A.Z * Scalar;
-	Result.W = A.W;
+	Result.W = A.W * Scalar;
 	
 };
 
@@ -207,7 +207,7 @@ double Quaternion :: GetNorm ( Quaternion & A )
 double Quaternion :: GetYaw ( Quaternion & A )
 {
 	
-	return atan2 ( 2.0 * ( A.W * A.Z + A.X * A.Y ), 1.0 - 2.0 * ( A.Y * A.Y + A.Z * A.Z ) );
+	return atan2 ( ( A.W * A.Z + A.X * A.Y ), 0.5 - ( A.Y * A.Y + A.Z * A.Z ) );
 	
 };
 
@@ -221,7 +221,7 @@ double Quaternion :: GetPitch ( Quaternion & A )
 double Quaternion :: GetRoll ( Quaternion & A )
 {
 	
-	return atan2 ( 2.0 * ( A.W * A.X + A.Y * A.Z ), 1.0 - 2.0 * ( A.X * A.X + A.Y * A.Y ) );
+	return atan2 ( ( A.W * A.X + A.Y * A.Z ), 0.5 - ( A.X * A.X + A.Y * A.Y ) );
 	
 };
 

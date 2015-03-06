@@ -1,9 +1,9 @@
 #ifndef LARUL_IOFFSETSOURCE_H
 #define LARUL_IOFFSETSOURCE_H
 
-#include "IMotoinSource.h"
+#include "IMotionSource.h"
 
-class IOffsetSource : public IMotoinSource
+class IOffsetSource : public IMotionSource
 {
 public:
 	

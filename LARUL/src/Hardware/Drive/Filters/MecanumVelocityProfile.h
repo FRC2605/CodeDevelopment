@@ -10,6 +10,8 @@ public:
 	MecanumVelocityProfile ( double Exponent );
 	~MecanumVelocityProfile ();
 
+	void SetExponent ( double Exponent );
+
 	void Compute ( double Magnitude, double Direction );
 
 	double ReadA ();

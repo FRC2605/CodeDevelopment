@@ -12,6 +12,13 @@ MecanumVelocityProfile :: ~MecanumVelocityProfile ()
 {
 };
 
+void MecanumVelocityProfile :: SetExponent ( double Exponent )
+{
+
+	this -> Exponent = Exponent;
+
+};
+
 void MecanumVelocityProfile :: Compute ( double Magnitude, double Direction )
 {
 
@@ -36,4 +43,7 @@ double MecanumVelocityProfile :: ReadB ()
 
 void MecanumVelocityProfile :: Reset ()
 {
+
+	this -> Magnitude = 0.0;
+
 };

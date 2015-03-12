@@ -175,13 +175,19 @@ bool CANTalonPSVelocityQuadBase :: GetEnabled ()
 	
 };
 
+#include <iostream>
+
 void CANTalonPSVelocityQuadBase :: Update ()
 {
 	
 	if ( ! Enabled )
 		return;
 	
-	ServoFL.SetTarget ( MInfoFL.Increment.Get () );
+	double MLP = MInfoFL.Increment.Get ();
+
+	std :: cout << "MLP: " << MLP << ", Speed: " << MInfoFL.Increment.GetSpeed () << "\n";
+
+	ServoFL.SetTarget ( MLP );
 	ServoFR.SetTarget ( MInfoFR.Increment.Get () );
 	ServoRL.SetTarget ( MInfoRL.Increment.Get () );
 	ServoRR.SetTarget ( MInfoRR.Increment.Get () );
@@ -234,29 +240,31 @@ void CANTalonPSVelocityQuadBase :: SetMotor ( MotorPosition Motor, double Value 
 	
 	case kMotorPosition_FL:
 		
+		std :: cout << "FL Set Speed: " << Value << "\n";
+
 		MInfoFL.SetPoint = Value;
-		MInfoFL.Increment.SetSpeed ( MInfoFL.SetPoint * MInfoFL.Inverted ? - PowerScale : PowerScale );
+		MInfoFL.Increment.SetSpeed ( MInfoFL.SetPoint * ( MInfoFL.Inverted ? - PowerScale : PowerScale ) );
 		
 		break;
 		
 	case kMotorPosition_FR:
 		
 		MInfoFR.SetPoint = Value;
-		MInfoFR.Increment.SetSpeed ( MInfoFR.SetPoint * MInfoFR.Inverted ? - PowerScale : PowerScale );
+		MInfoFR.Increment.SetSpeed ( MInfoFR.SetPoint * ( MInfoFR.Inverted ? - PowerScale : PowerScale ) );
 		
 		break;
 		
 	case kMotorPosition_RL:
 		
 		MInfoRL.SetPoint = Value;
-		MInfoRL.Increment.SetSpeed ( MInfoRL.SetPoint * MInfoRL.Inverted ? - PowerScale : PowerScale );
+		MInfoRL.Increment.SetSpeed ( MInfoRL.SetPoint * ( MInfoRL.Inverted ? - PowerScale : PowerScale ) );
 		
 		break;
 		
 	case kMotorPosition_RR:
 		
 		MInfoRR.SetPoint = Value;
-		MInfoRR.Increment.SetSpeed ( MInfoRR.SetPoint * MInfoRR.Inverted ? - PowerScale : PowerScale );
+		MInfoRR.Increment.SetSpeed ( MInfoRR.SetPoint * ( MInfoRR.Inverted ? - PowerScale : PowerScale ) );
 		
 		break;
 	

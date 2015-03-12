@@ -51,7 +51,7 @@ private:
 	
 	IQuadRectangularDriveBase * DriveBase;
 	
-	double TX, TY, TR, Scale, PrescaleR, PrescaleT;
+	double TX, TY, TR, Scale, PrescaleR, PrescaleT, PrevAngle;
 	
 	bool Enabled, SineInverted;
 	

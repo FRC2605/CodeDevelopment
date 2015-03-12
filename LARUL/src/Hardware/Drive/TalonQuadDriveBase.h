@@ -12,6 +12,8 @@ public:
 	
 	void SetInversion ( bool FL, bool FR, bool RL, bool RR );
 	
+	void Update ();
+	
 	// HWSystem interface
 	void Enable ();
 	void Disable ();

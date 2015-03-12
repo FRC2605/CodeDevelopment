@@ -7,8 +7,10 @@
 #include <WPILib.h>
 
 #include "../../Motion/IPositionDrive.h"
+#include "../Power/IPowerProfiled.h"
+#include "../Power/PowerProfile.h"
 
-class CANTalonPositionServo : public IPositionDrive
+class CANTalonPositionServo : public IPositionDrive, public IPowerProfiled
 {
 public:
 	
@@ -34,6 +36,8 @@ public:
 	
 	bool GetEnabled ();
 	
+	PowerProfile * GetProfile ();
+	
 private:
 	
 	CANTalon Motor;
@@ -41,6 +45,8 @@ private:
 	double Target;
 	
 	bool Enabled;
+	
+	PowerProfile Profile;
 	
 };
 

@@ -5,7 +5,8 @@
 CANTalonPositionServo :: CANTalonPositionServo ( uint8_t CAN_ID, CANTalon :: FeedbackDevice Feedback, uint8_t PDPChannel ):
 	Motor ( CAN_ID ),
 	Target ( 0.0 ),
-	Enabled ( false )
+	Enabled ( false ),
+	Profile ( "CANTalon Position Servo" )
 {
 	
 	Motor.SetControlMode ( CANTalon :: kPercentVbus );
@@ -13,6 +14,8 @@ CANTalonPositionServo :: CANTalonPositionServo ( uint8_t CAN_ID, CANTalon :: Fee
 	Motor.SetFeedbackDevice ( Feedback );
 	Motor.Set ( 0 );
 	Motor.EnableControl ();
+	
+	Profile.AddChannel ( PDPChannel );
 	
 };
 
@@ -127,6 +130,13 @@ bool CANTalonPositionServo :: GetEnabled ()
 {
 	
 	return Enabled;
+	
+};
+
+PowerProfile * CANTalonPositionServo :: GetProfile ()
+{
+	
+	return & Profile;
 	
 };
 

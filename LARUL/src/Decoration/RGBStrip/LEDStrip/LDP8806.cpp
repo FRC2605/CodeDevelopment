@@ -32,7 +32,7 @@ uint32_t LDP8806 :: GetLength ()
 	
 };
 
-void LDP8806 :: SetLEDs ( uint32_t Start, color_t * Colors, uint32_t Length )
+void LDP8806 :: SetPixels ( uint32_t Start, color_t * Colors, uint32_t Length )
 {
 	
 	if ( Start + Length >= NumPixels )
@@ -53,7 +53,7 @@ void LDP8806 :: SetLEDs ( uint32_t Start, color_t * Colors, uint32_t Length )
 	
 };
 
-void LDP8806 :: SetLED ( uint32_t Index, color_t Color )
+void LDP8806 :: SetPixel ( uint32_t Index, color_t Color )
 {
 	
 	if ( Index >= NumPixels )

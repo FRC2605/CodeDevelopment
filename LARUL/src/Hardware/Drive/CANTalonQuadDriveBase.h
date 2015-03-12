@@ -25,6 +25,8 @@ public:
 	
 	void SetWheelConfig ( CANTalonConfiguration Config );
 	
+	void Update ();
+	
 	// HWSystem interface
 	void Enable ();
 	void Disable ();

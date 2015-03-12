@@ -91,15 +91,15 @@ void CANTalonQuadDriveBase :: SetSensorInversion ( bool FL, bool FR, bool RL, bo
 	MInfoRL.SensorInverted = RL;
 	MInfoRR.SensorInverted = RR;
 	
-	MInfoFL.SensorInverted ? InvertedConfig.Configure ( & WheelFL ) : UnInvertedConfig.Configure ( & WheelFL );
-	MInfoFR.SensorInverted ? InvertedConfig.Configure ( & WheelFR ) : UnInvertedConfig.Configure ( & WheelFR );
-	MInfoRL.SensorInverted ? InvertedConfig.Configure ( & WheelRL ) : UnInvertedConfig.Configure ( & WheelRL );
-	MInfoRR.SensorInverted ? InvertedConfig.Configure ( & WheelRR ) : UnInvertedConfig.Configure ( & WheelRR );
-	
 };
 
 void CANTalonQuadDriveBase :: Enable ()
 {
+	
+	MInfoFL.SensorInverted ? InvertedConfig.Configure ( & WheelFL ) : UnInvertedConfig.Configure ( & WheelFL );
+	MInfoFR.SensorInverted ? InvertedConfig.Configure ( & WheelFR ) : UnInvertedConfig.Configure ( & WheelFR );
+	MInfoRL.SensorInverted ? InvertedConfig.Configure ( & WheelRL ) : UnInvertedConfig.Configure ( & WheelRL );
+	MInfoRR.SensorInverted ? InvertedConfig.Configure ( & WheelRR ) : UnInvertedConfig.Configure ( & WheelRR );
 	
 	Enabled = true;
 	
@@ -157,6 +157,10 @@ void CANTalonQuadDriveBase :: SetPowerScale ( double Scale )
 		
 	}
 	
+};
+
+void CANTalonQuadDriveBase :: Update ()
+{
 };
 
 void CANTalonQuadDriveBase :: SetMotor ( MotorPosition Motor, double Value )

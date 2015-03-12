@@ -10,6 +10,8 @@ public:
 	
 	virtual ~IDriveBase () {};
 	
+	virtual void Update () = 0;
+	
 };
 
 #endif

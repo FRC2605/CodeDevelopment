@@ -74,13 +74,13 @@
 #include "Hardware/Drive/Filters/MecanumVelocityProfile.h"
 #include "Hardware/Drive/Filters/MecanumMagDirOrientationOffset.h"
 #ifndef NO_WPILIB
+	#include "Hardware/Power/IPowerProfiled.h"
 	#include "Hardware/Power/IPowerScalable.h"
 	#include "Hardware/Power/Power.h"
 	#include "Hardware/Power/PowerManager.h"
 	#include "Hardware/Power/PowerProfile.h"
 	#include "Hardware/Motors/CANJaguarConfiguration.h"
 	#include "Hardware/Motors/CANTalonConfiguration.h"
-	//#include "Hardware/Drive/CANJaguarMecanumDriveBase.h"
 	#include "Hardware/Drive/CANTalonPositionServo.h"
 	#include "Hardware/Drive/CANTalonQuadDriveBase.h"
 	#include "hardware/Drive/TalonQuadDriveBase.h"
@@ -93,9 +93,9 @@
 #include "DSP/LookbackLowpassFilter.h"
 
 #ifndef NO_WPILIB
-	#include <DriverStation/JoystickButtonInput.h>
-	#include <DriverStation/JoystickXYInput.h>
-	#include <DriverStation/NumericStepper.h>
+	#include "DriverStation/JoystickButtonInput.h"
+	#include "DriverStation/JoystickXYInput.h"
+	#include "DriverStation/NumericStepper.h"
 #endif
 
 //#include "Debug/LARULDebug.h"

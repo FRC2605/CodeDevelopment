@@ -1,11 +1,11 @@
 #ifndef LARUL_LDP8806_H
 #define LARUL_LDP8806_H
 
-#include "IRGBLEDStrip.h"
+#include "../IRGBStrip.h"
 
-#include "../../COM/ISPIInterface.h"
+#include "../../../COM/ISPIInterface.h"
 
-class LDP8806
+class LDP8806 : public IRGBStrip
 {
 public:
 	
@@ -14,8 +14,8 @@ public:
 	
 	uint32_t GetLength ();
 	
-	void SetLED ( uint32_t Index, color_t Color );
-	void SetLEDs ( uint32_t Start, color_t * Colors, uint32_t Length );
+	void SetPixel ( uint32_t Index, color_t Color );
+	void SetPixels ( uint32_t Start, color_t * Colors, uint32_t Length );
 	void Clear ( color_t ClearColor );
 	
 	void MarkBufferDirty ();

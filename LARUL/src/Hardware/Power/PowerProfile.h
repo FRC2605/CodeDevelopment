@@ -23,6 +23,9 @@ public:
 	void AddChannel ( uint8_t PDPChannel );
 	void RemoveChannel ( uint8_t PDPChannel );
 	
+	void AddSubProfile ( PowerProfile * Profile );
+	void RemoveSubProfile ( PowerProfile * Profile );
+	
 	const std :: string GetName ();
 	
 	double GetCurrent ();
@@ -33,6 +36,7 @@ public:
 private:
 	
 	Vector <uint8_t> Channels;
+	Vector <PowerProfile *> SubProfiles;
 	std :: string Name;
 	
 };

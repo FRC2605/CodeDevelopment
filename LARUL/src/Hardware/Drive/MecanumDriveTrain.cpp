@@ -58,6 +58,14 @@ bool MecanumDriveTrain :: GetEnabled ()
 	
 };
 
+void MecanumDriveTrain :: Update ()
+{
+	
+	if ( DriveBase != NULL )
+		DriveBase -> Update ();
+	
+};
+
 void MecanumDriveTrain :: PushTransform ()
 {
 	

@@ -70,8 +70,11 @@ bool TalonQuadDriveBase :: GetEnabled ()
 	
 	return Enabled;
 	
-}
+};
 
+void TalonQuadDriveBase :: Update ()
+{
+};
 
 PowerProfile * TalonQuadDriveBase :: GetProfile ()
 {

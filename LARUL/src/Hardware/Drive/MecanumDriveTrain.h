@@ -36,6 +36,8 @@ public:
 	
 	void PushTransform ();
 	
+	void Update ();
+	
 	void AddXYFilter ( DSPFilter_2_2 * XYFilter );
 	void RemoveXYFilter ( DSPFilter_2_2 * XYFilter );
 	

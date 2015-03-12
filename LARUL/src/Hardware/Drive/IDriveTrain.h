@@ -9,6 +9,8 @@ public:
 	
 	virtual ~IDriveTrain () {};
 	
+	virtual void Update () = 0;
+	
 };
 
 #endif

@@ -326,17 +326,15 @@ void LinearSlide :: Update ()
 			
 			double CVel = Targeter.GetSpeed ();
 			double VDiff = TargetVelocity - CVel;
+			double Delt = Delta.GetTimeS ();
 			
-			if ( ( fabs ( VDiff ) < RampRate ) || ( RampRate == 0.0 ) )
+			if ( ( fabs ( VDiff ) < RampRate * Delt ) || ( RampRate == 0.0 ) )
 				Targeter.SetSpeed ( TargetVelocity );
 			else
 			{
 				
-				double Inc = ( ( VDiff > 0.0 ) ? - RampRate : RampRate ) * Delta.GetTimeS ();
+				double Inc = ( ( VDiff > 0.0 ) ? RampRate : - RampRate ) * Delt;
 				
-				if ( ( ( CVel + Inc > TargetVelocity ) && ( TargetVelocity > 0.0 ) ) || ( ( CVel + Inc < TargetVelocity ) && ( TargetVelocity <= 0.0 ) ) )
-					Targeter.Set ( TargetVelocity );
-				else
 				Targeter.SetSpeed ( CVel + Inc );
 				
 			}

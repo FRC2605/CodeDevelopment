@@ -19,23 +19,18 @@ Current Features
 - Asynchronous message queue with timing utilities
 - Arbitrary address locking mechanism.
 - Powerful delegate and method closure system.
+- DSP interface and filters.
+- Driver station input wrappers for HID control processing.
+- 3D Mathematics utilities.
+- Sensor HAL.
+- Motion HAL.
+- IMU/Inertial navigation utilities. (Through Nav6)
 
 Partial Features
 ----------------
-- Driver station input wrappers for HID control processing.
-- DSP interface and filters.
 - Mathematic utility library
-- Sensor HAL.
-- Motion HAL.
-- 2D/3D Mathematics utilities.
 
 Planned Features
 ----------------
 - Whatever else I feel like at any point in time...
-- IMU/Inertial navigation utilities.
-
-Tentatively Planned Features
-----------------------------
-- Possible python scripting utility wrapping CPython.
-- We just don't know
 

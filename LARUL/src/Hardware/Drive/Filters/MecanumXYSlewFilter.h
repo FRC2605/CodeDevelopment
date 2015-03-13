@@ -13,12 +13,12 @@ public:
 	~MecanumXYSlewFilter ();
 	
 	void Compute ( double FeedA, double FeedB );
-	
+
 	double ReadA ();
 	double ReadB ();
-	
+
 	void Reset ();
-		
+
 private:
 	
 	double MaxSlew;

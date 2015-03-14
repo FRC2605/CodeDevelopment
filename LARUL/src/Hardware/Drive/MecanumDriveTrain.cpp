@@ -25,9 +25,15 @@ void MecanumDriveTrain :: SetDriveBase ( IQuadRectangularDriveBase * DriveBase )
 {
 	
 	if ( Enabled )
-		return;
-	
-	this -> DriveBase = DriveBase;
+	{
+		
+		this -> DriveBase -> Disable ();
+		this -> DriveBase = DriveBase;
+		
+		DriveBase -> Enable ();
+		
+		PushTransform ();
+	}
 	
 };
 

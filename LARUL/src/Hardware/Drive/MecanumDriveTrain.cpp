@@ -23,7 +23,8 @@ MecanumDriveTrain :: MecanumDriveTrain ( IQuadRectangularDriveBase * DriveBase )
 
 void MecanumDriveTrain :: SetDriveBase ( IQuadRectangularDriveBase * DriveBase )
 {
-	
+
+
 	if ( this -> DriveBase == DriveBase )
 		return;
 

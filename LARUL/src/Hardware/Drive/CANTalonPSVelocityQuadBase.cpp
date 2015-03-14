@@ -139,10 +139,15 @@ void CANTalonPSVelocityQuadBase :: Enable ()
 	MInfoRL.Increment.Set ( 0.0 );
 	MInfoRR.Increment.Set ( 0.0 );
 	
-	MInfoFL.Increment.SetSpeed ( MInfoFL.SetPoint = 0.0 );
-	MInfoFR.Increment.SetSpeed ( MInfoFR.SetPoint = 0.0 );
-	MInfoRL.Increment.SetSpeed ( MInfoRL.SetPoint = 0.0 );
-	MInfoRR.Increment.SetSpeed ( MInfoRR.SetPoint = 0.0 );
+	MInfoFL.SetPoint = 0.0;
+	MInfoFR.SetPoint = 0.0;
+	MInfoRL.SetPoint = 0.0;
+	MInfoRR.SetPoint = 0.0;
+
+	MInfoFL.Increment.SetSpeed ( 0.0 );
+	MInfoFR.Increment.SetSpeed ( 0.0 );
+	MInfoRL.Increment.SetSpeed ( 0.0 );
+	MInfoRR.Increment.SetSpeed ( 0.0 );
 	
 	MInfoFL.Increment.Start ();
 	MInfoFR.Increment.Start ();

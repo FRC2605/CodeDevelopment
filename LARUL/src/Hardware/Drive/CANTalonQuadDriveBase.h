@@ -8,12 +8,12 @@
 
 #include "../Motors/CANTalonConfiguration.h"
 
-#include "IQuadRectangularDriveBase.h"
+#include "IQuadRectangularCANTalonDriveBase.h"
 
 #include "../Power/PowerUsageSpec.h"
 #include "../Power/PowerProfile.h"
 
-class CANTalonQuadDriveBase : public IQuadRectangularDriveBase
+class CANTalonQuadDriveBase : public IQuadRectangularCANTalonDriveBase
 {
 public:
 	
@@ -42,6 +42,9 @@ public:
 	// IQuadRectangularDriveBase interace
 	void SetMotor ( MotorPosition Motor, double Value );
 	
+	// IQuadRectangularCANTalonDriveBase interface
+	CANTalon * GetCANTalon ( MotorPosition Motor );
+
 private:
 	
 	typedef struct

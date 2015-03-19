@@ -163,6 +163,29 @@ void CANTalonQuadDriveBase :: Update ()
 {
 };
 
+CANTalon * CANTalonQuadDriveBase :: GetCANTalon ( MotorPosition Motor )
+{
+
+	switch ( Motor )
+	{
+
+	case kMotorPosition_FL:
+		return & WheelFL;
+
+	case kMotorPosition_FR:
+		return & WheelFR;
+
+	case kMotorPosition_RL:
+		return & WheelRL;
+
+	case kMotorPosition_RR:
+		return & WheelRR;
+
+	}
+
+	return NULL;
+};
+
 void CANTalonQuadDriveBase :: SetMotor ( MotorPosition Motor, double Value )
 {
 	

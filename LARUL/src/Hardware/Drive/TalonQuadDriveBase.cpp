@@ -47,6 +47,8 @@ void TalonQuadDriveBase :: Enable ()
 	
 	Enabled = true;
 	
+
+
 };
 
 void TalonQuadDriveBase :: Disable ()

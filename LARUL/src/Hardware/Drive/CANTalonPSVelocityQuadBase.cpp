@@ -37,6 +37,23 @@ CANTalonPSVelocityQuadBase :: CANTalonPSVelocityQuadBase ( uint8_t CAN_ID_FL, ui
 	
 };
 
+CANTalonPSVelocityQuadBase :: CANTalonPSVelocityQuadBase ( IQuadRectangularCANTalonDriveBase * MotorSource, double MotorDrawAverage, double MotorDrawMax ):
+	ServoFL ( MotorSource -> GetCANTalon ( IQuadRectangularCANTalonDriveBase :: kMotorPosition_FL ) ),
+	ServoFR ( MotorSource -> GetCANTalon ( IQuadRectangularCANTalonDriveBase :: kMotorPosition_FR ) ),
+	ServoRL ( MotorSource -> GetCANTalon ( IQuadRectangularCANTalonDriveBase :: kMotorPosition_RL ) ),
+	ServoRR ( MotorSource -> GetCANTalon ( IQuadRectangularCANTalonDriveBase :: kMotorPosition_RR ) ),
+	PProfile ( "CANTalon Quad Drive Position Servo Velocity" ),
+	PSpec ( 0.0, MotorDrawMax, MotorDrawAverage, 50 ),
+	Enabled ( false ),
+	PowerScale ( 0.0 ),
+	P ( 0.0 ),
+	I ( 0.0 ),
+	D ( 0.0 ),
+	F ( 0.0 ),
+	Slot ( 0 )
+{
+};
+
 CANTalonPSVelocityQuadBase :: ~CANTalonPSVelocityQuadBase ()
 {
 };
@@ -188,14 +205,10 @@ void CANTalonPSVelocityQuadBase :: Update ()
 	if ( ! Enabled )
 		return;
 	
-	double MLP = MInfoFL.Increment.Get ();
-
-	std :: cout << "MLP: " << MLP << ", Speed: " << MInfoFL.Increment.GetSpeed () << "\n";
-
-	ServoFL.SetTarget ( MLP );
-	ServoFR.SetTarget ( MInfoFR.Increment.Get () );
-	ServoRL.SetTarget ( MInfoRL.Increment.Get () );
-	ServoRR.SetTarget ( MInfoRR.Increment.Get () );
+	ServoFL.SetTarget ( MInfoFL.Increment.Get () * MInfoFL.Inverted ? - PowerScale : PowerScale );
+	ServoFR.SetTarget ( MInfoFR.Increment.Get () * MInfoFR.Inverted ? - PowerScale : PowerScale );
+	ServoRL.SetTarget ( MInfoRL.Increment.Get () * MInfoRL.Inverted ? - PowerScale : PowerScale );
+	ServoRR.SetTarget ( MInfoRR.Increment.Get () * MInfoRR.Inverted ? - PowerScale : PowerScale );
 	
 };
 
@@ -232,6 +245,30 @@ void CANTalonPSVelocityQuadBase :: SetPowerScale ( double Scale )
 	}
 	
 };
+
+CANTalon * CANTalonPSVelocityQuadBase :: GetCANTalon ( MotorPosition Motor )
+{
+
+	switch ( Motor )
+	{
+
+	case kMotorPosition_FL:
+		return ServoFL.GetCANTalon ();
+
+	case kMotorPosition_FR:
+		return ServoFR.GetCANTalon ();
+
+	case kMotorPosition_RL:
+		return ServoRL.GetCANTalon ();
+
+	case kMotorPosition_RR:
+		return ServoRR.GetCANTalon ();
+
+	}
+
+	return NULL;
+
+}
 
 // IQuadRectangularDriveBase Interface
 void CANTalonPSVelocityQuadBase :: SetMotor ( MotorPosition Motor, double Value )

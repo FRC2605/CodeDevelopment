@@ -15,6 +15,7 @@ class CANTalonPositionServo : public IPositionDrive, public IPowerProfiled
 public:
 	
 	CANTalonPositionServo ( uint8_t CAN_ID, CANTalon :: FeedbackDevice Feedback, uint8_t PDPChannel );
+	CANTalonPositionServo ( CANTalon * Motor );
 	~CANTalonPositionServo ();
 	
 	void SetProfileSlot ( int Slot = 0 );
@@ -38,14 +39,18 @@ public:
 	
 	PowerProfile * GetProfile ();
 	
+	CANTalon * GetCANTalon ();
+
 private:
 	
-	CANTalon Motor;
+	CANTalon * Motor;
 	
 	double Target;
 	
 	bool Enabled;
-	
+
+	CANTalon :: FeedbackDevice Feedback;
+
 	PowerProfile Profile;
 	
 };

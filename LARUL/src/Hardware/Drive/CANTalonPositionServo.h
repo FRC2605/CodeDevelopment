@@ -47,10 +47,10 @@ private:
 	
 	double Target;
 	
+	bool Enabled;
+
 	CANTalon :: FeedbackDevice Feedback;
 
-	bool Enabled;
-	
 	PowerProfile Profile;
 	
 };

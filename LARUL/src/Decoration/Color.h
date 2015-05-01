@@ -14,6 +14,9 @@ typedef uint32_t color_t;
 #define ALPHA_FULL 0xFF000000
 #define ALPHA_NONE 0x00000000
 
+/* color_t is a generic type to represent a 32-bit ARGB color. Below are functoins for modification of color.
+*/
+
 inline color_t ColorFromRGB ( double R, double G, double B )
 {
 	

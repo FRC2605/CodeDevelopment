@@ -39,15 +39,15 @@ void RGBPatternScrollAnimation :: Draw ( color_t * Buffer, uint32_t Start, uint3
 	for ( uint32_t i = 0; i < Length; i ++ )
 	{
 		
-		uint32_t LowerIDX = floor ( Time * 10.0 );
-		uint32_t UpperIDX = ceil ( Time * 10.0 );
+		double Lower = fmod ( Time * static_cast <double> ( this -> Length ), static_cast <double> ( this -> Length ) );
+		uint32_t LIDX = floor ( Lower );
+
+		double Mix = Lower - static_cast <double> ( LIDX );
 		
-		double Mix = Time - static_cast <double> ( LowerIDX );
-		
-		LowerIDX %= this -> Length;
-		UpperIDX %= this -> Length;
-		
-		Buffer [ i ] = LerpColor ( Pattern [ LowerIDX ], Pattern [ UpperIDX ], Mix );
+		if ( Smooth )
+			Buffer [ i ] = LerpColor ( Pattern [ ( LIDX + i ) % this -> Length ], Pattern [ ( LIDX + i + 1 ) % this -> Length ], Mix );
+		else
+			Buffer [ i ] = Pattern [ ( LIDX + i ) % this -> Length ];
 		
 	}
 	

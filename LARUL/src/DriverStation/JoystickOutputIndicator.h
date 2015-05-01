@@ -8,6 +8,18 @@
 
 #include "../Indication/IBooleanIndicator.h"
 
+/* JoystickOutputIndicator: A wrapper for WPILib's Joystick class which exposes a joystick output as an IBooleanIndicator
+ *
+ * This class implements IBooleanIndicator, so see IBooleanIndicator for a functional description of any methods not
+ * detailed below.
+ *
+ *	JoystickOutputIndicator ( Joystick * Stick, int32_t Channel, bool DefaultState (OPTIONAL, Defaults to false) )
+ *	--------------------------------------------------------------------------------------------------------------
+ *	Contructs a JoystickOutputIndicator instance, using channel <Channel> on the joystick <Joystick> as the
+ *	output. Initially, it will be set to <DefaultState>.
+ *
+*/
+
 class JoystickOutputIndicator : public IBooleanIndicator
 {
 public:

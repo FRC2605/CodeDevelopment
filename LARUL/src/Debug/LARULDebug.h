@@ -1,7 +1,7 @@
 #ifndef LARUL_LDEBUG_H
 #define LARUL_LDEBUG_H
 
-#include "../LARULTubning.h"
+#include "../LARULTuning.h"
 
 
 

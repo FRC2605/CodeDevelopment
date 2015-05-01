@@ -8,6 +8,10 @@
 
 #include "ISPIInterface.h"
 
+/* WPISPI: A wrapper for the WPILib SPI class which implements ISPIInterface.
+ * See ISPIInterface for a functional description of methods.
+*/
+
 class WPISPI : public ISPIInterface
 {
 public:

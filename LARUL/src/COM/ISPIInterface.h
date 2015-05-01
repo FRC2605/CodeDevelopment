@@ -4,6 +4,19 @@
 #include <stdint.h>
 
 /* ISPIInterface: A generic SPI bus interface.
+ *
+ * Methods:
+ *
+ *	virtual void SetClockRate ( double RateHZ )
+ *	----------------------------------------------------
+ *	Sets the bus clock rate in Hz
+ *
+ *	virtual void SetBitOrder ( BitOrder Order )
+ *	----------------------------------------------------
+ *	Sets the bit order of the bus
+ *
+ *	virtual void SetSampleTrigger ( SampleTrigger Trigger )
+ *
 */
 
 class ISPIInterface

@@ -8,10 +8,6 @@
 #ifndef NO_WPILIB
 #include <WPILib.h>
 
-/* WPICom: A wrapper for the WPILib SerialPort class which implemens ISerialInterface.
- * See ISerialInterface for a functional description of each method.
-*/
- 
 class WPICom : public ISerialInterface
 {
 public:

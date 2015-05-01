@@ -3,9 +3,6 @@
 
 #include <stdint.h>
 
-/* ISPIInterface: A generic SPI bus interface.
-*/
-
 class ISPIInterface
 {
 public:

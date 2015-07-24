@@ -1,5 +1,5 @@
 #ifndef LARUL_JOYSTICKXYINPUT_H
-#define LATUL_JOYSTICKXYINPUT_H
+#define LARUL_JOYSTICKXYINPUT_H
 
 #include "../Sensing/IXYInput.h"
 
